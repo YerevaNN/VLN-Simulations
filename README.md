@@ -107,6 +107,16 @@ PORT=8787 \
 
 Open `http://HOST:8787`. The mission map reconstructs the same episode-seeded river, trees, groundcover, rocks, debris, rockslide, cliffs, and landmarks used by the simulator—not a decorative approximation.
 
+## Download the ten-mission sample
+
+The complete validated `natural-valley-v2` PoC is published as a compressed [GitHub Release](https://github.com/YerevaNN/VLN-Simulations/releases/tag/v0.1.0), outside Git history. Download, verify, and extract it with:
+
+```bash
+./scripts/download_sample_data.sh
+```
+
+The archive is approximately 919 MiB compressed and 1.24 GiB extracted. Its pinned SHA-256 checksum is tracked in [`checksums/natural-valley-v2-sample.sha256`](checksums/natural-valley-v2-sample.sha256).
+
 ## Data contract
 
 Every `episode-NNN` contains:

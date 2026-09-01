@@ -11,6 +11,8 @@
 - Simulated vehicle: Pegasus Iris articulation used as an X500 v2-class dynamics proxy
 - Control interface: MAVLink `MANUAL_CONTROL` in PX4 Position mode
 - Validator: `uav-sim-v2-validator`
+- Release archive: [`natural-valley-v2-sample.tar.zst`](https://github.com/YerevaNN/VLN-Simulations/releases/download/v0.1.0/natural-valley-v2-sample.tar.zst)
+- Archive SHA-256: `2b1e94d6a10439c60dd525fe80f642d34d4c940bc992adbfcb75d17811f46501`
 
 ## Content
 
