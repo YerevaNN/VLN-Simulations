@@ -1,0 +1,24 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile Python sources
+        run: python -m py_compile simulation/*.py viewer/app.py
+      - name: Check shell syntax
+        run: bash -n scripts/*.sh
+      - name: Reject tracked generated data
+        run: |
+          if git ls-files | grep -E '\.(ulg|tlog|parquet|usdc|hdr|jpe?g)$'; then
+            echo "Generated data or heavyweight assets must not be committed."
+            exit 1
+          fi

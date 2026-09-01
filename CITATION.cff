@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use VLN Simulations in research, please cite this repository."
+title: "VLN Simulations: Language-Conditioned UAV Data Generation in Isaac Sim"
+type: software
+authors:
+  - family-names: Khachatrian
+    given-names: Hrant
+    affiliation: YerevaNN
+repository-code: "https://github.com/YerevaNN/VLN-Simulations"
+url: "https://github.com/YerevaNN/VLN-Simulations"
+license: Apache-2.0
+version: 0.1.0
+date-released: 2026-09-01

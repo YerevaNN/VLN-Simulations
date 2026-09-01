@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Natural Valley UAV Mission Playback</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">UV</div>
+      <div><div class="eyebrow">NATURAL VALLEY · DATASET V2</div><h1>UAV Mission Playback</h1></div>
+    </div>
+    <div class="top-actions">
+      <span id="statusPill" class="pill"><i></i> Loading dataset</span>
+      <label class="episode-picker">Episode<select id="episodeSelect"></select></label>
+    </div>
+  </header>
+
+  <main>
+    <section class="mission-card">
+      <div>
+        <div class="section-label">MISSION INSTRUCTION</div>
+        <p id="missionInstruction">Loading mission…</p>
+      </div>
+      <div class="mission-stats">
+        <div><span>Seed</span><strong id="seed">—</strong></div>
+        <div><span>Duration</span><strong id="duration">—</strong></div>
+        <div><span>Distance</span><strong id="distance">—</strong></div>
+        <div><span>Capture</span><strong id="captureRate">—</strong></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="primary-column">
+        <article class="panel camera-panel">
+          <div class="panel-heading">
+            <div><span class="section-label">FORWARD RGB</span><strong id="frameCounter">Frame —</strong></div>
+            <span class="live-label"><i></i> SIMULATION</span>
+          </div>
+          <div class="camera-stage">
+            <img id="rgbFrame" alt="Forward RGB camera frame">
+            <div class="camera-overlay top-left">X500 v2 TARGET · FIXED FORWARD</div>
+            <div id="cameraTime" class="camera-overlay bottom-right">T+00:00.00</div>
+            <div id="frameEmpty" class="frame-empty">Waiting for the first camera frame</div>
+          </div>
+          <div class="transport">
+            <button id="skipBack" aria-label="Previous frame">‹</button>
+            <button id="playButton" class="play" aria-label="Play or pause">▶</button>
+            <button id="skipForward" aria-label="Next frame">›</button>
+            <span id="currentTime">00:00.00</span>
+            <input id="scrubber" type="range" min="0" max="1000" value="0" step="1" aria-label="Mission time">
+            <span id="endTime">00:00.00</span>
+            <select id="speed" aria-label="Playback speed">
+              <option value="0.25">0.25×</option><option value="0.5">0.5×</option>
+              <option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option>
+            </select>
+          </div>
+        </article>
+
+        <article class="panel chart-panel">
+          <div class="panel-heading"><div><span class="section-label">OPERATOR INPUT</span><strong>Joystick timeline · 50 Hz</strong></div><div class="legend"><span class="roll">Roll</span><span class="pitch">Pitch</span><span class="yaw">Yaw</span><span class="throttle">Throttle</span></div></div>
+          <canvas id="actionChart"></canvas>
+        </article>
+      </div>
+
+      <aside class="side-column">
+        <article class="panel map-panel">
+          <div class="panel-heading"><div><span class="section-label">MISSION MAP</span><strong>Simulated objects · East / North trajectory</strong></div><span id="waypointReadout">WP —</span></div>
+          <canvas id="missionMap"></canvas>
+          <div class="map-key" style="height:auto;min-height:42px;flex-wrap:wrap;padding:7px 10px;gap:7px 14px">
+            <span style="color:#4eb4c8">━ River</span><span style="color:#4f9a61">▲ Trees</span>
+            <span style="color:#a9a397">◆ Rocks</span><span style="color:#f4a85f">● Landmarks</span>
+            <span><i class="route"></i> Route</span><span><i class="actual"></i> Flown</span><span><i class="aircraft"></i> UAV</span>
+          </div>
+        </article>
+
+        <article class="panel subgoal-panel">
+          <div class="section-label">ACTIVE SUBGOAL</div>
+          <div id="subgoalIndex" class="subgoal-index">01</div>
+          <div><strong id="subgoal">Waiting for flight</strong><p id="subgoalProgress">Waypoint — of —</p></div>
+        </article>
+
+        <article class="panel controls-panel">
+          <div class="panel-heading"><div><span class="section-label">LIVE CONTROLS</span><strong>Virtual gamepad</strong></div><span id="mode">POSCTL</span></div>
+          <div class="sticks">
+            <div><div class="stick" id="leftStick"><i></i><span>Yaw / throttle</span></div></div>
+            <div><div class="stick" id="rightStick"><i></i><span>Roll / pitch</span></div></div>
+          </div>
+          <div class="axis-grid">
+            <div><span>ROLL</span><strong id="rollValue">0.00</strong><b><i id="rollBar"></i></b></div>
+            <div><span>PITCH</span><strong id="pitchValue">0.00</strong><b><i id="pitchBar"></i></b></div>
+            <div><span>YAW</span><strong id="yawValue">0.00</strong><b><i id="yawBar"></i></b></div>
+            <div><span>THR</span><strong id="throttleValue">0.00</strong><b><i id="throttleBar"></i></b></div>
+          </div>
+        </article>
+
+        <article class="panel telemetry-panel">
+          <div class="panel-heading"><div><span class="section-label">VEHICLE STATE</span><strong>Privileged telemetry</strong></div><span id="armed" class="armed">DISARMED</span></div>
+          <div class="telemetry-grid">
+            <div><span>ALTITUDE</span><strong id="altitude">—</strong><small>m ENU</small></div>
+            <div><span>GROUND SPEED</span><strong id="speedValue">—</strong><small>m/s</small></div>
+            <div><span>HEADING</span><strong id="heading">—</strong><small>degrees</small></div>
+            <div><span>POSITION</span><strong id="position">—</strong><small>E / N m</small></div>
+          </div>
+        </article>
+      </aside>
+    </section>
+    <footer style="margin-top:18px;text-align:right;color:#83978e;font-size:10px;letter-spacing:.08em">
+      Natural-environment assets by <a style="color:#72f1a7" href="https://polyhaven.com" target="_blank" rel="noopener">Poly Haven</a> · CC0
+    </footer>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
