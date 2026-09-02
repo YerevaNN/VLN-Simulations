@@ -122,6 +122,7 @@ def validate_episode(episode, errors):
     if manifest.get("schema_version") == "uav-poc-v2":
         environment = manifest.get("environment", {})
         clipping_range = manifest.get("camera", {}).get("clipping_range_m", [])
+        camera_mount = manifest.get("camera", {}).get("mount_xyz_m", [])
         if environment.get("environment_version") != "mountain-valley-v2":
             errors.append(f"{episode.name}: v2 environment metadata missing")
         if environment.get("asset_source") != "Poly Haven" or environment.get("asset_license") != "CC0 1.0 Universal":
@@ -132,6 +133,11 @@ def validate_episode(episode, errors):
             errors.append(f"{episode.name}: outdoor camera far plane is too short")
         if environment.get("distant_terrain_extent_m", 0) < 2000.0:
             errors.append(f"{episode.name}: distant terrain envelope is missing")
+        if len(camera_mount) != 3 or float(camera_mount[2]) < 0.25:
+            errors.append(f"{episode.name}: camera mount can intersect terrain at touchdown")
+        clearing = environment.get("launch_clearing_radius_m", {})
+        if clearing.get("trees", 0) < 75.0 or clearing.get("groundcover", 0) < 50.0:
+            errors.append(f"{episode.name}: launch clearing is too small")
 
     landing_index = mission.get("landing_index")
     waypoints = mission.get("waypoints_enu_m", [])

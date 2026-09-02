@@ -15,8 +15,10 @@ The scene is a mountain valley built in Isaac Sim 5.1. A 1.3 km-square high-deta
 - instanced photogrammetric rock faces forming valley walls;
 - a timber footbridge, stone cairn, fire-lookout tower and beacon, waterfall, rockslide, cliff gate, and survey marker;
 - a mountain HDR environment plus deterministic sun angle and intensity variation;
-- route-aware vegetation exclusion around all ten flight paths so realism does not create camera occlusion or unsafe scripted transits;
+- route-aware vegetation exclusion around all ten flight paths plus a shared launch/landing clearing, so realism does not create camera occlusion or unsafe scripted transits;
 - a 5 km camera far plane instead of Pegasus 5.1's 100 m default, explicit point-instancer bounds, a river extending beyond the routes, and a lower-density background forest so terrain and assets do not snap into view.
+
+The launch pad remains fixed across episodes for controlled comparisons. OpenUSD asset prototypes are nested beneath their `PointInstancer`, preventing the source tree, shrub, grass, rock, and deadwood geometry from also being rendered at world origin. Asset-specific exclusion radii keep randomized instances 40–90 m from the pad, while the camera is mounted 0.35 m above the Iris proxy origin so touchdown frames remain above terrain.
 
 The POC's cones, spheres, flat-color terrain, sparse objects, and empty sky have been removed from this version.
 

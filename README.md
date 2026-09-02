@@ -15,7 +15,7 @@ Simulation-first data generation for language-conditioned UAV control. This repo
 - deep validation of images, timing, checksums, mission completion, MAVLink logs, ULogs, and training exports;
 - an interactive browser viewer with synchronized frames, controls, telemetry, routes, and the actual deterministic scene objects.
 
-The current horizon-fixed PoC contains 18,949 RGB frames, 96,546 actions, 32.4 minutes of simulated flight, and 6.36 km of trajectories. See the [dataset card](docs/dataset-card.md) for complete statistics.
+The current horizon- and launch-pad-fixed PoC contains 18,968 RGB frames, 96,642 actions, 32.4 minutes of simulated flight, and 6.36 km of trajectories. See the [dataset card](docs/dataset-card.md) for complete statistics.
 
 ## System
 
@@ -110,7 +110,7 @@ Open `http://HOST:8787`. The mission map reconstructs the same episode-seeded ri
 
 ## Download the ten-mission sample
 
-The original `natural-valley-v2` PoC is published as a compressed [GitHub Release](https://github.com/YerevaNN/VLN-Simulations/releases/tag/v0.1.0), outside Git history. It predates the horizon fix; the live AP viewer uses `natural-valley-v2-horizon`. Download, verify, and extract the original sample with:
+The original `natural-valley-v2` PoC is published as a compressed [GitHub Release](https://github.com/YerevaNN/VLN-Simulations/releases/tag/v0.1.0), outside Git history. It predates the horizon and launch-pad fixes; the live AP viewer uses `natural-valley-v2-launch-fixed`. Download, verify, and extract the original sample with:
 
 ```bash
 ./scripts/download_sample_data.sh

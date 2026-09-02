@@ -43,6 +43,10 @@ def safe_from_landmarks(x, y):
     return all(math.hypot(x - lx, y - ly) > 12.0 for lx, ly in landmarks)
 
 
+def clear_of_launch(x, y, radius):
+    return math.hypot(x, y) >= radius
+
+
 @lru_cache(maxsize=1)
 def route_segments():
     segments = []
@@ -78,7 +82,8 @@ def environment_map(seed):
         x = float(rng.uniform(-310, 390))
         side = float(rng.choice([-1, 1]))
         y = river_y(x) + side * float(rng.uniform(25, 205))
-        if not safe_from_landmarks(x, y) or not clear_of_routes(x, y, 35.0):
+        if (not safe_from_landmarks(x, y) or not clear_of_launch(x, y, 80.0)
+                or not clear_of_routes(x, y, 35.0)):
             continue
         prototype = int(rng.integers(0, 2))
         scale = float(rng.uniform(1.5, 3.0))
@@ -88,7 +93,8 @@ def environment_map(seed):
     for _ in range(145):
         x = float(rng.uniform(-300, 390))
         y = river_y(x) + float(rng.choice([-1, 1])) * float(rng.uniform(48, 190))
-        if not safe_from_landmarks(x, y) or not clear_of_routes(x, y, 45.0):
+        if (not safe_from_landmarks(x, y) or not clear_of_launch(x, y, 90.0)
+                or not clear_of_routes(x, y, 45.0)):
             continue
         scale = float(rng.uniform(0.30, 0.50))
         rng.uniform(-math.pi, math.pi)
@@ -97,6 +103,8 @@ def environment_map(seed):
     for _ in range(950):
         x = float(rng.uniform(-290, 370))
         y = river_y(x) + float(rng.choice([-1, 1])) * float(rng.uniform(10, 155))
+        if not clear_of_launch(x, y, 60.0):
+            continue
         prototype = int(rng.integers(0, 3))
         scale = float(rng.uniform((1.2, 0.7, 0.35)[prototype], (2.8, 1.8, 0.95)[prototype]))
         rng.uniform(-math.pi, math.pi)
@@ -105,6 +113,8 @@ def environment_map(seed):
     for _ in range(380):
         x = float(rng.uniform(-280, 380))
         y = river_y(x) + float(rng.choice([-1, 1])) * float(rng.uniform(4.5, 28.0))
+        if not clear_of_launch(x, y, 40.0):
+            continue
         prototype = int(rng.integers(0, 4))
         scale = float(rng.uniform(0.45, 2.2))
         rng.uniform(-math.pi, math.pi)
@@ -113,6 +123,8 @@ def environment_map(seed):
     for _ in range(55):
         x = float(rng.uniform(-230, 340))
         y = river_y(x) + float(rng.choice([-1, 1])) * float(rng.uniform(18, 120))
+        if not clear_of_launch(x, y, 60.0):
+            continue
         prototype = int(rng.integers(0, 2))
         scale = float(rng.uniform(0.7, 1.4))
         rng.uniform(-math.pi, math.pi)

@@ -1,9 +1,9 @@
-# UAV Natural Valley V2 Horizon Dataset Card
+# UAV Natural Valley V2 Launch-Fixed Dataset Card
 
 ## Dataset
 
-- Name: `natural-valley-v2-horizon`
-- Location on AP: `/mnt/frtn/uav-sim/datasets/natural-valley-v2-horizon`
+- Name: `natural-valley-v2-launch-fixed`
+- Location on AP: `/mnt/frtn/uav-sim/datasets/natural-valley-v2-launch-fixed`
 - Generated: 2026-09-02
 - Simulator: NVIDIA Isaac Sim 5.1.0 with Pegasus Simulator 5.1.0
 - Autopilot: PX4 SITL v1.14.3
@@ -11,7 +11,7 @@
 - Simulated vehicle: Pegasus Iris articulation used as an X500 v2-class dynamics proxy
 - Control interface: MAVLink `MANUAL_CONTROL` in PX4 Position mode
 - Validator: `uav-sim-v2-validator`
-- Environment revision: `horizon-fix-v1`
+- Environment revision: `horizon-fix-v3-launch-pad`
 - Camera clipping range: 0.05–5,000 m
 - Prior release: [`natural-valley-v2-sample.tar.zst`](https://github.com/YerevaNN/VLN-Simulations/releases/download/v0.1.0/natural-valley-v2-sample.tar.zst) predates this horizon correction
 
@@ -27,33 +27,33 @@ Aggregate validated content:
 | Unique mission IDs | 10 |
 | Unique instructions | 10 |
 | Successful episodes | 10 |
-| Generation retries | 1 replacement after a terminal-state logging race |
-| Simulated duration | 1,941.52 s |
-| Cumulative path | 6,360.15 m |
-| RGB frames | 18,949 |
-| Joystick actions | 96,546 |
-| Aligned 2 Hz examples | 3,792 |
-| Aligned 5 Hz examples | 9,472 |
-| Aligned 10 Hz examples | 18,939 |
-| Dataset bytes | 1,576,236,290 |
+| Generation retries | 0 |
+| Simulated duration | 1,943.46 s |
+| Cumulative path | 6,361.10 m |
+| RGB frames | 18,968 |
+| Joystick actions | 96,642 |
+| Aligned 2 Hz examples | 3,795 |
+| Aligned 5 Hz examples | 9,483 |
+| Aligned 10 Hz examples | 18,958 |
+| Dataset bytes | 1,654,469,668 |
 | Reusable asset pack | 499 MB |
 
-The validator returned `pass` with no errors after decoding every image, verifying every manifest checksum, checking timing and action bounds, parsing all aligned exports, inspecting MAVLink and ULog evidence, and requiring both a far plane of at least 2 km and a distant terrain envelope. The original `natural-valley-v2` dataset remains intact on AP.
+The validator returned `pass` with no errors after decoding every image, verifying every manifest checksum, checking timing and action bounds, parsing all aligned exports, inspecting MAVLink and ULog evidence, and requiring the long-range camera, distant terrain envelope, elevated camera mount, and launch clearing. A contact-sheet review of every first and last frame also confirmed that no episode starts or ends inside vegetation. The earlier datasets remain intact on AP.
 
 ## Missions
 
 | Episode | Mission ID | Simulated time | Path |
 | ---: | --- | ---: | ---: |
-| 0 | `upper-river-waterfall-recon` | 200.38 s | 674.62 m |
-| 1 | `western-forest-deadwood-survey` | 176.70 s | 549.52 m |
-| 2 | `stone-cairn-photogrammetry-orbit` | 214.72 s | 637.25 m |
-| 3 | `footbridge-structural-inspection` | 140.10 s | 290.30 m |
-| 4 | `north-slope-rockslide-assessment` | 193.74 s | 635.18 m |
-| 5 | `south-meadow-search-grid` | 211.52 s | 750.90 m |
-| 6 | `fire-lookout-perimeter-check` | 174.58 s | 500.49 m |
-| 7 | `confluence-branch-mapping` | 160.88 s | 511.70 m |
-| 8 | `southern-cliff-gate-transit` | 195.82 s | 731.35 m |
-| 9 | `multi-landmark-valley-patrol` | 273.08 s | 1,078.85 m |
+| 0 | `upper-river-waterfall-recon` | 200.30 s | 674.66 m |
+| 1 | `western-forest-deadwood-survey` | 176.86 s | 548.59 m |
+| 2 | `stone-cairn-photogrammetry-orbit` | 215.24 s | 639.07 m |
+| 3 | `footbridge-structural-inspection` | 140.70 s | 290.99 m |
+| 4 | `north-slope-rockslide-assessment` | 193.68 s | 635.24 m |
+| 5 | `south-meadow-search-grid` | 211.92 s | 750.27 m |
+| 6 | `fire-lookout-perimeter-check` | 175.66 s | 500.10 m |
+| 7 | `confluence-branch-mapping` | 160.70 s | 511.97 m |
+| 8 | `southern-cliff-gate-transit` | 195.52 s | 731.38 m |
+| 9 | `multi-landmark-valley-patrol` | 272.88 s | 1,078.84 m |
 
 The full instructions, task types, named landmarks, subgoals, and ENU waypoint routes are stored in each episode's `mission.json`.
 

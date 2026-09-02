@@ -298,6 +298,10 @@ def build_river(stage, seed, assets_root):
 
 def point_instancer(stage, path, prototype_specs, instances):
     """Create efficient metric OpenUSD instances."""
+    # Prototype roots must be descendants of the PointInstancer.  When they
+    # are authored as siblings, Hydra also traverses and renders each source
+    # asset once at its local origin, which stacked vegetation on the pad.
+    instancer = UsdGeom.PointInstancer.Define(stage, path)
     prototype_paths = []
     for index, (asset, base_scale, material) in enumerate(prototype_specs):
         prototype_path = f"{path}/Prototypes/P{index}"
@@ -306,7 +310,6 @@ def point_instancer(stage, path, prototype_specs, instances):
         prototype.AddScaleOp().Set(Gf.Vec3f(base_scale, base_scale, base_scale))
         bind(prototype.GetPrim(), material, strong=True)
         prototype_paths.append(Sdf.Path(prototype_path))
-    instancer = UsdGeom.PointInstancer.Define(stage, f"{path}/Instances")
     instancer.CreatePrototypesRel().SetTargets(prototype_paths)
     instancer.CreateProtoIndicesAttr([item[0] for item in instances])
     instancer.CreatePositionsAttr([Gf.Vec3f(*item[1]) for item in instances])
@@ -330,6 +333,11 @@ def point_instancer(stage, path, prototype_specs, instances):
 def safe_from_landmarks(x, y):
     landmarks = [(0, 0), (72, river_y(72)), (145, 8), (180, -55), (130, 85), (260, river_y(260))]
     return all(math.hypot(x - lx, y - ly) > 12.0 for lx, ly in landmarks)
+
+
+def clear_of_launch(x, y, radius):
+    """Keep oversized visual assets outside the shared takeoff/landing clearing."""
+    return math.hypot(x, y) >= radius
 
 
 def scatter_nature(stage, seed, assets_root):
@@ -359,7 +367,8 @@ def scatter_nature(stage, seed, assets_root):
         centre = river_y(x)
         side = float(rng.choice([-1, 1]))
         y = centre + side * float(rng.uniform(25, 205))
-        if not safe_from_landmarks(x, y) or not clear_of_routes(x, y, 35.0):
+        if (not safe_from_landmarks(x, y) or not clear_of_launch(x, y, 80.0)
+                or not clear_of_routes(x, y, 35.0)):
             continue
         z = terrain_height(x, y, seed)
         prototype = int(rng.integers(0, 2))
@@ -369,7 +378,8 @@ def scatter_nature(stage, seed, assets_root):
         x = float(rng.uniform(-300, 390))
         centre = river_y(x)
         y = centre + float(rng.choice([-1, 1])) * float(rng.uniform(48, 190))
-        if not safe_from_landmarks(x, y) or not clear_of_routes(x, y, 45.0):
+        if (not safe_from_landmarks(x, y) or not clear_of_launch(x, y, 90.0)
+                or not clear_of_routes(x, y, 45.0)):
             continue
         z = terrain_height(x, y, seed)
         scale = float(rng.uniform(0.30, 0.50))
@@ -378,6 +388,8 @@ def scatter_nature(stage, seed, assets_root):
         x = float(rng.uniform(-290, 370))
         centre = river_y(x)
         y = centre + float(rng.choice([-1, 1])) * float(rng.uniform(10, 155))
+        if not clear_of_launch(x, y, 60.0):
+            continue
         z = terrain_height(x, y, seed)
         prototype = int(rng.integers(0, 3))
         scale = float(rng.uniform((1.2, 0.7, 0.35)[prototype], (2.8, 1.8, 0.95)[prototype]))
@@ -387,6 +399,8 @@ def scatter_nature(stage, seed, assets_root):
         centre = river_y(x)
         bank_distance = float(rng.choice([-1, 1])) * float(rng.uniform(4.5, 28.0))
         y = centre + bank_distance
+        if not clear_of_launch(x, y, 40.0):
+            continue
         z = terrain_height(x, y, seed)
         prototype = int(rng.integers(0, 4))
         scale = float(rng.uniform(0.45, 2.2))
@@ -394,6 +408,8 @@ def scatter_nature(stage, seed, assets_root):
     for _ in range(55):
         x = float(rng.uniform(-230, 340))
         y = river_y(x) + float(rng.choice([-1, 1])) * float(rng.uniform(18, 120))
+        if not clear_of_launch(x, y, 60.0):
+            continue
         z = terrain_height(x, y, seed)
         prototype = int(rng.integers(0, 2))
         scale = float(rng.uniform(0.7, 1.4))
@@ -579,7 +595,7 @@ def build_environment(stage, seed, assets_root):
     build_landmarks(stage, seed, assets_root)
     return {
         "environment_version": "mountain-valley-v2",
-        "environment_revision": "horizon-fix-v1",
+        "environment_revision": "horizon-fix-v3-launch-pad",
         "asset_source": "Poly Haven",
         "asset_license": "CC0 1.0 Universal",
         "asset_count": len(manifest["assets"]),
@@ -587,6 +603,13 @@ def build_environment(stage, seed, assets_root):
         "distant_terrain_grid": [161, 161],
         "terrain_extent_m": 650.0,
         "distant_terrain_extent_m": 2400.0,
+        "launch_clearing_radius_m": {
+            "trees": 80.0,
+            "mature_trees": 90.0,
+            "groundcover": 60.0,
+            "rocks": 40.0,
+            "debris": 60.0,
+        },
         **nature_counts,
     }
 

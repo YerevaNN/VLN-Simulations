@@ -48,6 +48,8 @@ MAX_SIM_SECONDS = 260.0
 IMAGE_SIZE = (640, 360)
 CAMERA_NEAR_CLIP_M = 0.05
 CAMERA_FAR_CLIP_M = 5000.0
+CAMERA_MOUNT_XYZ_M = (0.30, 0.0, 0.35)
+CAMERA_MOUNT_RPY_DEG = (0.0, -3.0, 180.0)
 
 
 class LongRangeMonocularCamera(MonocularCamera):
@@ -400,8 +402,11 @@ def main():
             "frequency": CAMERA_SENSOR_HZ,
             "resolution": IMAGE_SIZE,
             "depth": False,
-            "position": np.array([0.23, 0.0, 0.02]),
-            "orientation": np.array([0.0, -3.0, 180.0]),
+            # The Iris proxy settles with its articulation origin slightly
+            # below the terrain.  Keep the optical centre above ground during
+            # takeoff and touchdown while approximating an X500 front mount.
+            "position": np.array(CAMERA_MOUNT_XYZ_M),
+            "orientation": np.array(CAMERA_MOUNT_RPY_DEG),
             "diagonal_fov": 98.0,
             "intrinsics": np.array([[380.0, 0.0, 320.0], [0.0, 380.0, 180.0], [0.0, 0.0, 1.0]]),
             "distortion_coefficients": [0.0] * 8,
@@ -616,7 +621,8 @@ def main():
             "type": "fixed_forward_rgb",
             "hz": CAMERA_HZ,
             "resolution": IMAGE_SIZE,
-            "mount_rpy_deg": [0.0, -3.0, 180.0],
+            "mount_xyz_m": CAMERA_MOUNT_XYZ_M,
+            "mount_rpy_deg": CAMERA_MOUNT_RPY_DEG,
             "clipping_range_m": [CAMERA_NEAR_CLIP_M, CAMERA_FAR_CLIP_M],
         },
         "action_hz": ACTION_HZ,
