@@ -24,6 +24,7 @@ def main():
     parser.add_argument("--width", type=int, default=512)
     parser.add_argument("--quality", type=int, default=48)
     parser.add_argument("--workers", type=int, default=12)
+    parser.add_argument("--skip-images", action="store_true", help="Refresh viewer and JSON without reconverting existing preview frames")
     args = parser.parse_args()
 
     args.output.mkdir(parents=True, exist_ok=True)
@@ -74,8 +75,9 @@ def main():
             stderr=subprocess.DEVNULL,
         )
 
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        list(pool.map(convert, image_jobs))
+    if not args.skip_images:
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            list(pool.map(convert, image_jobs))
 
     manifest = {
         "episodes": len(episodes),

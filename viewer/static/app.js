@@ -1,5 +1,5 @@
 const $ = id => document.getElementById(id);
-const state = {data:null,time:0,playing:false,speed:1,lastTick:0,frameIndex:-1};
+const state = {data:null,time:0,playing:false,speed:1,lastTick:0,frameIndex:-1,frameReady:new Map(),frameLoading:new Set()};
 const colors = ['#72f1a7','#63d9e9','#b699ff','#ffc76b'];
 
 function fmt(t) {
@@ -10,6 +10,17 @@ function nearest(rows,t) {
   if(!rows.length)return 0; let lo=0,hi=rows.length-1;
   while(lo<hi){const mid=Math.ceil((lo+hi)/2);if(rows[mid][0]<=t)lo=mid;else hi=mid-1}
   return lo;
+}
+function preloadFrame(index) {
+  const frames=state.data?.frames;if(!frames||index<0||index>=frames.length||state.frameReady.has(index)||state.frameLoading.has(index))return;
+  state.frameLoading.add(index);const image=new Image();
+  image.onload=()=>{state.frameLoading.delete(index);state.frameReady.set(index,image.src);if(index===nearest(state.data.frames,state.time))render(true)};
+  image.onerror=()=>state.frameLoading.delete(index);
+  image.src=frames[index][1];
+}
+function preloadWindow(index) {
+  for(let i=index;i<Math.min(state.data.frames.length,index+40);i++)preloadFrame(i);
+  if(state.frameReady.size>160)for(const key of state.frameReady.keys())if(key<index-20||key>index+80)state.frameReady.delete(key);
 }
 function sizeCanvas(canvas) {
   const dpr=Math.min(devicePixelRatio||1,2),r=canvas.getBoundingClientRect();
@@ -28,7 +39,7 @@ async function loadEpisode(id) {
   state.playing=false;$('playButton').textContent='▶';$('statusPill').className='pill';
   $('statusPill').innerHTML='<i></i> Loading episode';
   const data=await fetch(`/api/episodes/${id}`).then(r=>{if(!r.ok)throw Error('Episode could not be loaded');return r.json()});
-  state.data=data;state.time=0;state.frameIndex=-1;
+  state.data=data;state.time=0;state.frameIndex=-1;state.frameReady=new Map();state.frameLoading=new Set();preloadWindow(0);
   const m=data.manifest,mission=data.mission;
   $('missionInstruction').textContent=mission.instruction;$('seed').textContent=m.seed;
   $('duration').textContent=`${m.duration_s.toFixed(1)} s`;$('distance').textContent=`${m.path_length_m.toFixed(0)} m`;
@@ -42,8 +53,10 @@ function render(force=false) {
   state.time=Math.max(0,Math.min(end,state.time));
   const fi=nearest(d.frames,state.time),ai=nearest(d.actions,state.time),si=nearest(d.states,state.time);
   const frame=d.frames[fi],a=d.actions[ai],s=d.states[si],beforeCamera=state.time<d.frames[0][0];
-  if(force||fi!==state.frameIndex){state.frameIndex=fi;$('rgbFrame').src=frame[1];$('frameCounter').textContent=`Frame ${(fi+1).toLocaleString()} / ${d.frames.length.toLocaleString()}`}
-  $('frameEmpty').style.display=beforeCamera?'grid':'none';$('rgbFrame').style.visibility=beforeCamera?'hidden':'visible';
+  preloadWindow(fi);const ready=state.frameReady.get(fi);
+  if(ready&&(force||fi!==state.frameIndex)){state.frameIndex=fi;$('rgbFrame').src=ready;$('frameCounter').textContent=`Frame ${(fi+1).toLocaleString()} / ${d.frames.length.toLocaleString()}`}
+  $('frameEmpty').textContent=beforeCamera?'Waiting for the first camera frame':'Buffering preview frame…';
+  $('frameEmpty').style.display=(beforeCamera||!ready)?'grid':'none';$('rgbFrame').style.visibility=beforeCamera?'hidden':'visible';
   $('scrubber').value=Math.round(state.time/end*1000);$('currentTime').textContent=fmt(state.time);$('cameraTime').textContent=`T+${fmt(frame[0])}`;
   updateAction(a);updateTelemetry(s);updateSubgoal(a);drawMap(s);drawChart();
 }
@@ -124,7 +137,7 @@ function drawChart() {
 }
 
 function tick(ts) {
-  if(state.playing&&state.data){if(state.lastTick)state.time+=(ts-state.lastTick)/1000*state.speed;if(state.time>=state.data.manifest.duration_s){state.time=state.data.manifest.duration_s;state.playing=false;$('playButton').textContent='▶'}render()}
+  if(state.playing&&state.data){if(state.lastTick){const candidate=Math.min(state.data.manifest.duration_s,state.time+(ts-state.lastTick)/1000*state.speed),fi=nearest(state.data.frames,candidate);preloadWindow(fi);if(candidate<state.data.frames[0][0]||state.frameReady.has(fi))state.time=candidate}if(state.time>=state.data.manifest.duration_s){state.time=state.data.manifest.duration_s;state.playing=false;$('playButton').textContent='▶'}render()}
   state.lastTick=ts;requestAnimationFrame(tick);
 }
 $('playButton').onclick=()=>{if(!state.data)return;if(state.time>=state.data.manifest.duration_s)state.time=0;state.playing=!state.playing;$('playButton').textContent=state.playing?'❚❚':'▶'};
