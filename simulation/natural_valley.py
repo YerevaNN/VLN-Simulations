@@ -34,7 +34,10 @@ def terrain_height(x, y, seed):
     """Mountain valley height field with a navigable river corridor and distant ridges."""
     centre = river_y(x)
     lateral = abs(y - centre)
-    ridge = 0.0015 * lateral**1.78
+    # Cap the large-scale terms outside the high-detail terrain.  This keeps the
+    # same near-field valley while allowing a several-kilometre visual terrain
+    # skirt without numerical mountain spikes at its boundary.
+    ridge = 0.0015 * min(lateral, 900.0) ** 1.78
     ridged_detail = (1.0 - math.exp(-lateral / 70.0)) * (
         3.1 * math.sin(x / 47.0 + seed * 0.013)
         + 2.0 * math.sin((x + y) / 31.0)
@@ -42,8 +45,10 @@ def terrain_height(x, y, seed):
     )
     river_cut = -1.1 * math.exp(-((y - centre) / 8.0) ** 2)
     saddle = -7.0 * math.exp(-((x - 220.0) / 75.0) ** 2 - ((y - 78.0) / 38.0) ** 2)
-    upstream_rise = 0.00085 * max(0.0, x - 255.0) ** 2
-    base = ridge + ridged_detail + river_cut + saddle + upstream_rise
+    upstream_rise = 0.00085 * min(max(0.0, x - 255.0), 600.0) ** 2
+    horizon_distance = max(0.0, max(abs(x), abs(y)) - 650.0)
+    horizon_rise = min(95.0, 0.055 * horizon_distance)
+    base = ridge + ridged_detail + river_cut + saddle + upstream_rise + horizon_rise
     launch_blend = min(1.0, math.hypot(x, y) / 24.0)
     return max(-1.2, base * (0.12 + 0.88 * launch_blend))
 
@@ -226,6 +231,36 @@ def build_terrain(stage, seed, assets_root):
         stage, "/World/Materials/Ground", assets_root, "aerial_grass_rock"
     )
     create_mesh(stage, "/World/Terrain", points, indices, counts, uvs, ground, collision=True)
+    return ground
+
+
+def build_distant_terrain(stage, seed, ground_material):
+    """Build a coarse visual terrain ring that hides the finite scene boundary."""
+    grid_n = 161
+    extent = 2400.0
+    coordinates = np.linspace(-extent, extent, grid_n)
+    points, uvs = [], []
+    for y in coordinates:
+        for x in coordinates:
+            points.append(Gf.Vec3f(float(x), float(y), float(terrain_height(x, y, seed) - 0.5)))
+            uvs.append(Gf.Vec2f(float((x + extent) / 34.0), float((y + extent) / 34.0)))
+    indices, counts = [], []
+    for row in range(grid_n - 1):
+        for column in range(grid_n - 1):
+            x0, x1 = coordinates[column], coordinates[column + 1]
+            y0, y1 = coordinates[row], coordinates[row + 1]
+            # Leave a hole under the high-detail collision mesh, retaining a
+            # narrow overlap at its edge so no background can leak through.
+            if max(abs(x0), abs(x1), abs(y0), abs(y1)) < 620.0:
+                continue
+            a = row * grid_n + column
+            b, c, d = a + 1, a + grid_n, a + grid_n + 1
+            indices.extend([a, b, d, a, d, c])
+            counts.extend([3, 3])
+    create_mesh(
+        stage, "/World/DistantTerrain", points, indices, counts, uvs,
+        ground_material, collision=False,
+    )
 
 
 def ribbon_geometry(samples, half_width, z_offset, seed, y_function=river_y):
@@ -246,7 +281,9 @@ def ribbon_geometry(samples, half_width, z_offset, seed, y_function=river_y):
 
 
 def build_river(stage, seed, assets_root):
-    samples = np.linspace(-260.0, 390.0, 132)
+    # Continue the river well beyond every route so it never terminates inside
+    # the camera frustum as the aircraft advances up-valley.
+    samples = np.linspace(-1200.0, 1600.0, 281)
     riverbed_material = create_pbr_material(
         stage, "/World/Materials/Riverbed", assets_root, "ganges_river_pebbles"
     )
@@ -278,6 +315,15 @@ def point_instancer(stage, path, prototype_specs, instances):
         for item in instances
     ])
     instancer.CreateScalesAttr([Gf.Vec3f(*item[3]) for item in instances])
+    if instances:
+        positions = np.asarray([item[1] for item in instances], dtype=float)
+        max_scale = max(max(item[3]) for item in instances)
+        margin = max(12.0, 12.0 * max_scale)
+        lower = positions.min(axis=0) - margin
+        upper = positions.max(axis=0) + margin
+        instancer.CreateExtentAttr([
+            Gf.Vec3f(*lower.astype(float)), Gf.Vec3f(*upper.astype(float))
+        ])
     return instancer
 
 
@@ -307,7 +353,7 @@ def scatter_nature(stage, seed, assets_root):
             if float(np.linalg.norm(point - (a + fraction * delta))) < clearance:
                 return False
         return True
-    trees, mature_trees, groundcover, rocks, debris = [], [], [], [], []
+    trees, distant_trees, mature_trees, groundcover, rocks, debris = [], [], [], [], [], []
     for _ in range(520):
         x = float(rng.uniform(-310, 390))
         centre = river_y(x)
@@ -352,10 +398,27 @@ def scatter_nature(stage, seed, assets_root):
         prototype = int(rng.integers(0, 2))
         scale = float(rng.uniform(0.7, 1.4))
         debris.append((prototype, (x, y, z), float(rng.uniform(-math.pi, math.pi)), (scale, scale, scale)))
+    # Lower-density background forest masks the near-field scatter boundary and
+    # gives the valley a stable silhouette throughout every mission.
+    for _ in range(1200):
+        x = float(rng.uniform(-1200, 1600))
+        centre = river_y(x)
+        y = centre + float(rng.choice([-1, 1])) * float(rng.uniform(300, 850))
+        z = terrain_height(x, y, seed)
+        prototype = int(rng.integers(0, 2))
+        scale = float(rng.uniform(1.5, 3.4))
+        distant_trees.append((
+            prototype, (x, y, z), float(rng.uniform(-math.pi, math.pi)),
+            (scale, scale, scale),
+        ))
     point_instancer(stage, "/World/Nature/Trees", [
         (asset_path(assets_root, "fir"), 1.0, materials["fir"]),
         (asset_path(assets_root, "pine"), 1.0, materials["pine"]),
     ], trees)
+    point_instancer(stage, "/World/Nature/DistantTrees", [
+        (asset_path(assets_root, "fir"), 1.0, materials["fir"]),
+        (asset_path(assets_root, "pine"), 1.0, materials["pine"]),
+    ], distant_trees)
     point_instancer(stage, "/World/Nature/MatureTrees", [
         (asset_path(assets_root, "mature_tree"), 1.0, materials["mature_tree"]),
     ], mature_trees)
@@ -374,6 +437,13 @@ def scatter_nature(stage, seed, assets_root):
         (asset_path(assets_root, "stump"), 1.0, materials["stump"]),
         (asset_path(assets_root, "dead_log"), 1.0, materials["dead_log"]),
     ], debris)
+    return {
+        "tree_instances": len(trees) + len(mature_trees),
+        "distant_tree_instances": len(distant_trees),
+        "groundcover_instances": len(groundcover),
+        "river_stone_instances": len(rocks),
+        "debris_instances": len(debris),
+    }
 
 
 def cube(stage, path, position, scale, material, rotation_z=0.0):
@@ -502,19 +572,22 @@ def build_environment(stage, seed, assets_root):
     if manifest.get("license") != "CC0 1.0 Universal":
         raise RuntimeError("Unexpected asset license")
     build_lighting(stage, seed, assets_root)
-    build_terrain(stage, seed, assets_root)
+    ground_material = build_terrain(stage, seed, assets_root)
+    build_distant_terrain(stage, seed, ground_material)
     build_river(stage, seed, assets_root)
-    scatter_nature(stage, seed, assets_root)
+    nature_counts = scatter_nature(stage, seed, assets_root)
     build_landmarks(stage, seed, assets_root)
     return {
         "environment_version": "mountain-valley-v2",
+        "environment_revision": "horizon-fix-v1",
         "asset_source": "Poly Haven",
         "asset_license": "CC0 1.0 Universal",
         "asset_count": len(manifest["assets"]),
         "terrain_grid": [161, 161],
-        "tree_instances": 665,
-        "groundcover_instances": 950,
-        "river_stone_instances": 380,
+        "distant_terrain_grid": [161, 161],
+        "terrain_extent_m": 650.0,
+        "distant_terrain_extent_m": 2400.0,
+        **nature_counts,
     }
 
 

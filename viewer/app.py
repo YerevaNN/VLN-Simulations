@@ -118,6 +118,14 @@ def environment_map(seed):
         rng.uniform(-math.pi, math.pi)
         debris.append([round(x, 2), round(y, 2), debris_types[prototype], round(scale, 2)])
 
+    for _ in range(1200):
+        x = float(rng.uniform(-1200, 1600))
+        y = river_y(x) + float(rng.choice([-1, 1])) * float(rng.uniform(300, 850))
+        prototype = int(rng.integers(0, 2))
+        scale = float(rng.uniform(1.5, 3.4))
+        rng.uniform(-math.pi, math.pi)
+        trees.append([round(x, 2), round(y, 2), tree_types[prototype], round(scale, 2)])
+
     slide_rng = np.random.default_rng(seed + 991)
     rockslide = []
     for _ in range(34):
@@ -146,7 +154,7 @@ def environment_map(seed):
         [220.0, 75.0, "Rockslide"],
         [289.5, -63.5, "Cliff gate"],
     ]
-    river = [[round(float(x), 2), round(river_y(float(x)), 2)] for x in np.linspace(-260.0, 390.0, 132)]
+    river = [[round(float(x), 2), round(river_y(float(x)), 2)] for x in np.linspace(-1200.0, 1600.0, 281)]
     return {
         "river": river,
         "trees": trees,

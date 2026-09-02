@@ -46,6 +46,21 @@ ACTION_HZ = 50.0
 STATE_HZ = 50.0
 MAX_SIM_SECONDS = 260.0
 IMAGE_SIZE = (640, 360)
+CAMERA_NEAR_CLIP_M = 0.05
+CAMERA_FAR_CLIP_M = 5000.0
+
+
+class LongRangeMonocularCamera(MonocularCamera):
+    """Pegasus camera with an explicit far plane suitable for outdoor flight.
+
+    Pegasus Simulator 5.1 hard-codes its camera far plane to 100 m in
+    ``MonocularCamera.start``.  Overriding it after initialization prevents
+    terrain and landmarks from being clipped as the UAV approaches them.
+    """
+
+    def start(self):
+        super().start()
+        self._camera.set_clipping_range(CAMERA_NEAR_CLIP_M, CAMERA_FAR_CLIP_M)
 
 
 def parse_args():
@@ -379,7 +394,7 @@ def main():
             }
         )
     )
-    camera = MonocularCamera(
+    camera = LongRangeMonocularCamera(
         "forward_camera",
         config={
             "frequency": CAMERA_SENSOR_HZ,
@@ -602,6 +617,7 @@ def main():
             "hz": CAMERA_HZ,
             "resolution": IMAGE_SIZE,
             "mount_rpy_deg": [0.0, -3.0, 180.0],
+            "clipping_range_m": [CAMERA_NEAR_CLIP_M, CAMERA_FAR_CLIP_M],
         },
         "action_hz": ACTION_HZ,
         "duration_s": duration,

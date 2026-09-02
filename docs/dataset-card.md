@@ -1,22 +1,23 @@
-# UAV Natural Valley V2 Dataset Card
+# UAV Natural Valley V2 Horizon Dataset Card
 
 ## Dataset
 
-- Name: `natural-valley-v2`
-- Location on AP: `/mnt/frtn/uav-sim/datasets/natural-valley-v2`
-- Generated: 2026-09-01
+- Name: `natural-valley-v2-horizon`
+- Location on AP: `/mnt/frtn/uav-sim/datasets/natural-valley-v2-horizon`
+- Generated: 2026-09-02
 - Simulator: NVIDIA Isaac Sim 5.1.0 with Pegasus Simulator 5.1.0
 - Autopilot: PX4 SITL v1.14.3
 - Hardware target: Holybro PX4 Development Kit - X500 v2
 - Simulated vehicle: Pegasus Iris articulation used as an X500 v2-class dynamics proxy
 - Control interface: MAVLink `MANUAL_CONTROL` in PX4 Position mode
 - Validator: `uav-sim-v2-validator`
-- Release archive: [`natural-valley-v2-sample.tar.zst`](https://github.com/YerevaNN/VLN-Simulations/releases/download/v0.1.0/natural-valley-v2-sample.tar.zst)
-- Archive SHA-256: `2b1e94d6a10439c60dd525fe80f642d34d4c940bc992adbfcb75d17811f46501`
+- Environment revision: `horizon-fix-v1`
+- Camera clipping range: 0.05–5,000 m
+- Prior release: [`natural-valley-v2-sample.tar.zst`](https://github.com/YerevaNN/VLN-Simulations/releases/download/v0.1.0/natural-valley-v2-sample.tar.zst) predates this horizon correction
 
 ## Content
 
-Ten deterministic-seed episodes execute ten different natural-language missions in one comprehensive 1.3 km-square mountain-valley environment. The fixed forward RGB camera records at 10 Hz, while normalized scripted-expert gamepad actions and privileged vehicle state are recorded at 50 Hz. Raw MAVLink telemetry and native PX4 ULogs are retained.
+Ten deterministic-seed episodes execute ten different natural-language missions in one comprehensive mountain valley. A 1.3 km-square high-detail collision mesh is enclosed by a 4.8 km-square visual terrain ring. The fixed forward RGB camera records at 10 Hz, while normalized scripted-expert gamepad actions and privileged vehicle state are recorded at 50 Hz. Raw MAVLink telemetry and native PX4 ULogs are retained.
 
 Aggregate validated content:
 
@@ -27,38 +28,38 @@ Aggregate validated content:
 | Unique instructions | 10 |
 | Successful episodes | 10 |
 | Generation retries | 1 replacement after a terminal-state logging race |
-| Simulated duration | 1,942.82 s |
-| Cumulative path | 6,360.48 m |
-| RGB frames | 18,963 |
-| Joystick actions | 96,620 |
-| Aligned 2 Hz examples | 3,793 |
-| Aligned 5 Hz examples | 9,479 |
-| Aligned 10 Hz examples | 18,953 |
-| Dataset bytes | 1,331,252,261 |
+| Simulated duration | 1,941.52 s |
+| Cumulative path | 6,360.15 m |
+| RGB frames | 18,949 |
+| Joystick actions | 96,546 |
+| Aligned 2 Hz examples | 3,792 |
+| Aligned 5 Hz examples | 9,472 |
+| Aligned 10 Hz examples | 18,939 |
+| Dataset bytes | 1,576,236,290 |
 | Reusable asset pack | 499 MB |
 
-The validator returned `pass` with no errors after decoding every image, verifying every manifest checksum, checking timing and action bounds, parsing all aligned exports, and inspecting MAVLink and ULog evidence. The rejected pre-fix episode is preserved outside the released dataset at `/mnt/frtn/uav-sim/datasets/natural-valley-v2-failed/episode-004-terminal-state-20260901`.
+The validator returned `pass` with no errors after decoding every image, verifying every manifest checksum, checking timing and action bounds, parsing all aligned exports, inspecting MAVLink and ULog evidence, and requiring both a far plane of at least 2 km and a distant terrain envelope. The original `natural-valley-v2` dataset remains intact on AP.
 
 ## Missions
 
 | Episode | Mission ID | Simulated time | Path |
 | ---: | --- | ---: | ---: |
-| 0 | `upper-river-waterfall-recon` | 200.36 s | 675.01 m |
-| 1 | `western-forest-deadwood-survey` | 176.74 s | 549.16 m |
-| 2 | `stone-cairn-photogrammetry-orbit` | 214.70 s | 637.58 m |
-| 3 | `footbridge-structural-inspection` | 140.22 s | 289.75 m |
-| 4 | `north-slope-rockslide-assessment` | 193.80 s | 634.79 m |
-| 5 | `south-meadow-search-grid` | 211.68 s | 751.47 m |
-| 6 | `fire-lookout-perimeter-check` | 175.48 s | 499.88 m |
-| 7 | `confluence-branch-mapping` | 160.76 s | 511.86 m |
-| 8 | `southern-cliff-gate-transit` | 195.64 s | 731.46 m |
-| 9 | `multi-landmark-valley-patrol` | 273.44 s | 1,079.54 m |
+| 0 | `upper-river-waterfall-recon` | 200.38 s | 674.62 m |
+| 1 | `western-forest-deadwood-survey` | 176.70 s | 549.52 m |
+| 2 | `stone-cairn-photogrammetry-orbit` | 214.72 s | 637.25 m |
+| 3 | `footbridge-structural-inspection` | 140.10 s | 290.30 m |
+| 4 | `north-slope-rockslide-assessment` | 193.74 s | 635.18 m |
+| 5 | `south-meadow-search-grid` | 211.52 s | 750.90 m |
+| 6 | `fire-lookout-perimeter-check` | 174.58 s | 500.49 m |
+| 7 | `confluence-branch-mapping` | 160.88 s | 511.70 m |
+| 8 | `southern-cliff-gate-transit` | 195.82 s | 731.35 m |
+| 9 | `multi-landmark-valley-patrol` | 273.08 s | 1,078.85 m |
 
 The full instructions, task types, named landmarks, subgoals, and ENU waypoint routes are stored in each episode's `mission.json`.
 
 ## Environment And Assets
 
-The scene includes collision terrain, a winding river and pebble bed, mountain walls, trees, saplings, grasses, ferns, shrubs, deadwood, stumps, boulders, mossy rocks, a bridge, cairn, lookout, waterfall, rockslide, cliff gate, survey marker, mountain HDR environment, and deterministic lighting variation.
+The scene includes collision terrain, a coarse distant mountain ring, an extended winding river and pebble bed, background forest bands, explicit instancer bounds, mountain walls, trees, saplings, grasses, ferns, shrubs, deadwood, stumps, boulders, mossy rocks, a bridge, cairn, lookout, waterfall, rockslide, cliff gate, survey marker, mountain HDR environment, and deterministic lighting variation.
 
 The 18-asset source pack is pinned at `/mnt/frtn/uav-sim/assets/polyhaven-v2`. Its `asset_manifest.json` records source URLs, authors, file hashes, sizes, and license. Poly Haven assets are released under [CC0 1.0 Universal](https://polyhaven.com/license). Powered by Poly Haven.
 

@@ -6,7 +6,7 @@
 
 ## Environment
 
-The scene is a 1.3 km-square mountain valley built in Isaac Sim 5.1. It includes:
+The scene is a mountain valley built in Isaac Sim 5.1. A 1.3 km-square high-detail collision mesh covers the operating area, while a coarse 4.8 km-square visual terrain ring closes the horizon. It includes:
 
 - a 161 × 161 collision terrain with a river-cut valley, side ridges, a high saddle, and an upstream rise;
 - tiled 2K PBR grass-rock terrain and river-pebble materials;
@@ -15,7 +15,8 @@ The scene is a 1.3 km-square mountain valley built in Isaac Sim 5.1. It includes
 - instanced photogrammetric rock faces forming valley walls;
 - a timber footbridge, stone cairn, fire-lookout tower and beacon, waterfall, rockslide, cliff gate, and survey marker;
 - a mountain HDR environment plus deterministic sun angle and intensity variation;
-- route-aware vegetation exclusion around all ten flight paths so realism does not create camera occlusion or unsafe scripted transits.
+- route-aware vegetation exclusion around all ten flight paths so realism does not create camera occlusion or unsafe scripted transits;
+- a 5 km camera far plane instead of Pegasus 5.1's 100 m default, explicit point-instancer bounds, a river extending beyond the routes, and a lower-density background forest so terrain and assets do not snap into view.
 
 The POC's cones, spheres, flat-color terrain, sparse objects, and empty sky have been removed from this version.
 
@@ -46,9 +47,9 @@ Each `mission.json` contains a unique natural-language instruction, task type, n
 
 ## Automation And Quality Gates
 
-[`scripts/run_batch.sh`](../scripts/run_batch.sh) downloads the pinned assets if needed, generates episodes sequentially on the selected GPU, retries each failure up to three times, runs the deep dataset validator, and normalizes dataset ownership. Completed successful episodes are skipped on resume.
+[`scripts/run_batch.sh`](../scripts/run_batch.sh) downloads the pinned assets if needed, generates episodes sequentially on the selected GPU, retries each failure up to three times, runs the deep dataset validator, and normalizes dataset ownership. Completed successful episodes are skipped on resume. Each simulator uses an isolated container network by default, so separate GPU shards cannot cross-talk through PX4/MAVLink ports.
 
-Before the full batch, complete PX4 smoke missions validated the river and forest routes. Visual gates corrected asset units, missing alpha masks, material overrides, HDR composition, river width, camera angle, vegetation size, and route clearance.
+Before the full batch, complete PX4 smoke missions validated the river and forest routes. Visual gates corrected asset units, missing alpha masks, material overrides, HDR composition, river width, camera angle, vegetation size, route clearance, and the Pegasus camera's overly short 100 m far-clipping plane.
 
 The deep validator verifies decoded RGB images, timing, action bounds, mission completion, unique mission text, exports, checksums, MAVLink telemetry, and PX4 manual-control and actuator topics. It also requires the v2 environment version and CC0 provenance in every manifest.
 

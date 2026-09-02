@@ -11,6 +11,7 @@ EPISODE_START=${EPISODE_START:-0}
 EPISODE_END=${EPISODE_END:-9}
 SEED_BASE=${SEED_BASE:-5200}
 MAX_ATTEMPTS=${MAX_ATTEMPTS:-3}
+DOCKER_NETWORK_MODE=${DOCKER_NETWORK_MODE:-bridge}
 
 DATASET_ROOT="$DATA_ROOT/datasets/$DATASET_NAME"
 ASSETS_ROOT="$DATA_ROOT/assets/polyhaven-v2"
@@ -48,7 +49,9 @@ PY
 run_episode() {
   local episode_id=$1 seed=$2 attempt=$3
   local episode_name="episode-$(printf '%03d' "$episode_id")"
-  docker run --rm --user root --gpus "device=$GPU_DEVICE" --network=host \
+  # Keep PX4/MAVLink ports private to each container so GPU shards can run in
+  # parallel without one mission receiving another mission's control traffic.
+  docker run --rm --user root --gpus "device=$GPU_DEVICE" --network="$DOCKER_NETWORK_MODE" \
     -e ACCEPT_EULA=Y -e PRIVACY_CONSENT=Y \
     -e PYTHONPATH=/runtime/isaac-python-deps:/runtime/PegasusSimulator/extensions/pegasus.simulator \
     -v "$REPO_ROOT:/workspace/repo:ro" \

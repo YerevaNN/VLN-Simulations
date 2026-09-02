@@ -6,15 +6,16 @@ Simulation-first data generation for language-conditioned UAV control. This repo
 
 ## What is included
 
-- a 1.3 km-square mountain-valley environment with a winding river, ridges, vegetation, rocks, cliffs, and task landmarks;
+- a 1.3 km-square high-detail collision valley inside a 4.8 km visual terrain envelope, with a continuous river, ridges, vegetation, rocks, cliffs, and task landmarks;
 - 18 pinned, locally cached Poly Haven CC0 assets with retained provenance and hashes;
 - ten distinct natural-language missions covering reconnaissance, search, inspection, mapping, imaging, and long-range patrol;
 - a scripted expert that emits human-gamepad-level `roll`, `pitch`, `yaw`, and `throttle` through PX4 `MANUAL_CONTROL`;
 - 10 Hz forward RGB and 50 Hz action/state recording, plus aligned 2/5/10 Hz JSONL exports;
+- an explicit 5 km RGB far plane, conservative instance bounds, and background forest bands that prevent outdoor geometry pop-in;
 - deep validation of images, timing, checksums, mission completion, MAVLink logs, ULogs, and training exports;
 - an interactive browser viewer with synchronized frames, controls, telemetry, routes, and the actual deterministic scene objects.
 
-The released PoC contains 18,963 RGB frames, 96,620 actions, 32.4 minutes of simulated flight, and 6.36 km of trajectories. See the [dataset card](docs/dataset-card.md) for complete statistics.
+The current horizon-fixed PoC contains 18,949 RGB frames, 96,546 actions, 32.4 minutes of simulated flight, and 6.36 km of trajectories. See the [dataset card](docs/dataset-card.md) for complete statistics.
 
 ## System
 
@@ -109,7 +110,7 @@ Open `http://HOST:8787`. The mission map reconstructs the same episode-seeded ri
 
 ## Download the ten-mission sample
 
-The complete validated `natural-valley-v2` PoC is published as a compressed [GitHub Release](https://github.com/YerevaNN/VLN-Simulations/releases/tag/v0.1.0), outside Git history. Download, verify, and extract it with:
+The original `natural-valley-v2` PoC is published as a compressed [GitHub Release](https://github.com/YerevaNN/VLN-Simulations/releases/tag/v0.1.0), outside Git history. It predates the horizon fix; the live AP viewer uses `natural-valley-v2-horizon`. Download, verify, and extract the original sample with:
 
 ```bash
 ./scripts/download_sample_data.sh

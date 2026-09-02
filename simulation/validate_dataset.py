@@ -121,12 +121,17 @@ def validate_episode(episode, errors):
         errors.append(f"{episode.name}: mission/manifest seed mismatch")
     if manifest.get("schema_version") == "uav-poc-v2":
         environment = manifest.get("environment", {})
+        clipping_range = manifest.get("camera", {}).get("clipping_range_m", [])
         if environment.get("environment_version") != "mountain-valley-v2":
             errors.append(f"{episode.name}: v2 environment metadata missing")
         if environment.get("asset_source") != "Poly Haven" or environment.get("asset_license") != "CC0 1.0 Universal":
             errors.append(f"{episode.name}: v2 asset provenance/license missing")
         if environment.get("asset_count", 0) < 17:
             errors.append(f"{episode.name}: v2 asset inventory is incomplete")
+        if len(clipping_range) != 2 or float(clipping_range[1]) < 2000.0:
+            errors.append(f"{episode.name}: outdoor camera far plane is too short")
+        if environment.get("distant_terrain_extent_m", 0) < 2000.0:
+            errors.append(f"{episode.name}: distant terrain envelope is missing")
 
     landing_index = mission.get("landing_index")
     waypoints = mission.get("waypoints_enu_m", [])
