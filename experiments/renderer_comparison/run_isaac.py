@@ -23,6 +23,8 @@ p.add_argument('--behavior-root')
 p.add_argument('--initial-renderer')
 p.add_argument('--prepare', action='store_true')
 p.add_argument('--views-only', action='store_true')
+p.add_argument('--quality-spp', type=int, default=4)
+p.add_argument('--disable-denoiser', action='store_true')
 a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene_dir = Path(a.scene_dir); scene_dir.mkdir(parents=True, exist_ok=True)
@@ -70,9 +72,9 @@ if a.backend.startswith('behavior'):
     exec(compile(ast.Module(body=[fn], type_ignores=[]), str(source), 'exec'), scope)
     scope['_set_renderer_settings'](SimpleNamespace(get_rendering_dt=lambda: 1 / 60))
     if a.backend == 'behavior-pathtracing':
-        for key, value in {'/rtx/rendermode': 'PathTracing', '/rtx/pathtracing/spp': 4,
-                           '/rtx/pathtracing/totalSpp': 256, '/rtx/pathtracing/maxBounces': 32,
-                           '/rtx/pathtracing/optixDenoiser/enabled': True}.items():
+        for key, value in {'/rtx/rendermode': 'PathTracing', '/rtx/pathtracing/spp': a.quality_spp,
+                           '/rtx/pathtracing/totalSpp': a.quality_spp * 64, '/rtx/pathtracing/maxBounces': 32,
+                           '/rtx/pathtracing/optixDenoiser/enabled': not a.disable_denoiser}.items():
             SettingsRecorder().set(key, value)
 
 if a.prepare:
