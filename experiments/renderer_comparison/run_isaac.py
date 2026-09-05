@@ -13,6 +13,7 @@ import subprocess
 import sys
 import time
 import shutil
+import faulthandler
 from types import SimpleNamespace
 
 p = argparse.ArgumentParser()
@@ -32,6 +33,8 @@ a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene_dir = Path(a.scene_dir); scene_dir.mkdir(parents=True, exist_ok=True)
 t0 = time.perf_counter()
+if os.environ.get('STRESS_SUITE') == 'valley-eight':
+    faulthandler.dump_traceback_later(120,repeat=True)
 git_dir = Path(__file__).resolve().parents[2]/'.git'
 head = (git_dir/'HEAD').read_text().strip()
 run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
