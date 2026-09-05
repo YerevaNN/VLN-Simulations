@@ -26,7 +26,9 @@ a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene_dir = Path(a.scene_dir); scene_dir.mkdir(parents=True, exist_ok=True)
 t0 = time.perf_counter()
-run_commit = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+git_dir = Path(__file__).resolve().parents[2]/'.git'
+head = (git_dir/'HEAD').read_text().strip()
+run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
 from isaacsim import SimulationApp
 app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
                      'renderer': 'PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'),
