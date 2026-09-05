@@ -21,4 +21,5 @@ for j in [246824,246829,246831,246832]:
     if log.exists():
         lines=log.read_text(errors='replace').splitlines()
         selected=[l for l in lines if any(x in l for x in ['Driver Version','ERROR_DEVICE_LOST','GPU crash','Fatal Python','CAPTURE','COMPLETE','TIME LIMIT','PHASE'])]
-        (out/f'failure-{j}.txt').write_text('\n'.join(selected+['--- final log lines ---']+lines[-8:]))
+        prefix='run' if j==246831 else 'failure'
+        (out/f'{prefix}-{j}.txt').write_text('\n'.join(selected+['--- final log lines ---']+lines[-8:]))
