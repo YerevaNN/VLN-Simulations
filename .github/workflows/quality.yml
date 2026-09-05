@@ -12,10 +12,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install CPU test dependencies
+        run: python -m pip install -r requirements-test.txt
       - name: Compile Python sources
-        run: python -m py_compile simulation/*.py viewer/app.py
+        run: python -m compileall -q simulation scripts viewer tests
+      - name: CPU contract and orchestration tests
+        run: python -m unittest discover -s tests -v
+      - name: Viewer API tests
+        run: python -m unittest discover -s viewer -p 'test_*.py' -v
+      - name: Viewer asynchronous isolation
+        run: node viewer/test_app.js
       - name: Check shell syntax
-        run: bash -n scripts/*.sh
+        run: for script in scripts/*.sh; do bash -n "$script"; done
       - name: Reject tracked generated data
         run: |
           if git ls-files | grep -E '\.(ulg|tlog|parquet|usdc|hdr|jpe?g)$'; then

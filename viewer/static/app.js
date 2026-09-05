@@ -1,5 +1,7 @@
 const $ = id => document.getElementById(id);
-const state = {data:null,time:0,playing:false,speed:1,lastTick:0,frameIndex:-1,frameReady:new Map(),frameLoading:new Set()};
+const state = {data:null,time:0,playing:false,speed:1,lastTick:0,frameIndex:-1,frameReady:new Map(),frameLoading:new Set(),generation:0,chunk:null,chunkRequest:0,mapCache:null,chartCache:null};
+const apiUrl = path => window.VIEWER_STATIC ? `./api/${path.replace(/\?.*$/, '')}${path.includes('?') ? '-'+new URLSearchParams(path.split('?')[1]).get('offset') : ''}.json` : `/api/${path}`;
+async function getJson(path) {const response=await fetch(apiUrl(path));if(!response.ok)throw Error('Viewer data could not be loaded');return response.json()}
 const colors = ['#72f1a7','#63d9e9','#b699ff','#ffc76b'];
 
 function fmt(t) {
@@ -13,9 +15,9 @@ function nearest(rows,t) {
 }
 function preloadFrame(index) {
   const frames=state.data?.frames;if(!frames||index<0||index>=frames.length||state.frameReady.has(index)||state.frameLoading.has(index))return;
-  state.frameLoading.add(index);const image=new Image();
-  image.onload=()=>{state.frameLoading.delete(index);state.frameReady.set(index,image.src);if(index===nearest(state.data.frames,state.time))render(true)};
-  image.onerror=()=>state.frameLoading.delete(index);
+  state.frameLoading.add(index);const image=new Image(),generation=state.generation,framesRef=frames;
+  image.onload=()=>{if(generation!==state.generation||framesRef!==state.data?.frames)return;state.frameLoading.delete(index);state.frameReady.set(index,image.src);if(index===nearest(state.data.frames,state.time))render(true)};
+  image.onerror=()=>{if(generation===state.generation&&framesRef===state.data?.frames)state.frameLoading.delete(index)};
   image.src=frames[index][1];
 }
 function preloadWindow(index) {
@@ -29,32 +31,55 @@ function sizeCanvas(canvas) {
   return {ctx:canvas.getContext('2d'),w,h,dpr};
 }
 
-async function loadEpisodes() {
-  const list=await fetch('/api/episodes').then(r=>r.json());
-  $('episodeSelect').innerHTML=list.map(e=>`<option value="${e.id}">${e.id.replace('episode-','Episode ')}</option>`).join('');
-  $('episodeSelect').onchange=()=>loadEpisode($('episodeSelect').value);
-  if(list.length)await loadEpisode(list[0].id);
+let listGeneration=0;
+async function loadEpisodes(offset=0) {
+  const generation=++listGeneration;
+  const page=await getJson(`episodes?offset=${offset}`);if(generation!==listGeneration)return;const list=page.items;
+  const select=$('episodeSelect');select.replaceChildren();
+  if(offset>0)select.add(new Option('← Previous episodes',`page:${Math.max(0,offset-100)}`));
+  list.forEach(e=>select.add(new Option(e.id.replace('episode-','Episode '),e.id)));
+  if(page.next_offset!==null)select.add(new Option('More episodes →',`page:${page.next_offset}`));
+  select.onchange=()=>{const value=select.value;(value.startsWith('page:')?loadEpisodes(+value.slice(5)):loadEpisode(value)).catch(showError)};
+  if(list.length){select.value=list[0].id;await loadEpisode(list[0].id)}
 }
+function showError(err){$('statusPill').textContent='Viewer error';$('missionInstruction').textContent=err.message;state.playing=false}
+async function ensureChunk(time) {
+  const data=state.data;if(!data?.chunked)return true;
+  const chunk=Math.floor(time/data.chunk_seconds);if(state.chunk===chunk)return true;
+  if(state.loadingChunk===chunk)return false;
+  state.loadingChunk=chunk;const generation=state.generation,request=++state.chunkRequest;
+  try {
+    const result=await getJson(`episodes/${data.episode}/chunks/${chunk}`);
+    if(generation!==state.generation||request!==state.chunkRequest)return false;
+    for(const key of ['frames','actions','states','events'])data[key]=result[key];
+    state.chunk=chunk;state.loadingChunk=null;state.frameReady.clear();state.frameLoading.clear();state.frameIndex=-1;
+    render(true);return true;
+  }catch(error){if(generation===state.generation&&request===state.chunkRequest){state.loadingChunk=null;showError(error)}return false}
+}
+
 async function loadEpisode(id) {
+  const generation=++state.generation;state.loadingChunk=null;state.chunk=null;state.chunkRequest++;state.mapCache=null;state.chartCache=null;state.data=null;
   state.playing=false;$('playButton').textContent='▶';$('statusPill').className='pill';
   $('statusPill').innerHTML='<i></i> Loading episode';
-  const data=await fetch(`/api/episodes/${id}`).then(r=>{if(!r.ok)throw Error('Episode could not be loaded');return r.json()});
-  state.data=data;state.time=0;state.frameIndex=-1;state.frameReady=new Map();state.frameLoading=new Set();preloadWindow(0);
+  let data;try{data=await getJson(`episodes/${id}`)}catch(error){if(generation===state.generation)throw error;return}if(generation!==state.generation)return;data.overviewStates=data.states;data.overviewActions=data.actions;
+  state.data=data;state.time=0;state.frameIndex=-1;state.frameReady=new Map();state.frameLoading=new Set();
   const m=data.manifest,mission=data.mission;
-  $('missionInstruction').textContent=mission.instruction;$('seed').textContent=m.seed;
+  $('missionInstruction').textContent=mission.instruction;$('missionMap').title=data.environment_map?.provenance||'';let provenance=$('mapProvenance');if(!provenance){provenance=document.createElement('small');provenance.id='mapProvenance';$('missionMap').after(provenance)}provenance.textContent=data.environment_map?.provenance||'';$('seed').textContent=m.seed;
   $('duration').textContent=`${m.duration_s.toFixed(1)} s`;$('distance').textContent=`${m.path_length_m.toFixed(0)} m`;
   $('captureRate').textContent=`${m.camera.hz} Hz RGB`;$('endTime').textContent=fmt(m.duration_s);
   $('statusPill').className='pill ready';$('statusPill').innerHTML=`<i></i> ${m.status.toUpperCase()} · ${m.frame_count.toLocaleString()} frames`;
-  render(true);drawChart();
+  await ensureChunk(0);if(generation!==state.generation)return;render(true);drawChart();
 }
 
 function render(force=false) {
   const d=state.data;if(!d)return;const end=d.manifest.duration_s;
   state.time=Math.max(0,Math.min(end,state.time));
+  if(d.chunked&&state.chunk!==Math.floor(state.time/d.chunk_seconds)){ensureChunk(state.time);$('frameEmpty').textContent='Loading timeline…';$('frameEmpty').style.display='grid';return}
+  if(!d.frames.length||!d.actions.length||!d.states.length)return;
   const fi=nearest(d.frames,state.time),ai=nearest(d.actions,state.time),si=nearest(d.states,state.time);
   const frame=d.frames[fi],a=d.actions[ai],s=d.states[si],beforeCamera=state.time<d.frames[0][0];
   preloadWindow(fi);const ready=state.frameReady.get(fi);
-  if(ready&&(force||fi!==state.frameIndex)){state.frameIndex=fi;$('rgbFrame').src=ready;$('frameCounter').textContent=`Frame ${(fi+1).toLocaleString()} / ${d.frames.length.toLocaleString()}`}
+  if(ready&&(force||fi!==state.frameIndex)){state.frameIndex=fi;$('rgbFrame').src=ready;$('frameCounter').textContent=`Frame at ${fmt(d.frames[fi][0])} · ${d.manifest.frame_count.toLocaleString()} total`}
   $('frameEmpty').textContent=beforeCamera?'Waiting for the first camera frame':'Buffering preview frame…';
   $('frameEmpty').style.display=(beforeCamera||!ready)?'grid':'none';$('rgbFrame').style.visibility=beforeCamera?'hidden':'visible';
   $('scrubber').value=Math.round(state.time/end*1000);$('currentTime').textContent=fmt(state.time);$('cameraTime').textContent=`T+${fmt(frame[0])}`;
@@ -79,7 +104,7 @@ function updateSubgoal(a) {
 function mapTransform(wps,states,w,h) {
   const pts=wps.map(p=>[p[0],p[1]]).concat(states.map(s=>[s[1],s[2]]));
   const xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);
-  let minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;for(const x of xs){minX=Math.min(minX,x);maxX=Math.max(maxX,x)}for(const y of ys){minY=Math.min(minY,y);maxY=Math.max(maxY,y)}
   const span=Math.max(maxX-minX,maxY-minY),worldPad=Math.max(14,span*.08);
   minX-=worldPad;maxX+=worldPad;minY-=worldPad;maxY+=worldPad;
   const pixelPad=16,scale=Math.min((w-2*pixelPad)/(maxX-minX||1),(h-2*pixelPad)/(maxY-minY||1));
@@ -114,14 +139,16 @@ function drawEnvironment(ctx,env,tf,w,h,dpr) {
 }
 
 function drawMap(current) {
-  const c=$('missionMap'),{ctx,w,h,dpr}=sizeCanvas(c),wps=state.data.mission.waypoints_enu_m,states=state.data.states;
-  const tf=mapTransform(wps,states,w,h);ctx.clearRect(0,0,w,h);ctx.fillStyle='#091510';ctx.fillRect(0,0,w,h);
+  const c=$('missionMap'),{ctx,w,h,dpr}=sizeCanvas(c),wps=state.data.mission.waypoints_enu_m,states=state.data.overviewStates||state.data.states;
+  const tf=mapTransform(wps,states,w,h),cacheKey=`${state.generation}:${w}:${h}`;
+  if(state.mapCache?.key===cacheKey){ctx.clearRect(0,0,w,h);ctx.drawImage(state.mapCache.canvas,0,0)}else{ctx.clearRect(0,0,w,h);ctx.fillStyle='#091510';ctx.fillRect(0,0,w,h);
   ctx.strokeStyle='#1b2d27';ctx.lineWidth=dpr;
   for(let x=0;x<w;x+=40*dpr){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
   for(let y=0;y<h;y+=40*dpr){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
   drawEnvironment(ctx,state.data.environment_map,tf,w,h,dpr);
 
   ctx.setLineDash([5*dpr,5*dpr]);ctx.strokeStyle='#a6bbb1';ctx.lineWidth=1.2*dpr;polyline(ctx,wps,tf);ctx.setLineDash([]);
+  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(c,0,0);state.mapCache={key:cacheKey,canvas};}
   const upto=nearest(states,state.time);ctx.strokeStyle='#72f1a7';ctx.lineWidth=2*dpr;ctx.beginPath();
   for(let i=0;i<=upto;i+=2){const q=tf([states[i][1],states[i][2]]);i?ctx.lineTo(...q):ctx.moveTo(...q)}ctx.stroke();
   wps.forEach((p,i)=>{const q=tf(p);ctx.fillStyle=i===current[11]?'#ffc76b':'#172a23';ctx.strokeStyle=i===current[11]?'#ffc76b':'#9eb1a8';ctx.lineWidth=dpr;ctx.beginPath();ctx.arc(q[0],q[1],3.3*dpr,0,Math.PI*2);ctx.fill();ctx.stroke()});
@@ -129,15 +156,17 @@ function drawMap(current) {
 }
 
 function drawChart() {
-  if(!state.data)return;const c=$('actionChart'),{ctx,w,h,dpr}=sizeCanvas(c),rows=state.data.actions,end=state.data.manifest.duration_s,pad=18*dpr;
+  if(!state.data)return;const c=$('actionChart'),{ctx,w,h,dpr}=sizeCanvas(c),rows=state.data.overviewActions||state.data.actions,end=state.data.manifest.duration_s,pad=18*dpr;
+  const cacheKey=`${state.generation}:${w}:${h}`;if(state.chartCache?.key===cacheKey){ctx.clearRect(0,0,w,h);ctx.drawImage(state.chartCache.canvas,0,0)}else{
   ctx.clearRect(0,0,w,h);ctx.strokeStyle='#20342c';ctx.lineWidth=dpr;
   for(let i=0;i<5;i++){const y=pad+(h-2*pad)*i/4;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}
   for(let axis=0;axis<4;axis++){ctx.strokeStyle=colors[axis];ctx.lineWidth=axis===3?1*dpr:1.2*dpr;ctx.globalAlpha=.86;ctx.beginPath();for(let i=0;i<rows.length;i+=4){const x=rows[i][0]/end*w,v=rows[i][axis+1],y=pad+(1-(v+1)/2)*(h-2*pad);i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+  ctx.globalAlpha=1;const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;canvas.getContext('2d').drawImage(c,0,0);state.chartCache={key:cacheKey,canvas};}
   ctx.globalAlpha=1;const x=state.time/end*w;ctx.strokeStyle='#edf7f1';ctx.lineWidth=dpr;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();ctx.fillStyle='#edf7f1';ctx.beginPath();ctx.arc(x,8*dpr,3*dpr,0,Math.PI*2);ctx.fill();
 }
 
 function tick(ts) {
-  if(state.playing&&state.data){if(state.lastTick){const candidate=Math.min(state.data.manifest.duration_s,state.time+(ts-state.lastTick)/1000*state.speed),fi=nearest(state.data.frames,candidate);preloadWindow(fi);if(candidate<state.data.frames[0][0]||state.frameReady.has(fi))state.time=candidate}if(state.time>=state.data.manifest.duration_s){state.time=state.data.manifest.duration_s;state.playing=false;$('playButton').textContent='▶'}render()}
+  if(state.playing&&state.data){if(state.lastTick){const candidate=Math.min(state.data.manifest.duration_s,state.time+(ts-state.lastTick)/1000*state.speed),fi=nearest(state.data.frames,candidate);if(state.data.chunked&&state.chunk!==Math.floor(candidate/state.data.chunk_seconds)){state.time=candidate;ensureChunk(candidate)}else{preloadWindow(fi);if(candidate<state.data.frames[0][0]||state.frameReady.has(fi))state.time=candidate}}if(state.time>=state.data.manifest.duration_s){state.time=state.data.manifest.duration_s;state.playing=false;$('playButton').textContent='▶'}render()}
   state.lastTick=ts;requestAnimationFrame(tick);
 }
 $('playButton').onclick=()=>{if(!state.data)return;if(state.time>=state.data.manifest.duration_s)state.time=0;state.playing=!state.playing;$('playButton').textContent=state.playing?'❚❚':'▶'};

@@ -2,6 +2,8 @@
 
 ## Purpose
 
+This document describes the historical v2 environment and sample. The current generator uses honest navigation contracts rather than claiming visual inspection/search coverage; see [engineering notes](engineering-notes.md) and each generated `mission.json`. Existing sample episodes retain their original instructions for provenance.
+
 `natural-valley-v2` is the visual-diversity follow-on to the ten-episode UAV simulation POC. It preserves PX4 SITL, MAVLink `MANUAL_CONTROL`, the X500 v2 hardware target, 10 Hz forward RGB, 50 Hz gamepad-level actions, privileged vehicle state, raw MAVLink telemetry, and PX4 ULogs. It replaces the placeholder scene and repeated mission with a richer natural environment and ten different language-conditioned routes.
 
 ## Environment
@@ -49,7 +51,7 @@ Each `mission.json` contains a unique natural-language instruction, task type, n
 
 ## Automation And Quality Gates
 
-[`scripts/run_batch.sh`](../scripts/run_batch.sh) downloads the pinned assets if needed, generates episodes sequentially on the selected GPU, retries each failure up to three times, runs the deep dataset validator, and normalizes dataset ownership. Completed successful episodes are skipped on resume. Each simulator uses an isolated container network by default, so separate GPU shards cannot cross-talk through PX4/MAVLink ports.
+[`scripts/run_batch.sh`](../scripts/run_batch.sh) downloads the pinned assets if needed, generates episodes sequentially on the selected GPU, retries each failure up to three times, runs the deep dataset validator, and normalizes dataset ownership. The current launcher revalidates fingerprint-matched published episodes on resume, keeps immutable attempts, and isolates simulator networking. See [batch generation](batch-generation.md).
 
 Before the full batch, complete PX4 smoke missions validated the river and forest routes. Visual gates corrected asset units, missing alpha masks, material overrides, HDR composition, river width, camera angle, vegetation size, route clearance, and the Pegasus camera's overly short 100 m far-clipping plane.
 

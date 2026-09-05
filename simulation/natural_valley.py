@@ -296,8 +296,19 @@ def build_river(stage, seed, assets_root):
     create_mesh(stage, "/World/RiverWater", *geometry, water_material, collision=False)
 
 
-def point_instancer(stage, path, prototype_specs, instances):
+def point_instancer(stage, path, prototype_specs, instances, partition=True):
     """Create efficient metric OpenUSD instances."""
+    # Small spatial groups let renderer bounds support culling.
+    if partition and len(instances) > 100:
+        cells = {}
+        for item in instances:
+            key = (math.floor(item[1][0] / 128.0), math.floor(item[1][1] / 128.0))
+            cells.setdefault(key, []).append(item)
+        if len(cells) > 1:
+            for (cx, cy), items in sorted(cells.items()):
+                suffix = f"Cell_{cx:+05d}_{cy:+05d}".replace("+", "p").replace("-", "n")
+                point_instancer(stage, f"{path}/{suffix}", prototype_specs, items, partition=False)
+            return None
     # Prototype roots must be descendants of the PointInstancer.  When they
     # are authored as siblings, Hydra also traverses and renders each source
     # asset once at its local origin, which stacked vegetation on the pad.
@@ -524,6 +535,10 @@ def build_landmarks(stage, seed, assets_root):
     cube(stage, "/World/Landmarks/Lookout/Deck", (lx, ly, lz + 8.8), (3.2, 3.2, 0.2), wood)
     cube(stage, "/World/Landmarks/Lookout/Cabin", (lx, ly, lz + 10.5), (2.4, 2.4, 1.5), canvas)
     cylinder(stage, "/World/Landmarks/Lookout/Beacon", (lx, ly, lz + 13.2), 0.25, 2.2, marker)
+    # Actual southwest marker referenced by the lane-navigation task.
+    mx, my = -55.0, -95.0
+    cylinder(stage, "/World/Landmarks/SurveyMarker",
+             (mx, my, terrain_height(mx, my, seed) + 1.0), 0.5, 2.0, marker)
     # Waterfall at the upper river and a visible plunge pool.
     wx, wy = 260.0, river_y(260.0)
     wz = terrain_height(wx, wy, seed)
@@ -595,7 +610,7 @@ def build_environment(stage, seed, assets_root):
     build_landmarks(stage, seed, assets_root)
     return {
         "environment_version": "mountain-valley-v2",
-        "environment_revision": "horizon-fix-v3-launch-pad",
+        "environment_revision": "navigation-contract-v4-inventory",
         "asset_source": "Poly Haven",
         "asset_license": "CC0 1.0 Universal",
         "asset_count": len(manifest["assets"]),
@@ -610,6 +625,8 @@ def build_environment(stage, seed, assets_root):
             "rocks": 40.0,
             "debris": 60.0,
         },
+        "scene_inventory": scene_inventory(stage, seed),
+        "world_generation_policy": "legacy_route_cleared",
         **nature_counts,
     }
 
@@ -623,6 +640,7 @@ def orbit(center, radius, altitude, label, count=8, clockwise=False):
             center[0] + radius * math.cos(theta),
             center[1] + radius * math.sin(theta), altitude, label,
         ))
+    points.extend(points[:2])  # Close plus overlap: tolerance must not truncate the full sweep.
     return points
 
 
@@ -635,79 +653,139 @@ def mission_definition(episode_id, seed):
     missions = []
     missions.append({
         "mission_id": "upper-river-waterfall-recon",
-        "task_type": "river reconnaissance",
-        "instruction": "Take off from the valley clearing, follow the river upstream beneath the timber footbridge, inspect the confluence, orbit the upper waterfall once, then return along the south bank and land at the launch pad.",
-        "landmarks": ["timber footbridge", "stream confluence", "upper waterfall"],
-        "waypoints": [(0, 0, 18, "take off above the valley clearing"), (38, river_y(38), 20, "follow the river upstream"), (72, river_y(72), 22, "pass beneath the timber footbridge corridor"), (145, 8, 25, "inspect the stream confluence"), (215, river_y(215), 28, "continue toward the upper waterfall")] + orbit((260, river_y(260)), 15, 31, "orbit the upper waterfall") + [(170, -18, 25, "return along the south bank"), (85, -14, 21, "follow the lower river home")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Take off from the valley clearing, follow the river upstream above the timber footbridge, pass the middle river bend, orbit the upper waterfall once counterclockwise, then return along the south bank and land at the launch pad.",
+        "landmarks": ["timber footbridge", "middle river bend", "upper waterfall"],
+        "waypoints": [(0, 0, 18, "take off above the valley clearing"), (38, river_y(38), 20, "follow the river upstream"), (72, river_y(72), 22, "pass above the timber footbridge"), (145, 8, 25, "pass the middle river bend"), (215, river_y(215), 28, "continue toward the upper waterfall")] + orbit((260, river_y(260)), 15, 31, "orbit the upper waterfall") + [(170, -18, 25, "return along the south bank"), (85, -14, 21, "follow the lower river home")] + finish_route(),
     })
     missions.append({
         "mission_id": "western-forest-deadwood-survey",
-        "task_type": "forest survey",
-        "instruction": "Climb from the launch clearing, survey the western conifer edge in a shallow S-pattern, circle the fallen deadwood site, cross the fern meadow, and return to land from the northwest.",
-        "landmarks": ["western conifer edge", "fallen deadwood", "fern meadow"],
-        "waypoints": [(0, 0, 19, "take off above the launch clearing"), (-42, 28, 24, "enter the western conifer edge"), (-88, 54, 28, "survey the north forest transect"), (-132, 18, 27, "cross to the western forest pocket")] + orbit((-150, -22), 14, 27, "circle the fallen deadwood site", clockwise=True) + [(-110, -58, 25, "cross the fern meadow"), (-58, -38, 22, "return from the northwest")] + finish_route("approach the launch clearing"),
+        "task_type": "landmark navigation",
+        "instruction": "Climb from the launch clearing, fly an S-shaped route through the western valley, circle the western turning point clockwise, cross the southwest valley, and return to land at the launch pad.",
+        "landmarks": ["western turning point", "southwest valley"],
+        "waypoints": [(0, 0, 19, "take off above the launch clearing"), (-42, 28, 24, "enter the western valley"), (-88, 54, 28, "fly the northern leg"), (-132, 18, 27, "cross to the western turning region")] + orbit((-150, -22), 14, 27, "circle the western turning point", clockwise=True) + [(-110, -58, 25, "cross the southwest valley"), (-58, -38, 22, "return from the southwest")] + finish_route("approach the launch clearing"),
     })
     missions.append({
         "mission_id": "stone-cairn-photogrammetry-orbit",
-        "task_type": "landmark imaging",
-        "instruction": "Fly southeast along the alternate river bank, climb to the stone cairn, perform two imaging arcs at different radii, exit through the confluence, and return to the starting pad.",
-        "landmarks": ["alternate river bank", "stone cairn", "stream confluence"],
-        "waypoints": [(0, 0, 18, "take off"), (52, -18, 21, "follow the alternate river bank"), (105, -32, 25, "climb toward the cairn"), (145, -45, 28, "approach the stone cairn")] + orbit((180, -55), 18, 31, "capture the wide cairn orbit") + orbit((180, -55), 10, 25, "capture the close cairn orbit", clockwise=True) + [(145, 8, 25, "exit through the stream confluence"), (75, 10, 21, "follow the river home")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Fly southeast along the south river bank, approach the stone cairn, fly a wide counterclockwise orbit followed by a close clockwise orbit, return via the middle river bend, and land at the starting pad.",
+        "landmarks": ["south river bank", "stone cairn", "middle river bend"],
+        "waypoints": [(0, 0, 18, "take off"), (52, -18, 21, "follow the alternate river bank"), (105, -32, 25, "climb toward the cairn"), (145, -45, 28, "approach the stone cairn")] + orbit((180, -55), 18, 31, "fly the wide cairn orbit") + orbit((180, -55), 10, 25, "fly the close cairn orbit", clockwise=True) + [(145, 8, 25, "return via the middle river bend"), (75, 10, 21, "follow the river home")] + finish_route(),
     })
     missions.append({
         "mission_id": "footbridge-structural-inspection",
-        "task_type": "infrastructure inspection",
-        "instruction": "Approach the timber footbridge from downstream, inspect its upstream and downstream faces, make a complete clockwise orbit above the bridge, then follow the river back and land.",
+        "task_type": "landmark navigation",
+        "instruction": "Approach the timber footbridge from downstream, pass south and north of it, make a complete clockwise orbit above the bridge, then follow the river back and land.",
         "landmarks": ["timber footbridge"],
-        "waypoints": [(0, 0, 17, "take off"), (30, river_y(30), 18, "approach the bridge from downstream"), (60, river_y(60) - 10, 20, "inspect the downstream face"), (72, river_y(72) + 11, 20, "inspect the upstream face")] + orbit((72, river_y(72)), 13, 24, "orbit the timber footbridge", clockwise=True) + [(40, river_y(40), 19, "follow the river downstream")] + finish_route(),
+        "waypoints": [(0, 0, 17, "take off"), (30, river_y(30), 18, "approach the bridge from downstream"), (60, river_y(60) - 10, 20, "pass south of the bridge"), (72, river_y(72) + 11, 20, "pass north of the bridge")] + orbit((72, river_y(72)), 13, 24, "orbit the timber footbridge", clockwise=True) + [(40, river_y(40), 19, "follow the river downstream")] + finish_route(),
     })
     missions.append({
         "mission_id": "north-slope-rockslide-assessment",
-        "task_type": "hazard assessment",
-        "instruction": "Ascend the north slope toward the recent rockslide, scan the debris field from west to east, orbit the largest boulder, descend through the saddle, and land at the valley clearing.",
-        "landmarks": ["north slope", "rockslide debris field", "largest boulder", "saddle"],
-        "waypoints": [(0, 0, 20, "take off and begin the north-slope climb"), (65, 35, 27, "climb above the north slope"), (130, 58, 32, "approach the rockslide from the west"), (195, 68, 35, "scan the western debris field"), (220, 78, 36, "scan the central debris field"), (242, 70, 36, "scan the eastern debris field")] + orbit((220, 75), 15, 38, "orbit the largest slide boulder") + [(190, 46, 31, "descend through the saddle"), (100, 22, 24, "return to the valley floor")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Ascend the north slope toward the rockslide, traverse the debris region from west to east, orbit the center of that region counterclockwise, descend toward the valley, and land at the launch clearing.",
+        "landmarks": ["north slope", "rockslide debris region"],
+        "waypoints": [(0, 0, 20, "take off and begin the north-slope climb"), (65, 35, 27, "climb above the north slope"), (130, 58, 32, "approach the rockslide from the west"), (195, 68, 35, "cross the western debris region"), (220, 78, 36, "cross the central debris region"), (242, 70, 36, "cross the eastern debris region")] + orbit((220, 75), 15, 38, "orbit the debris region center") + [(190, 46, 31, "descend toward the valley"), (100, 22, 24, "return to the valley floor")] + finish_route(),
     })
     missions.append({
         "mission_id": "south-meadow-search-grid",
-        "task_type": "area search",
-        "instruction": "Fly to the south meadow and execute a four-lane visual search grid from west to east, check the orange survey marker, then return directly to the launch pad and land.",
-        "landmarks": ["south meadow", "orange survey marker"],
-        "waypoints": [(0, 0, 20, "take off"), (-35, -42, 24, "enter the south meadow"), (-95, -72, 27, "start search lane one"), (-25, -72, 27, "complete search lane one"), (-25, -92, 27, "shift to lane two"), (-105, -92, 27, "complete search lane two"), (-105, -112, 28, "shift to lane three"), (-20, -112, 28, "complete search lane three"), (-20, -132, 30, "shift to lane four"), (-110, -132, 30, "complete search lane four"), (-55, -95, 25, "check the orange survey marker")] + finish_route("return directly to the launch clearing"),
+        "task_type": "landmark navigation",
+        "instruction": "Fly to the southwest valley and traverse four parallel east-west lanes, pass above the orange survey marker, then return to the launch pad and land.",
+        "landmarks": ["southwest valley", "orange survey marker"],
+        "waypoints": [(0, 0, 20, "take off"), (-35, -42, 24, "enter the southwest valley"), (-95, -72, 27, "start lane one"), (-25, -72, 27, "complete lane one"), (-25, -92, 27, "shift to lane two"), (-105, -92, 27, "complete lane two"), (-105, -112, 28, "shift to lane three"), (-20, -112, 28, "complete lane three"), (-20, -132, 30, "shift to lane four"), (-110, -132, 30, "complete lane four"), (-55, -95, 25, "pass above the orange survey marker")] + finish_route("return directly to the launch clearing"),
     })
     missions.append({
         "mission_id": "fire-lookout-perimeter-check",
-        "task_type": "lookout inspection",
-        "instruction": "Climb along the north forest boundary to the fire lookout, circle the tower counterclockwise while keeping the cabin in view, inspect the beacon, and descend by the river corridor to land.",
-        "landmarks": ["north forest boundary", "fire lookout tower", "lookout beacon"],
-        "waypoints": [(0, 0, 20, "take off"), (45, 32, 27, "climb along the north forest boundary"), (88, 60, 32, "approach the fire lookout"), (112, 77, 37, "align for the tower orbit")] + orbit((130, 85), 17, 40, "orbit the fire lookout tower") + [(130, 85, 45, "inspect the lookout beacon"), (95, 38, 31, "descend toward the river corridor"), (55, river_y(55), 23, "follow the river corridor home")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Climb northeast to the fire lookout, circle the tower counterclockwise, pass above the beacon, and descend by the river corridor to land.",
+        "landmarks": ["fire lookout tower", "lookout beacon"],
+        "waypoints": [(0, 0, 20, "take off"), (45, 32, 27, "climb northeast"), (88, 60, 32, "approach the fire lookout"), (112, 77, 37, "align for the tower orbit")] + orbit((130, 85), 17, 40, "orbit the fire lookout tower") + [(130, 85, 45, "pass above the lookout beacon"), (95, 38, 31, "descend toward the river corridor"), (55, river_y(55), 23, "follow the river corridor home")] + finish_route(),
     })
     missions.append({
         "mission_id": "confluence-branch-mapping",
-        "task_type": "stream mapping",
-        "instruction": "Map the stream confluence by tracing the main channel, flying the north branch to its bend, crossing to the south branch, and closing the loop around the confluence before returning to land.",
-        "landmarks": ["main river channel", "north stream branch", "south stream branch", "stream confluence"],
-        "waypoints": [(0, 0, 18, "take off"), (55, river_y(55), 21, "trace the main river channel"), (105, river_y(105), 23, "continue to the confluence"), (145, 8, 25, "mark the stream confluence"), (170, 35, 27, "trace the north stream branch"), (195, 54, 30, "reach the north branch bend"), (175, 5, 28, "cross between stream branches"), (165, -32, 27, "trace the south stream branch"), (135, -20, 25, "close the confluence loop"), (90, river_y(90), 22, "return along the main channel")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Follow the main river to the middle bend, fly northeast to the north slope, turn south across the river to the south bank, then return along the main channel and land.",
+        "landmarks": ["main river channel", "middle river bend", "north slope", "south river bank"],
+        "waypoints": [(0, 0, 18, "take off"), (55, river_y(55), 21, "trace the main river channel"), (105, river_y(105), 23, "continue to the middle bend"), (145, 8, 25, "pass the middle river bend"), (170, 35, 27, "fly northeast of the river"), (195, 54, 30, "reach the north-slope turning point"), (175, 5, 28, "cross the main river southward"), (165, -32, 27, "reach the south bank"), (135, -20, 25, "turn back toward the main river"), (90, river_y(90), 22, "return along the main channel")] + finish_route(),
     })
     missions.append({
         "mission_id": "southern-cliff-gate-transit",
-        "task_type": "terrain transit",
-        "instruction": "Follow the river to the upper valley, turn south through the paired cliff gate, cross the high saddle, photograph the rock faces from both sides, and return below the north ridge to land.",
-        "landmarks": ["upper valley", "paired cliff gate", "high saddle", "north ridge"],
-        "waypoints": [(0, 0, 20, "take off"), (65, river_y(65), 23, "follow the river into the upper valley"), (135, river_y(135), 27, "continue through the upper valley"), (210, -22, 33, "turn south toward the cliff gate"), (275, -62, 42, "transit the paired cliff gate"), (305, -38, 47, "cross the high saddle"), (285, -72, 45, "photograph the southern rock face"), (255, -44, 40, "photograph the northern rock face"), (205, 12, 34, "return below the north ridge"), (110, 12, 26, "descend toward the launch valley")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Follow the river to the upper valley, turn south toward the paired cliffs, pass the western cliff approach, visit the southern and northern turning points, and return via the river corridor to land.",
+        "landmarks": ["upper valley", "paired cliffs", "river corridor"],
+        "waypoints": [(0, 0, 20, "take off"), (65, river_y(65), 23, "follow the river into the upper valley"), (135, river_y(135), 27, "continue through the upper valley"), (210, -22, 33, "turn south toward the cliff gate"), (275, -62, 42, "pass the western cliff approach"), (305, -38, 47, "reach the eastern turning point"), (285, -72, 45, "visit the southern turning point"), (255, -44, 40, "visit the northern turning point"), (205, 12, 34, "return via the river corridor"), (110, 12, 26, "descend toward the launch valley")] + finish_route(),
     })
     missions.append({
         "mission_id": "multi-landmark-valley-patrol",
-        "task_type": "long-range patrol",
-        "instruction": "Complete a full valley patrol: pass the timber bridge, orbit the stone cairn, climb around the fire lookout, inspect the waterfall, return through the cliff-gate approach, and land at the starting clearing.",
-        "landmarks": ["timber footbridge", "stone cairn", "fire lookout", "upper waterfall", "cliff gate"],
-        "waypoints": [(0, 0, 21, "take off for the valley patrol"), (72, river_y(72), 24, "pass the timber footbridge"), (130, -28, 28, "turn toward the stone cairn")] + orbit((180, -55), 15, 32, "orbit the stone cairn", count=6) + [(165, 30, 34, "climb toward the fire lookout")] + orbit((130, 85), 18, 41, "circle the fire lookout", count=6) + [(185, 35, 35, "cross toward the upper river"), (260, river_y(260), 34, "inspect the upper waterfall"), (275, -52, 42, "pass the cliff-gate approach"), (190, -28, 32, "begin the homeward river leg"), (95, river_y(95), 25, "follow the river home")] + finish_route(),
+        "task_type": "landmark navigation",
+        "instruction": "Complete a valley patrol: pass above the timber bridge, orbit the stone cairn counterclockwise, circle the fire lookout counterclockwise, pass above the waterfall, return via the cliff approach, and land at the starting clearing.",
+        "landmarks": ["timber footbridge", "stone cairn", "fire lookout tower", "upper waterfall", "paired cliffs"],
+        "waypoints": [(0, 0, 21, "take off for the valley patrol"), (72, river_y(72), 24, "pass the timber footbridge"), (130, -28, 28, "turn toward the stone cairn")] + orbit((180, -55), 15, 32, "orbit the stone cairn", count=6) + [(165, 30, 34, "climb toward the fire lookout")] + orbit((130, 85), 18, 41, "circle the fire lookout", count=6) + [(185, 35, 35, "cross toward the upper river"), (260, river_y(260), 34, "pass above the upper waterfall"), (275, -52, 42, "pass the cliff-gate approach"), (190, -28, 32, "begin the homeward river leg"), (95, river_y(95), 25, "follow the river home")] + finish_route(),
     })
     mission = missions[episode_id % len(missions)]
     mission = dict(mission)
+    from mission_contract import make_contract
+    mission["mission_family_id"] = mission["mission_id"]
+    mission["mission_id"] = f'{mission["mission_family_id"]}-e{episode_id:06d}-s{seed}'
     mission["episode_id"] = episode_id
     mission["seed"] = seed
     mission["waypoints_enu_m"] = mission.pop("waypoints")
     mission["landing_index"] = len(mission["waypoints_enu_m"]) - 1
-    mission["max_sim_seconds"] = 440.0
+    mission["max_sim_seconds"] = 480.0
+    mission["mission_contract"] = make_contract(
+        mission, bridge_deck_z_m=terrain_height(72.0, river_y(72.0), seed) + 2.16,
+        river_center_y_m=river_y(72.0))
     return mission
+
+
+def scene_inventory(stage, seed):
+    """Snapshot authored scene transforms rather than rerunning procedural placement."""
+    objects = []
+    for prim in stage.Traverse():
+        path = str(prim.GetPath())
+        if not path.startswith(("/World/Nature/", "/World/Landmarks/")) or "/Prototypes/" in path:
+            continue
+        kind = prim.GetTypeName()
+        def attr(name):
+            return prim.GetAttribute(name).Get()
+        if kind == "PointInstancer":
+            item = {"path": path, "type": kind,
+                    "positions_enu_m": [list(v) for v in attr("positions")],
+                    "prototype_indices": list(attr("protoIndices")),
+                    "scales": [list(v) for v in attr("scales")],
+                    "yaw_radians": [2.0 * math.atan2(float(q.GetImaginary()[2]), float(q.GetReal()))
+                                    for q in attr("orientations")],
+                    "prototypes": []}
+            for target in prim.GetRelationship("prototypes").GetTargets():
+                proto = stage.GetPrimAtPath(target)
+                refs = proto.GetMetadata("references")
+                references = refs.GetAddedOrExplicitItems() if refs else []
+                scale = proto.GetAttribute("xformOp:scale").Get()
+                item["prototypes"].append({"asset_path": references[0].assetPath if references else "",
+                                           "base_scale": list(scale) if scale is not None else [1,1,1]})
+            objects.append(item)
+        elif kind in ("Cube", "Cylinder") or (kind == "Xform" and prim.HasAuthoredReferences()):
+            position = attr("xformOp:translate")
+            if position is None:
+                continue
+            item = {"path": path, "type": kind if kind != "Xform" else "reference",
+                    "position_enu_m": list(position)}
+            for source, target in [("xformOp:scale", "scale"), ("xformOp:rotateZ", "rotation_z_deg"),
+                                   ("radius", "radius_m"), ("height", "height_m"), ("size", "size_m")]:
+                value = attr(source)
+                if value is not None:
+                    item[target] = list(value) if source == "xformOp:scale" else float(value)
+            if kind == "Xform":
+                refs = prim.GetMetadata("references").GetAddedOrExplicitItems()
+                item["asset_path"] = refs[0].assetPath if refs else ""
+            objects.append(item)
+    water = stage.GetPrimAtPath("/World/RiverWater").GetAttribute("points").Get()
+    river = [[float((water[i][j] + water[i+1][j]) / 2) for j in range(3)]
+             for i in range(0, len(water), 2)]
+    return {"version": 1, "coordinate_frame": "ENU", "seed": seed, "objects": objects,
+            "river": river, "landmarks": [
+                [0, 0, "launch pad"], [72, river_y(72), "timber footbridge"],
+                [180, -55, "stone cairn"], [130, 85, "fire lookout"],
+                [260, river_y(260), "upper waterfall"], [-55, -95, "orange survey marker"],
+                [220, 75, "rockslide region"], [289.5, -63.5, "paired cliffs"]],
+            "geometry_scope": "Authored transforms and river vertices; asset meshes remain external references.",
+            "world_generation_policy": "legacy_route_cleared"}

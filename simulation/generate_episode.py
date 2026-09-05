@@ -5,17 +5,30 @@ Run this file with Isaac Sim's Python interpreter. The surrounding launcher moun
 the repository at /workspace and bulk output at /data.
 """
 
+import time
+import sys
+import os
+PROCESS_STARTED = time.perf_counter()
 from isaacsim import SimulationApp
 
-simulation_app = SimulationApp({"headless": True, "width": 640, "height": 360})
+simulation_app = SimulationApp({"headless": True, "extra_args": ["--portable-root", os.environ["ISAAC_PORTABLE_ROOT"]], "fast_shutdown": False, "width": 640, "height": 360, "disable_viewport_updates": "--enable-viewport-updates" not in sys.argv, "limit_cpu_threads": int(os.environ.get("OMP_NUM_THREADS", "24"))})
+
+APP_STARTED = time.perf_counter()
 
 import argparse
+from contextlib import ExitStack
+from types import SimpleNamespace
+import omni.usd
+from contact_recorder import ContactRecorder, TerrainClearanceObserver, evaluate_contacts
+from recording import ImageWriter, ParquetRecorder, quantize_manual, training_rows, source_lineage, ResetDeadline
 import hashlib
 import json
 import math
 import os
 import shutil
 import struct
+import subprocess
+import gc
 import time
 from pathlib import Path
 
@@ -38,6 +51,7 @@ from pegasus.simulator.logic.graphical_sensors.monocular_camera import Monocular
 from pegasus.simulator.logic.interface.pegasus_interface import PegasusInterface
 from pegasus.simulator.logic.vehicles.multirotor import Multirotor, MultirotorConfig
 from pegasus.simulator.params import ROBOTS
+from pegasus.simulator.logic.vehicle_manager import VehicleManager
 
 
 CAMERA_HZ = 10.0
@@ -49,7 +63,7 @@ IMAGE_SIZE = (640, 360)
 CAMERA_NEAR_CLIP_M = 0.05
 CAMERA_FAR_CLIP_M = 5000.0
 CAMERA_MOUNT_XYZ_M = (0.30, 0.0, 0.35)
-CAMERA_MOUNT_RPY_DEG = (0.0, -3.0, 180.0)
+CAMERA_MOUNT_EULER_ZYX_DEG = (0.0, -3.0, 180.0)
 
 
 class LongRangeMonocularCamera(MonocularCamera):
@@ -67,13 +81,22 @@ class LongRangeMonocularCamera(MonocularCamera):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--episode-id", type=int, required=True)
-    parser.add_argument("--seed", type=int, required=True)
+    parser.add_argument("--episode-id", type=int)
+    parser.add_argument("--seed", type=int)
     parser.add_argument("--output-root", default="/data/datasets/poc-v1")
     parser.add_argument("--px4-dir", default="/workspace/PX4-Autopilot")
-    parser.add_argument("--scene-version", choices=("v1", "v2"), default="v1")
+    parser.add_argument("--scene-version", choices=("v2",), default="v2")
     parser.add_argument("--assets-root", default="/assets")
-    return parser.parse_args()
+    parser.add_argument("--attempt-dir", help="Exclusive private attempt directory; must not exist")
+    parser.add_argument("--config-hash")
+    parser.add_argument("--episode-plan", help="Opt-in persistent app: JSON array of episode_id,seed,attempt_dir objects")
+    parser.add_argument("--enable-viewport-updates", action="store_true")
+    parser.add_argument("--reset-timeout-seconds", type=float, default=180.0, help="Kill a worker stalled in native world reset after this deadline")
+    parser.add_argument("--max-sim-seconds", type=float, help="Diagnostic duration cap; truncated missions remain failed")
+    args = parser.parse_args()
+    if not args.episode_plan and (args.episode_id is None or args.seed is None):
+        parser.error("--episode-id and --seed are required without --episode-plan")
+    return args
 
 
 def write_json(path, value):
@@ -297,15 +320,10 @@ def mission_definition(seed):
 
 
 def manual_send(gcs, target_system, command):
-    roll, pitch, yaw, throttle = command
-    gcs.mav.manual_control_send(
-        target_system,
-        int(np.clip(pitch, -1, 1) * 1000),
-        int(np.clip(roll, -1, 1) * 1000),
-        int(np.clip((throttle + 1.0) * 500, 0, 1000)),
-        int(np.clip(yaw, -1, 1) * 1000),
-        0,
-    )
+    encoded = quantize_manual(command)
+    gcs.mav.manual_control_send(target_system, encoded["x"], encoded["y"], encoded["z"], encoded["r"], 0)
+    return encoded
+
 
 
 def request_mode(gcs, target_system):
@@ -323,7 +341,7 @@ def request_arm(gcs, target_system, arm):
         mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
         0,
         1 if arm else 0,
-        0 if arm else 21196,
+        0,  # Never force-disarm a vehicle that PX4 still considers airborne.
         0,
         0,
         0,
@@ -332,41 +350,19 @@ def request_arm(gcs, target_system, arm):
     )
 
 
-def export_training_views(episode_dir, frames, actions, mission):
-    action_times = np.asarray([row["sim_time_s"] for row in actions])
-    for rate in (2, 5, 10):
-        output = episode_dir / "exports" / f"{rate}hz.jsonl"
-        output.parent.mkdir(parents=True, exist_ok=True)
-        min_spacing = 1.0 / rate
-        last = -1e9
-        with output.open("w", encoding="utf-8") as stream:
-            for frame in frames:
-                if frame["sim_time_s"] - last < min_spacing - 0.002:
-                    continue
-                idx = int(np.argmin(np.abs(action_times - frame["sim_time_s"])))
-                row = {
-                    "episode_id": episode_dir.name,
-                    "timestamp_s": frame["sim_time_s"],
-                    "image": frame["path"],
-                    "mission": mission["instruction"],
-                    "subgoal": actions[idx]["subgoal"],
-                    "action": {key: actions[idx][key] for key in ("roll", "pitch", "yaw", "throttle")},
-                }
-                stream.write(json.dumps(row, separators=(",", ":")) + "\n")
-                last = frame["sim_time_s"]
-
-
-def main():
-    args = parse_args()
-    episode_dir = Path(args.output_root) / f"episode-{args.episode_id:03d}"
-    if episode_dir.exists():
-        shutil.rmtree(episode_dir)
+def generate_episode(args, cleanup, keep_app=False):
+    episode_started = time.perf_counter()
+    lineage = source_lineage(Path(__file__).resolve().parents[1], [("PX4", args.px4_dir), ("Pegasus", px4_backend_module.__file__)])
+    print("EPISODE_START " + json.dumps({"episode_id": args.episode_id, "seed": args.seed}), flush=True)
+    episode_dir = Path(args.attempt_dir) if args.attempt_dir else Path(args.output_root) / f"episode-{args.episode_id:03d}"
+    episode_dir.mkdir(parents=True, exist_ok=False)
     frames_dir = episode_dir / "frames"
     frames_dir.mkdir(parents=True)
     if args.scene_version == "v2":
         from natural_valley import (
             build_environment as build_environment_v2,
             mission_definition as mission_definition_v2,
+            terrain_height as terrain_height_v2,
         )
 
         mission = mission_definition_v2(args.episode_id, args.seed)
@@ -379,12 +375,19 @@ def main():
     pg = PegasusInterface()
     pg._world = World(**pg._world_settings)
     world = pg.world
+    cleanup.callback(World.clear_instance)
+    cleanup.callback(world.clear)
+    cleanup.callback(world.clear_all_callbacks)
+    cleanup.callback(VehicleManager.get_vehicle_manager().remove_all_vehicles)
     if args.scene_version == "v2":
         environment_metadata = build_environment_v2(world.stage, args.seed, args.assets_root)
     else:
         build_environment(world.stage, args.seed)
         environment_metadata = {"environment_version": "procedural-valley-v1"}
 
+    inventory = environment_metadata.pop("scene_inventory", None)
+    if inventory is not None:
+        write_json(episode_dir / "scene_inventory.json", inventory)
     backend = PX4MavlinkBackend(
         PX4MavlinkBackendConfig(
             {
@@ -396,6 +399,11 @@ def main():
             }
         )
     )
+    def stop_px4():
+        if backend.px4_tool is not None:
+            backend.px4_tool.kill_px4()
+    cleanup.callback(stop_px4)
+    cleanup.callback(backend.stop)
     camera = LongRangeMonocularCamera(
         "forward_camera",
         config={
@@ -406,7 +414,7 @@ def main():
             # below the terrain.  Keep the optical centre above ground during
             # takeoff and touchdown while approximating an X500 front mount.
             "position": np.array(CAMERA_MOUNT_XYZ_M),
-            "orientation": np.array(CAMERA_MOUNT_RPY_DEG),
+            "orientation": np.array(CAMERA_MOUNT_EULER_ZYX_DEG),
             "diagonal_fov": 98.0,
             "intrinsics": np.array([[380.0, 0.0, 320.0], [0.0, 380.0, 180.0], [0.0, 0.0, 1.0]]),
             "distortion_coefficients": [0.0] * 8,
@@ -424,19 +432,37 @@ def main():
         config=config,
     )
 
-    world.reset()
+    contacts = ContactRecorder(world.stage, "/World/X500v2", episode_dir / "physics_contacts.jsonl")
+    cleanup.callback(contacts.close)
+    clearance = TerrainClearanceObserver(lambda x,y: terrain_height_v2(x,y,args.seed))
+    print("EPISODE_PHASE " + json.dumps({"phase": "world_reset", "episode_id": args.episode_id,
+          "elapsed_s": time.perf_counter()-episode_started, "deadline_s": args.reset_timeout_seconds}), flush=True)
+    with ResetDeadline(args.reset_timeout_seconds):
+        world.reset()
+    print("EPISODE_PHASE " + json.dumps({"phase": "rollout_ready", "episode_id": args.episode_id,
+          "elapsed_s": time.perf_counter()-episode_started}), flush=True)
     timeline.play()
+    cleanup.callback(timeline.stop)
     gcs = mavutil.mavlink_connection(
         "udpin:0.0.0.0:14550", source_system=255, source_component=190
     )
+    cleanup.callback(gcs.close)
     tlog_stream = (episode_dir / "mavlink.tlog").open("wb")
 
+    cleanup.callback(tlog_stream.close)
+    image_writer = ImageWriter()
+    cleanup.callback(image_writer.close)
+
     expert = HumanLikeExpert(args.seed + 1000)
-    actions = []
-    states = []
-    frames = []
+    actions = ParquetRecorder(episode_dir / "joystick.parquet")
+    states = ParquetRecorder(episode_dir / "vehicle_state.parquet")
+    frames = ParquetRecorder(episode_dir / "frames.parquet")
+    for recorder in (actions, states, frames):
+        cleanup.callback(recorder.close)
     events = []
     heartbeat = None
+    heartbeat_time = -1.0
+    last_capture_time = -1.0
     armed = False
     finished = False
     waypoint_index = 0
@@ -447,14 +473,18 @@ def main():
     last_arm_request = -1e9
     last_disarm_request = -1e9
     landing_started = None
+    grounded_since = None
     wall_start = time.time()
     waypoints = mission["waypoints_enu_m"]
 
-    max_sim_seconds = float(mission.get("max_sim_seconds", MAX_SIM_SECONDS))
+    max_sim_seconds = args.max_sim_seconds or float(mission.get("max_sim_seconds", MAX_SIM_SECONDS))
+    setup_completed = time.perf_counter()
     while simulation_app.is_running() and world.current_time < max_sim_seconds:
         next_frame_due = world.current_time >= next_frame_time - 0.001
         world.step(render=next_frame_due)
         sim_time = float(world.current_time)
+        contacts.sample(sim_time)
+        clearance.sample(vehicle.state.position, in_flight=armed and vehicle.state.position[2] > 2.0)
 
         while True:
             msg = gcs.recv_match(blocking=False)
@@ -466,6 +496,7 @@ def main():
                 and msg.autopilot != mavutil.mavlink.MAV_AUTOPILOT_INVALID
             ):
                 heartbeat = msg
+                heartbeat_time = sim_time
                 armed = bool(msg.base_mode & mavutil.mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
             elif msg.get_type() in ("COMMAND_ACK", "STATUSTEXT"):
                 events.append({"sim_time_s": sim_time, "type": msg.get_type(), "payload": json.dumps(msg.to_dict())})
@@ -488,19 +519,37 @@ def main():
                 target = waypoints[waypoint_index]
                 allow_horizontal = armed and sim_time > 7.0
                 command = expert.step(vehicle.state, target[:3], 1.0 / ACTION_HZ, allow_horizontal)
+                if waypoint_index == mission["landing_index"] and armed and vehicle.state.position[2] < 1.5:
+                    # POSCTL has a centre-stick deadband: targeting z=.12 alone
+                    # hovers above the landing gear contact height. Continue a
+                    # gentle commanded descent until actual ground contact.
+                    command[3] = min(command[3], -0.20)
+                    if landing_started is not None and contacts.has_ground_contact():
+                        # PX4 land detection requires a descent setpoint above
+                        # 1.1*LNDMC_Z_VEL_MAX. Gentle approach sticks are below
+                        # that threshold; bottom stick after stable contact
+                        # lets the autopilot recognize landing and disarm normally.
+                        command[:] = [0.0, 0.0, 0.0, -1.0]
                 if not armed:
                     command[:] = 0.0
-                manual_send(gcs, target_system, command)
+                encoded = manual_send(gcs, target_system, command)
+                transmit_wall_time_ns = time.time_ns()
                 subgoal = target[3]
                 actions.append(
                     {
                         "sim_time_s": sim_time,
-                        "roll": float(command[0]),
-                        "pitch": float(command[1]),
-                        "yaw": float(command[2]),
-                        "throttle": float(command[3]),
+                        "roll": encoded["y"] / 1000.0,
+                        "pitch": encoded["x"] / 1000.0,
+                        "yaw": encoded["r"] / 1000.0,
+                        "throttle": encoded["z"] / 500.0 - 1.0,
                         "buttons": 0,
-                        "mode": "POSCTL",
+                        "mode": mavutil.mode_string_v10(heartbeat),
+                        "heartbeat_time_s": heartbeat_time,
+                        "decision_time_s": sim_time,
+                        "transmitted_time_s": sim_time,
+                        "transmit_wall_time_ns": transmit_wall_time_ns,
+                        **{f"requested_{k}": float(command[i]) for i, k in enumerate(("roll", "pitch", "yaw", "throttle"))},
+                        **{f"transmitted_{k}": v for k, v in encoded.items()},
                         "waypoint_index": waypoint_index,
                         "subgoal": subgoal,
                     }
@@ -512,21 +561,26 @@ def main():
                 vertical_distance = abs(float(vehicle.state.position[2] - target[2]))
                 is_landing = waypoint_index == mission["landing_index"]
                 reached = (
-                    horizontal_distance < (6.0 if not is_landing else 0.45)
+                    horizontal_distance < (mission.get("mission_contract", {}).get("waypoint_horizontal_tolerances_m", [6.0] * len(waypoints))[waypoint_index] if not is_landing else 0.45)
                     and vertical_distance < (3.0 if not is_landing else 0.30)
                 )
-                if (
-                    is_landing
-                    and horizontal_distance < 2.5
-                    and vehicle.state.position[2] < 0.9
-                    and abs(vehicle.state.linear_velocity[2]) < 0.2
-                ):
-                    if landing_started is None:
+                grounded = (is_landing and horizontal_distance < 2.5
+                            and vehicle.state.position[2] < .4
+                            and float(np.linalg.norm(vehicle.state.linear_velocity)) < .25
+                            and contacts.has_ground_contact())
+                if grounded:
+                    if grounded_since is None:
+                        grounded_since = sim_time
+                    if landing_started is None and sim_time - grounded_since >= 1.0:
                         landing_started = sim_time
                         events.append({"sim_time_s": sim_time, "type": "touchdown", "payload": "{}"})
-                    if sim_time - landing_started > 1.0 and sim_time - last_disarm_request > 1.0:
+                    if landing_started is not None and sim_time - landing_started > 1.0 and sim_time - last_disarm_request > 1.0:
                         request_arm(gcs, target_system, False)
                         last_disarm_request = sim_time
+                else:
+                    grounded_since = None
+                    if armed:
+                        landing_started = None
                 if reached and not is_landing:
                     events.append(
                         {
@@ -536,7 +590,7 @@ def main():
                         }
                     )
                     waypoint_index += 1
-                if landing_started is not None and not armed and sim_time - landing_started > 2.0:
+                if landing_started is not None and grounded and not armed and sim_time - landing_started > 2.0:
                     finished = True
 
         if sim_time >= next_state_time - 0.001:
@@ -555,6 +609,8 @@ def main():
                     "pitch_rad": float(pitch),
                     "yaw_rad": float(yaw),
                     "armed": armed,
+                    "mode": mavutil.mode_string_v10(heartbeat) if heartbeat else "UNKNOWN",
+                    "heartbeat_time_s": heartbeat_time,
                     "waypoint_index": waypoint_index,
                 }
             )
@@ -562,14 +618,21 @@ def main():
                 next_state_time += 1.0 / STATE_HZ
 
         if next_frame_due and camera.state and camera.state.get("camera") is not None:
-            rgba = camera.state["camera"].get_rgba()
-            if rgba is not None and rgba.size:
+            sample = camera.state["camera"].get_current_frame()
+            rgba = sample.get("rgb")
+            capture_time = float(sample.get("rendering_time", -1.0))
+            if rgba is not None and rgba.size and capture_time > last_capture_time:
                 rgb = np.asarray(rgba[:, :, :3])
                 if rgb.dtype != np.uint8:
                     rgb = np.clip(rgb * 255.0, 0, 255).astype(np.uint8)
-                filename = f"rgb_{int(round(sim_time * 1_000_000)):012d}.jpg"
-                Image.fromarray(rgb).save(frames_dir / filename, quality=90, subsampling=1)
-                frames.append({"sim_time_s": sim_time, "path": f"frames/{filename}"})
+                filename = f"rgb_{int(round(capture_time * 1_000_000)):012d}.jpg"
+                image_writer.submit(frames_dir / filename, rgb)
+                capture_id = sample.get("rendering_frame")
+                frames.append({"sim_time_s": capture_time, "observation_time_s": sim_time,
+                               "capture_frame_id": str(capture_id),
+                               "capture_timestamp_source": "isaac_camera.rendering_time",
+                               "path": f"frames/{filename}"})
+                last_capture_time = capture_time
                 while next_frame_time <= sim_time + 0.001:
                     next_frame_time += 1.0 / CAMERA_HZ
 
@@ -579,6 +642,24 @@ def main():
         if finished:
             break
 
+    calibration = {}
+    optical_camera = camera.state.get("camera") if camera.state else None
+    if optical_camera is not None:
+        local_position, local_quaternion = optical_camera.get_local_pose(camera_axes="world")
+        calibration["local_position_m"] = np.asarray(local_position).tolist()
+        calibration["local_quaternion_wxyz"] = np.asarray(local_quaternion).tolist()
+        calibration["pose_axes"] = "world: +Z up, +X forward; relative to parent"
+        for name, reader in (("intrinsics_matrix", optical_camera.get_intrinsics_matrix),
+                             ("focal_length", optical_camera.get_focal_length),
+                             ("horizontal_aperture", optical_camera.get_horizontal_aperture),
+                             ("vertical_aperture", optical_camera.get_vertical_aperture),
+                             ("lens_distortion_model", optical_camera.get_lens_distortion_model)):
+            try:
+                value = reader()
+                calibration[name] = value if isinstance(value, str) else np.asarray(value).tolist()
+            except Exception as exc:
+                calibration[name + "_unavailable"] = str(exc)
+    rollout_completed = time.perf_counter()
     timeline.stop()
     if backend.px4_tool is not None:
         px4_root = Path(backend.px4_tool.root_fs.name)
@@ -591,23 +672,42 @@ def main():
     tlog_stream.close()
     gcs.close()
 
-    pd.DataFrame(actions).to_parquet(episode_dir / "joystick.parquet", index=False)
-    pd.DataFrame(states).to_parquet(episode_dir / "vehicle_state.parquet", index=False)
+    image_writer.close()
+    for recorder in (actions, states, frames):
+        recorder.close()
+    cleanup.close()
+    actions = pd.read_parquet(episode_dir / "joystick.parquet").to_dict("records")
+    states = pd.read_parquet(episode_dir / "vehicle_state.parquet").to_dict("records")
+    frames = pd.read_parquet(episode_dir / "frames.parquet").to_dict("records")
     pd.DataFrame(events, columns=["sim_time_s", "type", "payload"]).to_parquet(
         episode_dir / "events.parquet", index=False
     )
-    pd.DataFrame(frames).to_parquet(episode_dir / "frames.parquet", index=False)
-    export_training_views(episode_dir, frames, actions, mission)
 
     duration = states[-1]["sim_time_s"] if states else 0.0
     path_length = 0.0
     if len(states) > 1:
         positions = np.asarray([[s["x_enu_m"], s["y_enu_m"], s["z_enu_m"]] for s in states])
         path_length = float(np.linalg.norm(np.diff(positions, axis=0), axis=1).sum())
+    mission_result = None
+    if mission.get("mission_contract"):
+        from mission_contract import evaluate_mission
+        mission_result = evaluate_mission(mission, states)
+        write_json(episode_dir / "mission_evaluation.json", mission_result)
+        finished = finished and mission_result["success"]
+    collision_result = evaluate_contacts(
+        [json.loads(line) for line in (episode_dir / "physics_contacts.jsonl").read_text().splitlines()],
+        states, contacts.summary())
+    write_json(episode_dir / "collision_evaluation.json", collision_result)
+    finished = finished and collision_result["success"]
     status = "success" if finished else "failed"
+    from dataset_splits import assign_split
     manifest = {
+        "dataset_split": assign_split("natural-valley"),
         "schema_version": "uav-poc-v2" if args.scene_version == "v2" else "uav-poc-v1",
         "episode_id": args.episode_id,
+        "config_hash": args.config_hash,
+        "recording_contract_version": 1,
+        "source_lineage": lineage,
         "mission_id": mission.get("mission_id"),
         "task_type": mission.get("task_type"),
         "status": status,
@@ -622,7 +722,9 @@ def main():
             "hz": CAMERA_HZ,
             "resolution": IMAGE_SIZE,
             "mount_xyz_m": CAMERA_MOUNT_XYZ_M,
-            "mount_rpy_deg": CAMERA_MOUNT_RPY_DEG,
+            "mount_euler_zyx_deg": CAMERA_MOUNT_EULER_ZYX_DEG,
+            "mount_euler_convention": "scipy Rotation.from_euler ZYX, degrees; Pegasus input",
+            "calibration_readback": calibration,
             "clipping_range_m": [CAMERA_NEAR_CLIP_M, CAMERA_FAR_CLIP_M],
         },
         "action_hz": ACTION_HZ,
@@ -633,21 +735,89 @@ def main():
         "state_count": len(states),
         "last_waypoint_index": waypoint_index,
         "wall_time_s": time.time() - wall_start,
+        "timing": {
+            "application_startup_s": APP_STARTED - PROCESS_STARTED,
+            "episode_setup_s": setup_completed - episode_started,
+            "rollout_s": rollout_completed - setup_completed,
+            "release_and_recording_drain_s": 0.0,
+            "cpu_thread_limit": int(os.environ.get("OMP_NUM_THREADS", "24")),
+            "gpu_retained_during_postprocess": keep_app,
+            "image_writer_backpressure_s": image_writer.wait_s,
+            "persistent_application": keep_app,
+            "viewport_updates_enabled": args.enable_viewport_updates,
+        },
+        "collision_evidence": contacts.summary(),
+        "terrain_clearance": clearance.summary(),
+        "control_contract": {
+            "source": "online_privileged_state_expert",
+            "transport": "MAVLink MANUAL_CONTROL sent before recording and next physics step",
+            "application_evidence": "PX4 ULog; UDP send alone is not acknowledgement",
+            "alignment": "latest_transmitted_at_or_before_observation",
+            "observation_clock": "Isaac camera rendering_time",
+        },
         "environment": environment_metadata,
         "files": {},
     }
-    for path in sorted(episode_dir.rglob("*")):
-        if path.is_file() and path.name != "manifest.json":
-            manifest["files"][str(path.relative_to(episode_dir))] = {
-                "bytes": path.stat().st_size,
-                "sha256": sha256(path),
-            }
-    write_json(episode_dir / "manifest.json", manifest)
-    print("EPISODE_RESULT " + json.dumps(manifest), flush=True)
-    simulation_app.close()
-    if not finished:
-        raise SystemExit(2)
+    postprocess_input = episode_dir / "postprocess_input.json"
+    payload = {"manifest": manifest, "process_started": PROCESS_STARTED,
+               "episode_started": episode_started, "rollout_completed": rollout_completed}
+    write_json(postprocess_input, payload)
+    if not keep_app:
+        gc.disable()
+        simulation_app.close()
+    # Isaac graceful teardown mutates imported NumPy module state. Export and
+    # hash in a fresh interpreter; never reuse numerical modules after close.
+    payload["simulator_released"] = time.perf_counter()
+    write_json(postprocess_input, payload)
+    subprocess.run([sys.executable, str(Path(__file__).with_name("postprocess_episode.py")),
+                    str(episode_dir)], check=True)
+    return finished
 
+
+def main():
+    try:
+        args = parse_args()
+        if args.episode_plan:
+            plan = json.loads(Path(args.episode_plan).read_text())
+            if not isinstance(plan, list) or not plan:
+                raise ValueError("episode plan must be a nonempty list")
+            outcomes = []
+            for item in plan:
+                if not {"episode_id", "seed", "attempt_dir"} <= item.keys():
+                    raise ValueError("each planned episode requires episode_id, seed, attempt_dir")
+                if set(item) - {"episode_id", "seed", "attempt_dir", "config_hash", "max_sim_seconds", "reset_timeout_seconds"}:
+                    raise ValueError("unknown episode plan fields")
+                current = SimpleNamespace(**(vars(args) | item))
+                # Fresh stage, world, PX4 rootfs, recorder, sensor and expert for
+                # every attempt. Only SimulationApp / extension loading is reused.
+                omni.usd.get_context().new_stage()
+                with ExitStack() as cleanup:
+                    outcomes.append(generate_episode(current, cleanup, keep_app=True))
+            return 0 if all(outcomes) else 2
+        with ExitStack() as cleanup:
+            return 0 if generate_episode(args, cleanup) else 2
+    except BaseException:
+        import traceback
+        traceback.print_exc()
+        sys.stderr.flush()
+        raise
+    finally:
+        if not simulation_app.is_exiting():
+            gc.disable()
+            simulation_app.close()
 
 if __name__ == "__main__":
-    main()
+    try:
+        exit_code = main()
+    except SystemExit as exc:
+        exit_code = exc.code if isinstance(exc.code, int) else 1
+    except BaseException:
+        # main already prints the traceback before native teardown.
+        exit_code = 1
+    sys.stdout.flush()
+    sys.stderr.flush()
+    # All recorders, PX4, world and SimulationApp are explicitly closed above.
+    # Isaac unloads extension modules that existing Python objects still refer
+    # to; interpreter GC after framework teardown segfaults in this runtime.
+    # Avoid that second, unsafe native destruction pass in this isolated worker.
+    os._exit(exit_code)

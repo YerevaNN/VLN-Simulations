@@ -2,6 +2,8 @@
 
 This document is the backlog for capabilities deliberately excluded from the first ten-episode proof of concept. Items should move into the core specification only after the POC is working and a concrete experiment requires them.
 
+The concrete production proposal, including the 10K-hour target, sensor and mission taxonomies, dynamic scenes, simulator allocation, compute budget, and staged execution gates, is maintained in the [10K-hour scale plan](scale-plan.md). This file remains the longer-term extension backlog and should not duplicate that specification.
+
 The `natural-valley-v2` follow-on has now implemented one comprehensive textured mountain-valley environment, 18 pinned CC0 natural assets, dense route-aware vegetation and geology, deterministic lighting variation, and ten distinct language missions. Broader terrain families, weather, moving entities, and real elevation data remain extensions.
 
 ## Capture And Sensors

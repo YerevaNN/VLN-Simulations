@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import math
 import shutil
 import subprocess
 import urllib.request
@@ -43,27 +44,42 @@ def main():
 
     app_path = args.output / "app.js"
     app = app_path.read_text()
-    app = app.replace("fetch('/api/episodes')", "fetch('./api/episodes.json')")
-    app = app.replace("fetch(`/api/episodes/${id}`)", "fetch(`./api/episodes/${id}.json`)")
+    app = "window.VIEWER_STATIC = true;\n" + app
     app_path.write_text(app)
 
     api_root = args.output / "api" / "episodes"
     api_root.mkdir(parents=True, exist_ok=True)
-    episodes = fetch_json(f"{args.viewer_url}/api/episodes")
-    (args.output / "api" / "episodes.json").write_text(json.dumps(episodes, separators=(",", ":")))
+    episodes = []
+    offset = 0
+    while offset is not None:
+        page = fetch_json(f"{args.viewer_url}/api/episodes?offset={offset}")
+        (args.output / "api" / f"episodes-{offset}.json").write_text(json.dumps(page, separators=(",", ":")))
+        episodes.extend(page["items"])
+        offset = page["next_offset"]
 
     image_jobs = []
+    seen_frames = set()
     for summary in episodes:
         episode_id = summary["id"]
         detail = fetch_json(f"{args.viewer_url}/api/episodes/{episode_id}")
-        rewritten_frames = []
-        for timestamp, old_url in detail["frames"]:
-            filename = Path(old_url).name
-            relative = Path("frames") / episode_id / filename
-            rewritten_frames.append([timestamp, relative.as_posix()])
-            image_jobs.append((args.dataset_root / episode_id / "frames" / filename, args.output / relative))
-        detail["frames"] = rewritten_frames
+        def rewrite_frames(payload):
+            rewritten = []
+            for timestamp, old_url in payload["frames"]:
+                filename = Path(old_url).name
+                relative = Path("frames") / episode_id / filename
+                rewritten.append([timestamp, relative.as_posix()])
+                if relative not in seen_frames:
+                    seen_frames.add(relative)
+                    image_jobs.append((args.dataset_root / episode_id / "frames" / filename, args.output / relative))
+            payload["frames"] = rewritten
+        rewrite_frames(detail)
         (api_root / f"{episode_id}.json").write_text(json.dumps(detail, separators=(",", ":")))
+        chunk_root = api_root / episode_id / "chunks"
+        chunk_root.mkdir(parents=True, exist_ok=True)
+        for chunk in range(math.floor(detail["manifest"]["duration_s"] / detail["chunk_seconds"]) + 1):
+            payload = fetch_json(f"{args.viewer_url}/api/episodes/{episode_id}/chunks/{chunk}")
+            rewrite_frames(payload)
+            (chunk_root / f"{chunk}.json").write_text(json.dumps(payload, separators=(",", ":")))
 
     def convert(job):
         source, target = job

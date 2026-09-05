@@ -1,0 +1,17 @@
+{
+  "bucket_count": 10000,
+  "description": "Frozen ancestry-family split. All current valley variants and simulator counterparts share one training family; they are not held-out worlds.",
+  "explicit_assignments": {
+    "natural-valley": "train"
+  },
+  "family_aliases": {
+    "mountain-valley-v2": "natural-valley",
+    "natural-valley-v1": "natural-valley",
+    "natural-valley-v2": "natural-valley"
+  },
+  "hash_algorithm": "sha256",
+  "salt": "vln-simulations/world-family-splits-v1/2026-09-05",
+  "train_end": 8000,
+  "validation_end": 9000,
+  "version": "world-family-splits-v1"
+}

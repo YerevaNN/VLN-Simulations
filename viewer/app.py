@@ -7,12 +7,13 @@ from pathlib import Path
 
 import numpy as np
 import pyarrow.parquet as pq
-from flask import Flask, abort, jsonify, send_from_directory
+import pyarrow.dataset as ds
+from flask import Flask, abort, jsonify, send_from_directory, request
 
 
 DATASET_ROOT = Path(os.environ.get("UAV_DATASET_ROOT", "/data")).resolve()
 DATASET_NAME = os.environ.get("UAV_DATASET_NAME", DATASET_ROOT.name)
-EPISODE_RE = re.compile(r"episode-\d{3}")
+EPISODE_RE = re.compile(r"episode-\d{3,}")
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
@@ -70,7 +71,7 @@ def clear_of_routes(x, y, clearance):
 
 @lru_cache(maxsize=16)
 def environment_map(seed):
-    """Reproduce the exact deterministic XY scatter used by the Isaac scene."""
+    """Legacy approximation only: historical placement code may differ."""
     rng = np.random.default_rng(seed)
     trees, groundcover, rocks, debris = [], [], [], []
     tree_types = ("fir", "pine")
@@ -179,6 +180,56 @@ def environment_map(seed):
     }
 
 
+def stored_environment(root, mission):
+    path = root / "scene_inventory.json"
+    if not path.exists():
+        return {**environment_map(int(mission["seed"])), "provenance": "Legacy approximation (no recorded scene inventory)"}
+    inventory = read_json(path)
+    result = {key: [] for key in ("river", "trees", "groundcover", "rocks", "debris", "rockslide", "cliffs", "landmarks")}
+    result["river"] = inventory.get("river", [])
+    landmarks = inventory.get("landmarks", [])
+    if isinstance(landmarks, list):
+        result["landmarks"] = landmarks
+    for obj in inventory.get("objects", []):
+        label = obj.get("path", "").lower()
+        category = next((key for term, key in (("rockslide", "rockslide"), ("cliff", "cliffs"), ("wall", "cliffs"), ("tree", "trees"), ("vegetation", "trees"), ("fir", "trees"), ("pine", "trees"), ("grass", "groundcover"), ("cover", "groundcover"), ("fern", "groundcover"), ("shrub", "groundcover"), ("rock", "rocks"), ("stone", "rocks"), ("debris", "debris"), ("stump", "debris"), ("log", "debris")) if term in label), "landmarks")
+        positions = obj.get("positions_enu_m", [])
+        if "position_enu_m" in obj:
+            positions = [obj["position_enu_m"]]
+        for position in positions:
+            result[category].append([position[0], position[1], obj.get("path", "object").split("/")[-1], 1.0])
+    result["provenance"] = "Recorded authored scene inventory"
+    return result
+
+
+def sampled_records(path, limit=2000, start=None, end=None):
+    """Bound memory while scanning historical Parquet files without time partitions."""
+    parquet = pq.ParquetFile(path)
+    stride = max(1, math.ceil(parquet.metadata.num_rows / limit)) if start is None else 1
+    offset = 0
+    last = None
+    selected = []
+    if start is None:
+        batches = parquet.iter_batches(batch_size=4096)
+    else:
+        # Arrow skips row groups using timestamp statistics when available.
+        predicate = (ds.field("sim_time_s") >= start) & (ds.field("sim_time_s") < end)
+        batches = ds.dataset(path, format="parquet").scanner(filter=predicate, batch_size=4096).to_batches()
+    for batch in batches:
+        for row in batch.to_pylist():
+            timestamp = row["sim_time_s"]
+            if start is None:
+                if offset % stride == 0:
+                    selected.append(row)
+                last = row
+            elif start <= timestamp < end:
+                selected.append(row)
+            offset += 1
+    if start is None and last is not None and (not selected or selected[-1] != last):
+        selected.append(last)
+    return selected
+
+
 def public_manifest(manifest):
     keys = (
         "episode_id", "status", "seed", "duration_s", "path_length_m",
@@ -189,21 +240,23 @@ def public_manifest(manifest):
     return {key: manifest.get(key) for key in keys if key in manifest}
 
 
-@lru_cache(maxsize=16)
-def build_timeline(name: str):
+@lru_cache(maxsize=8)
+def build_timeline(name: str, start=None, end=None, full=False):
     root = episode_path(name)
     mission = read_json(root / "mission.json")
     manifest = read_json(root / "manifest.json")
-    frames = records(root / "frames.parquet")
-    actions = records(root / "joystick.parquet")
-    states = records(root / "vehicle_state.parquet")
-    events = records(root / "events.parquet")
+    def rows(filename):
+        return records(root / filename) if full else sampled_records(root / filename, start=start, end=end)
+    frames, actions, states, events = (rows(filename) for filename in ("frames.parquet", "joystick.parquet", "vehicle_state.parquet", "events.parquet"))
 
     return {
         "episode": name,
+        "chunked": not full,
+        "chunk_seconds": 30,
+        "range": [start, end],
         "manifest": public_manifest(manifest),
         "mission": mission,
-        "environment_map": environment_map(int(mission["seed"])),
+        "environment_map": stored_environment(root, mission),
         "frames": [
             [row["sim_time_s"], f"/data/{name}/{Path(row['path']).name}"]
             for row in frames
@@ -237,8 +290,14 @@ def health():
 
 @app.get("/api/episodes")
 def episodes():
+    try:
+        offset = max(0, int(request.args.get("offset", 0)))
+        limit = min(200, max(1, int(request.args.get("limit", 100))))
+    except ValueError:
+        abort(400)
+    paths = sorted((p for p in DATASET_ROOT.glob("episode-*") if p.is_dir() and EPISODE_RE.fullmatch(p.name) and (p / "manifest.json").exists() and (p / "mission.json").exists()), key=lambda p: int(p.name.split("-")[-1]))
     result = []
-    for path in sorted(DATASET_ROOT.glob("episode-*")):
+    for path in paths[offset:offset + limit]:
         if not path.is_dir() or not EPISODE_RE.fullmatch(path.name):
             continue
         mission = read_json(path / "mission.json")
@@ -249,12 +308,24 @@ def episodes():
             "mission_id": mission.get("mission_id"),
             "manifest": public_manifest(manifest),
         })
-    return jsonify(result)
+    return jsonify({"items": result, "total": len(paths), "offset": offset, "next_offset": offset + limit if offset + limit < len(paths) else None})
 
 
 @app.get("/api/episodes/<name>")
 def timeline(name):
     return jsonify(build_timeline(name))
+
+
+@app.get("/api/episodes/<name>/chunks/<int:chunk>")
+def timeline_chunk(name, chunk):
+    root = episode_path(name)
+    duration = float(read_json(root / "manifest.json").get("duration_s", 0))
+    start = chunk * 30
+    if start > duration or chunk > 100000:
+        abort(404)
+    # Overlap carries the most recent preceding sample across chunk boundaries.
+    data = build_timeline(name, max(0, start - 1), start + 31)
+    return jsonify({key: data[key] for key in ("frames", "actions", "states", "events", "range")})
 
 
 @app.get("/data/<name>/<filename>")

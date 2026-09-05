@@ -1,6 +1,6 @@
 # VLN Simulations
 
-Simulation-first data generation for language-conditioned UAV control. This repository contains the reproducible proof of concept behind **Natural Valley v2**: ten autonomous PX4 missions in a rich Isaac Sim mountain environment, recorded as synchronized RGB observations, gamepad-level actions, vehicle state, MAVLink telemetry, and native PX4 logs.
+Simulation-first data generation for language-conditioned UAV control. This repository contains the **Natural Valley** PX4/Isaac simulation pipeline and its historical ten-flight v2 sample. The current generator produces contract-checked navigation demonstrations, records live gamepad commands and their simulated outcomes, and publishes only independently validated attempts. The historical sample predates the engineering changes documented below.
 
 **Live dataset playback:** [ap.yc2.io:8787](http://ap.yc2.io:8787)
 
@@ -8,14 +8,16 @@ Simulation-first data generation for language-conditioned UAV control. This repo
 
 - a 1.3 km-square high-detail collision valley inside a 4.8 km visual terrain envelope, with a continuous river, ridges, vegetation, rocks, cliffs, and task landmarks;
 - 18 pinned, locally cached Poly Haven CC0 assets with retained provenance and hashes;
-- ten distinct natural-language missions covering reconnaissance, search, inspection, mapping, imaging, and long-range patrol;
+- ten navigation mission families with scene-bound targets, ordered routes, closed orbits, bridge clearance and stable landing predicates;
 - a scripted expert that emits human-gamepad-level `roll`, `pitch`, `yaw`, and `throttle` through PX4 `MANUAL_CONTROL`;
-- 10 Hz forward RGB and 50 Hz action/state recording, plus aligned 2/5/10 Hz JSONL exports;
+- 10 Hz forward RGB capture timestamps, 50 Hz live command/state recording, and explicit aligned 2/5/10 Hz exports with future command chunks;
 - an explicit 5 km RGB far plane, conservative instance bounds, and background forest bands that prevent outdoor geometry pop-in;
-- deep validation of images, timing, checksums, mission completion, MAVLink logs, ULogs, and training exports;
-- an interactive browser viewer with synchronized frames, controls, telemetry, routes, and the actual deterministic scene objects.
+- independent validity and mission-outcome checks, including images, timing, checksums, route/landing evidence, PX4 received commands and observed flight mode;
+- a paginated, chunked playback viewer using recorded scene inventories for new episodes and visibly labeled approximate maps for historical episodes.
 
-The current horizon- and launch-pad-fixed PoC contains 18,968 RGB frames, 96,642 actions, 32.4 minutes of simulated flight, and 6.36 km of trajectories. See the [dataset card](docs/dataset-card.md) for complete statistics.
+The preserved historical horizon- and launch-pad-fixed PoC contains 18,968 RGB frames, 96,642 actions, 32.4 minutes of simulated flight, and 6.36 km of trajectories. See the [dataset card](docs/dataset-card.md) for complete statistics.
+
+The proposed production-scale successor targets 10,000 accepted flight hours across approximately 100,000-120,000 episodes, multiple simulators, rich onboard sensors, dynamic agents, and held-out environment families. See the [10K-hour scale plan](docs/scale-plan.md). Implementation decisions, tests and remaining challenges are in [engineering notes](docs/engineering-notes.md); generation operations are in [batch generation and recovery](docs/batch-generation.md).
 
 ## System
 
@@ -48,7 +50,7 @@ scripts/
   serve_viewer.sh       read-only playback deployment
 viewer/                 Flask + Canvas playback application
 configs/example.env     configurable AP/runtime paths
-docs/                   environment design, dataset card, and roadmap
+docs/                   environment design, dataset card, scale plan, and roadmap
 ```
 
 ## Requirements
@@ -84,7 +86,7 @@ set +a
 ./scripts/run_batch.sh
 ```
 
-The command is fully unattended and resumable. It downloads missing assets, selects the requested GPU, skips already-successful episodes, retries episode failures, validates the complete dataset, and exits nonzero if any quality gate fails.
+The command verifies the pinned assets, fingerprints code/runtime/configuration, claims each episode, records private attempts and atomically publishes validated successes. Resume requires a matching publication receipt and revalidation. Existing datasets are never overwritten; use a new dataset name for changed configurations. Failed attempts and cost measurements are preserved. See [batch generation](docs/batch-generation.md) for sharding, timeouts and recovery.
 
 Generate one episode directly with Isaac Sim's Python interpreter:
 
@@ -106,7 +108,7 @@ PORT=8787 \
 ./scripts/serve_viewer.sh
 ```
 
-Open `http://HOST:8787`. The mission map reconstructs the same episode-seeded river, trees, groundcover, rocks, debris, rockslide, cliffs, and landmarks used by the simulator—not a decorative approximation.
+Open `http://HOST:8787`. New episodes export the authored scene inventory used by the mission map. Historical episodes lack this artifact and display a clearly labeled legacy approximation.
 
 ## Download the ten-mission sample
 
@@ -122,11 +124,14 @@ The archive is approximately 919 MiB compressed and 1.24 GiB extracted. Its pinn
 
 Every `episode-NNN` contains:
 
-- `mission.json` and `manifest.json`;
+- `mission.json`, `manifest.json`, authored `scene_inventory.json`, and independent `mission_evaluation.json` for new generation;
 - JPEG RGB frames plus `frames.parquet` timestamps;
 - `joystick.parquet`, `vehicle_state.parquet`, and `events.parquet`;
 - `mavlink.tlog` and `px4.ulg`;
-- aligned `exports/{2,5,10}hz.jsonl` views.
+- aligned `exports/{2,5,10}hz.jsonl` views;
+- a publication receipt after successful batch validation.
+
+Use `scripts/pack_dataset.py` for immutable indexed archive shards and `scripts/report_capacity.py` for measured attempt costs or explicitly labeled historical scenarios. See their `--help` output and the [viewer/archive notes](viewer/README.md).
 
 Large datasets, downloaded assets, runtime checkouts, and simulator caches are deliberately excluded from Git.
 

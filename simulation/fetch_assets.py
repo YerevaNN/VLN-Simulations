@@ -4,6 +4,8 @@
 import argparse
 import hashlib
 import json
+import os
+import tempfile
 import urllib.request
 from pathlib import Path
 
@@ -11,158 +13,91 @@ from pathlib import Path
 API = "https://api.polyhaven.com"
 USER_AGENT = "YerevaNN-VLN-Simulations/1.0 (+https://github.com/YerevaNN/VLN-Simulations)"
 
-MODEL_IDS = [
-    "boulder_01",
-    "dead_tree_trunk",
-    "fern_02",
-    "fir_sapling",
-    "grass_bermuda_01",
-    "jacaranda_tree",
-    "mountainside",
-    "pine_sapling_small",
-    "rock_07",
-    "rock_09",
-    "rock_moss_set_01",
-    "shrub_02",
-    "stone_01",
-    "tree_stump_01",
-]
-TEXTURE_IDS = ["aerial_grass_rock", "forrest_ground_03", "ganges_river_pebbles"]
-HDRI_IDS = ["drakensberg_solitary_mountain"]
+DEFAULT_LOCK = Path(__file__).resolve().parents[1] / "configs" / "assets.lock.json"
 
 
-def request_json(url):
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.load(response)
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
-def download(url, path, expected_md5=None):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    if path.exists() and expected_md5:
-        digest = hashlib.md5(path.read_bytes()).hexdigest()
-        if digest == expected_md5:
-            return
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=180) as response, path.open("wb") as stream:
-        while chunk := response.read(1024 * 1024):
-            stream.write(chunk)
-    if expected_md5 and hashlib.md5(path.read_bytes()).hexdigest() != expected_md5:
-        path.unlink(missing_ok=True)
-        raise RuntimeError(f"MD5 mismatch for {path}")
+def locked_path(root, relative):
+    root = Path(root).resolve()
+    path = (root / relative).resolve()
+    if path == root or not path.is_relative_to(root):
+        raise ValueError(f"Asset path escapes root: {relative}")
+    return path
 
 
-def choose(mapping, *path):
-    value = mapping
-    for key in path:
-        value = value[key]
-    return value
+def matches_lock(path, item):
+    return (path.is_file() and path.stat().st_size == item["bytes"]
+            and file_sha256(path) == item["sha256"])
 
 
-def fetch_file_entry(entry, root, relative_path):
-    target = root / relative_path
-    download(entry["url"], target, entry.get("md5"))
-    return {
-        "path": str(target.relative_to(root)),
-        "bytes": target.stat().st_size,
-        "md5": entry.get("md5"),
-        "source_url": entry["url"],
-    }
-
-
-def fetch_model(asset_id, root):
-    files = request_json(f"{API}/files/{asset_id}")
-    entry = choose(files, "usd", "1k", "usd")
-    asset_root = root / "models" / asset_id
-    result = [fetch_file_entry(entry, asset_root, f"{asset_id}_1k.usdc")]
-    for relative, dependency in entry.get("include", {}).items():
-        result.append(fetch_file_entry(dependency, asset_root, relative))
-    return {"id": asset_id, "kind": "model", "root_file": result[0]["path"], "files": result}
-
-
-def find_texture_entry(files, names):
-    for name in names:
-        group = files.get(name)
-        if not group:
+def sync_locked_assets(root, lock_path=DEFAULT_LOCK, verify_only=False):
+    """Resolve exact bytes without requesting the mutable upstream asset catalog."""
+    lock_path = Path(lock_path)
+    lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    if lock.get("schema_version") != "uav-assets-lock-v1":
+        raise ValueError("Unsupported asset lock schema")
+    paths = [item["path"] for item in lock["files"]]
+    if len(paths) != len(set(paths)):
+        raise ValueError("Duplicate asset path in lock")
+    for item in lock["files"]:
+        target = locked_path(root, item["path"])
+        if matches_lock(target, item):
             continue
-        for resolution in ("2k", "1k"):
-            formats = group.get(resolution, {})
-            for extension in ("jpg", "png", "exr"):
-                if extension in formats:
-                    return formats[extension], extension, name
-    return None
-
-
-def fetch_texture(asset_id, root):
-    files = request_json(f"{API}/files/{asset_id}")
-    asset_root = root / "textures" / asset_id
-    outputs = {}
-    channels = {
-        "diffuse": ("Diffuse", "diffuse"),
-        "normal": ("nor_gl", "Normal GL", "normal_gl"),
-        "roughness": ("Rough", "rough", "Roughness"),
-    }
-    result = []
-    for channel, names in channels.items():
-        selected = find_texture_entry(files, names)
-        if not selected:
-            continue
-        entry, extension, source_key = selected
-        item = fetch_file_entry(entry, asset_root, f"{channel}.{extension}")
-        item["source_channel"] = source_key
-        outputs[channel] = item["path"]
-        result.append(item)
-    if "diffuse" not in outputs:
-        raise RuntimeError(f"No diffuse texture for {asset_id}")
-    return {"id": asset_id, "kind": "texture", "channels": outputs, "files": result}
-
-
-def fetch_hdri(asset_id, root):
-    files = request_json(f"{API}/files/{asset_id}")
-    entry = choose(files, "hdri", "2k", "hdr")
-    asset_root = root / "hdri" / asset_id
-    item = fetch_file_entry(entry, asset_root, f"{asset_id}_2k.hdr")
-    return {"id": asset_id, "kind": "hdri", "root_file": item["path"], "files": [item]}
+        if verify_only:
+            raise ValueError(f"Missing or altered locked asset: {item['path']}")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        fd, temp_name = tempfile.mkstemp(prefix=".asset-", dir=target.parent)
+        try:
+            with os.fdopen(fd, "wb") as stream:
+                request = urllib.request.Request(item["source_url"], headers={"User-Agent": USER_AGENT})
+                with urllib.request.urlopen(request, timeout=180) as response:
+                    for chunk in iter(lambda: response.read(1024 * 1024), b""):
+                        stream.write(chunk)
+                stream.flush()
+                os.fsync(stream.fileno())
+            if not matches_lock(Path(temp_name), item):
+                raise ValueError(f"Downloaded bytes differ from lock: {item['path']}")
+            os.replace(temp_name, target)
+        finally:
+            Path(temp_name).unlink(missing_ok=True)
+    if not verify_only:
+        manifest = dict(lock["source_manifest"])
+        manifest["asset_lock_sha256"] = file_sha256(lock_path)
+        manifest["content_hash_algorithm"] = "sha256"
+        # Keep the established per-asset layout while adding strong content hashes.
+        entries = {item["path"]: item for item in lock["files"]}
+        for asset in manifest["assets"]:
+            base = Path({"model": "models", "texture": "textures", "hdri": "hdri"}[asset["kind"]]) / asset["id"]
+            for item in asset["files"]:
+                item["sha256"] = entries[str(base / item["path"])]["sha256"]
+        target = Path(root) / "asset_manifest.json"
+        fd, temp_name = tempfile.mkstemp(prefix=".manifest-", dir=target.parent)
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                json.dump(manifest, stream, indent=2, sort_keys=True)
+                stream.write("\n")
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temp_name, target)
+        finally:
+            Path(temp_name).unlink(missing_ok=True)
+    return {"asset_lock_sha256": file_sha256(lock_path), "verified_files": len(paths)}
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", default="/mnt/frtn/uav-sim/assets/polyhaven-v2")
+    parser.add_argument("--lock", type=Path, default=DEFAULT_LOCK)
+    parser.add_argument("--verify-only", action="store_true", help="Check exact local bytes without writes or network requests")
     args = parser.parse_args()
-    root = Path(args.output_root)
-    root.mkdir(parents=True, exist_ok=True)
-    catalog = request_json(f"{API}/assets")
-    manifest = {
-        "schema_version": "uav-sim-assets-v2",
-        "source": "Poly Haven public API",
-        "source_url": "https://polyhaven.com/",
-        "license": "CC0 1.0 Universal",
-        "license_url": "https://polyhaven.com/license",
-        "api_credit": "Powered by Poly Haven",
-        "assets": [],
-    }
-    for asset_id in MODEL_IDS:
-        print(f"Fetching model {asset_id}", flush=True)
-        item = fetch_model(asset_id, root)
-        item["name"] = catalog[asset_id]["name"]
-        item["authors"] = catalog[asset_id].get("authors", {})
-        manifest["assets"].append(item)
-    for asset_id in TEXTURE_IDS:
-        print(f"Fetching texture {asset_id}", flush=True)
-        item = fetch_texture(asset_id, root)
-        item["name"] = catalog[asset_id]["name"]
-        item["authors"] = catalog[asset_id].get("authors", {})
-        manifest["assets"].append(item)
-    for asset_id in HDRI_IDS:
-        print(f"Fetching HDRI {asset_id}", flush=True)
-        item = fetch_hdri(asset_id, root)
-        item["name"] = catalog[asset_id]["name"]
-        item["authors"] = catalog[asset_id].get("authors", {})
-        manifest["assets"].append(item)
-    (root / "asset_manifest.json").write_text(
-        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
-    print(f"Fetched {len(manifest['assets'])} assets into {root}", flush=True)
+    print(json.dumps(sync_locked_assets(args.output_root, args.lock, args.verify_only), sort_keys=True))
 
 
 if __name__ == "__main__":

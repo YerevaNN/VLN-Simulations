@@ -13,6 +13,7 @@ import pandas as pd
 from PIL import Image
 from pymavlink import mavutil
 from pyulog import ULog
+from validation_contract import check_records, check_export_row, observed_px4_evidence
 
 
 REQUIRED_FILES = (
@@ -52,18 +53,24 @@ def validate_tlog(path):
     return counts
 
 
-def validate_ulog(path):
+def validate_ulog(path, actions):
     ulog = ULog(str(path), message_name_filter_list=list(ULOG_TOPICS))
     topics = {}
     for item in ulog.data_list:
         length = len(next(iter(item.data.values()))) if item.data else 0
         topics[item.name] = topics.get(item.name, 0) + length
-    return topics
+    datasets = {item.name: item.data for item in ulog.data_list if getattr(item, "multi_id", 0) == 0}
+    evidence, errors = observed_px4_evidence(datasets, actions)
+    return topics, evidence, errors
 
 
-def validate_exports(episode, frames, errors):
+def validate_exports(episode, frames, actions, errors):
     result = {}
     frame_paths = set(frames.path)
+    frame_lookup = {row["path"]: row for row in frames.to_dict("records")}
+    action_records = actions.to_dict("records")
+    action_times = actions.sim_time_s.tolist()
+    causal = "transmitted_time_s" in actions.columns
     for rate in (2, 5, 10):
         path = episode / "exports" / f"{rate}hz.jsonl"
         if not path.exists() or path.stat().st_size == 0:
@@ -85,6 +92,10 @@ def validate_exports(episode, frames, errors):
         if abs(len(rows) - expected) > 2:
             errors.append(f"{episode.name}: {rate} Hz export count {len(rows)} differs from expected {expected}")
         for row in rows:
+            issue = check_export_row(row, frame_lookup, action_records, action_times, causal=causal, rate=rate)
+            if issue:
+                errors.append(f"{episode.name}: {rate} Hz {issue}")
+                break
             if row.get("image") not in frame_paths:
                 errors.append(f"{episode.name}: {rate} Hz export references a missing frame")
                 break
@@ -97,6 +108,7 @@ def validate_exports(episode, frames, errors):
 
 
 def validate_episode(episode, errors):
+    error_start = len(errors)
     for relative in REQUIRED_FILES:
         path = episode / relative
         if not path.exists() or path.stat().st_size == 0:
@@ -111,14 +123,20 @@ def validate_episode(episode, errors):
     frames = pd.read_parquet(episode / "frames.parquet")
     events = pd.read_parquet(episode / "events.parquet")
 
-    if manifest.get("status") != "success":
-        errors.append(f"{episode.name}: status={manifest.get('status')}")
+    if manifest.get("status") not in ("success", "failed"):
+        errors.append(f"{episode.name}: invalid outcome status={manifest.get('status')}")
     if manifest.get("controller_interface") != "MAVLink MANUAL_CONTROL":
         errors.append(f"{episode.name}: controller interface is not MAVLink MANUAL_CONTROL")
     if manifest.get("vehicle_target") != "Holybro PX4 Development Kit X500 v2":
         errors.append(f"{episode.name}: X500 v2 target missing from manifest")
     if mission.get("seed") != manifest.get("seed"):
         errors.append(f"{episode.name}: mission/manifest seed mismatch")
+    split_evidence = "unverified_legacy"
+    if "dataset_split" in manifest:
+        from dataset_splits import validate_assignments
+        assignment = validate_assignments([manifest["dataset_split"]])
+        split_evidence = "verified" if assignment["valid"] else "inconsistent"
+        errors.extend(f"{episode.name}: {issue}" for issue in assignment["errors"])
     if manifest.get("schema_version") == "uav-poc-v2":
         environment = manifest.get("environment", {})
         clipping_range = manifest.get("camera", {}).get("clipping_range_m", [])
@@ -156,6 +174,8 @@ def validate_episode(episode, errors):
     frame_times = frames.sim_time_s.to_numpy(dtype=float)
     action_times = actions.sim_time_s.to_numpy(dtype=float)
     state_times = states.sim_time_s.to_numpy(dtype=float)
+    errors.extend(f"{episode.name}: {issue}" for issue in check_records(
+        actions.to_dict("records"), frames.to_dict("records"), states.to_dict("records")))
     frame_gaps = np.diff(frame_times)
     action_gaps = np.diff(action_times)
     state_gaps = np.diff(state_times)
@@ -174,24 +194,33 @@ def validate_episode(episode, errors):
         values = actions[column].to_numpy(dtype=float)
         if not np.isfinite(values).all() or np.any(np.abs(values) > 1.000001):
             errors.append(f"{episode.name}: {column} action is non-finite or outside [-1, 1]")
-    if set(actions["mode"].unique()) != {"POSCTL"}:
-        errors.append(f"{episode.name}: unexpected flight mode in joystick table")
+    # The legacy mode column was a constant, not an observation. Use ULog below.
     if not np.all(actions["buttons"].to_numpy() == 0):
         errors.append(f"{episode.name}: unexpected scripted button value")
-    if float(actions[list(ACTION_COLUMNS)].std().max()) < 0.05:
-        errors.append(f"{episode.name}: joystick trace lacks meaningful variation")
-
-    if int(actions.waypoint_index.min()) != 0 or int(actions.waypoint_index.max()) != landing_index:
-        errors.append(f"{episode.name}: joystick trace does not span the full mission")
-    if int(states.waypoint_index.iloc[-1]) != landing_index or bool(states.armed.iloc[-1]):
-        errors.append(f"{episode.name}: final state is not landed/disarmed at the final waypoint")
-    if "touchdown" not in set(events.type) or int((events.type == "waypoint_reached").sum()) < landing_index:
-        errors.append(f"{episode.name}: mission event history is incomplete")
-    route = np.asarray([waypoint[:3] for waypoint in waypoints], dtype=float)
-    nominal_route_length = float(np.linalg.norm(np.diff(route, axis=0), axis=1).sum())
-    minimum_path_length = max(100.0, nominal_route_length * 0.65)
-    if manifest.get("last_waypoint_index") != landing_index or manifest.get("path_length_m", 0) < minimum_path_length:
-        errors.append(f"{episode.name}: manifest does not prove the full route")
+    positions = states[["x_enu_m", "y_enu_m", "z_enu_m"]].to_numpy(dtype=float)
+    actual_length = float(np.linalg.norm(np.diff(positions, axis=0), axis=1).sum())
+    if not math.isclose(actual_length, float(manifest.get("path_length_m", -1)), abs_tol=0.01, rel_tol=1e-5):
+        errors.append(f"{episode.name}: manifest path length differs from recorded positions")
+    if not math.isclose(float(state_times[-1]), float(manifest.get("duration_s", -1)), abs_tol=0.04):
+        errors.append(f"{episode.name}: manifest duration differs from terminal state timestamp")
+    from mission_contract import evaluate_mission
+    mission_evaluation = evaluate_mission(mission, states.to_dict("records"))
+    if manifest.get("status") == "success" and mission_evaluation.get("verified") and not mission_evaluation.get("success", False):
+        errors.append(f"{episode.name}: claimed success contradicts recorded mission geometry/terminal state")
+    collision_evaluation = {"success": False, "verified": False,
+                            "reason": "legacy recording has no contact monitor evidence"}
+    contact_path = episode / "physics_contacts.jsonl"
+    if contact_path.exists() or "collision_evidence" in manifest:
+        if not contact_path.exists() or "collision_evidence" not in manifest:
+            errors.append(f"{episode.name}: contact stream and monitor metadata must both be present")
+        else:
+            from contact_recorder import evaluate_contacts
+            with contact_path.open(encoding="utf-8") as stream:
+                contacts = [json.loads(line) for line in stream if line.strip()]
+            collision_evaluation = evaluate_contacts(contacts, states.to_dict("records"), manifest["collision_evidence"])
+            errors.extend(f"{episode.name}: invalid contact evidence: {issue}" for issue in collision_evaluation.get("errors", []))
+            if manifest.get("status") == "success" and collision_evaluation.get("verified") and not collision_evaluation.get("success"):
+                errors.append(f"{episode.name}: claimed success contradicts recorded physical collisions")
 
     image_stds = []
     sample_indices = set(np.linspace(0, len(frame_files) - 1, min(64, len(frame_files)), dtype=int))
@@ -222,7 +251,7 @@ def validate_episode(episode, errors):
     actual_files = {
         str(path.relative_to(episode)): path
         for path in episode.rglob("*")
-        if path.is_file() and path.name != "manifest.json"
+        if path.is_file() and path.name not in ("manifest.json", "validation_summary.json", "publication.json")
     }
     manifest_files = manifest.get("files", {})
     if set(actual_files) != set(manifest_files):
@@ -237,13 +266,26 @@ def validate_episode(episode, errors):
     tlog_counts = validate_tlog(episode / "mavlink.tlog")
     if tlog_counts["HEARTBEAT"] < 50 or tlog_counts["LOCAL_POSITION_NED"] < 100:
         errors.append(f"{episode.name}: MAVLink telemetry log lacks required flight telemetry")
-    ulog_topics = validate_ulog(episode / "px4.ulg")
+    ulog_topics, px4_evidence, px4_errors = validate_ulog(episode / "px4.ulg", actions.to_dict("records"))
+    errors.extend(f"{episode.name}: {issue}" for issue in px4_errors)
     if any(ulog_topics.get(topic, 0) < 100 for topic in ULOG_TOPICS):
         errors.append(f"{episode.name}: PX4 ULog lacks manual-control, status, or actuator evidence")
 
-    export_counts = validate_exports(episode, frames, errors)
+    export_counts = validate_exports(episode, frames, actions, errors)
     return {
         "episode": episode.name,
+        "episode_id": manifest.get("episode_id", episode.name),
+        "config_hash": manifest.get("config_hash"),
+        "data_valid": len(errors) == error_start,
+        "mission_success": bool(mission_evaluation.get("success") and mission_evaluation.get("verified")
+                                and collision_evaluation.get("success") and collision_evaluation.get("verified")),
+        "mission_evaluation": mission_evaluation,
+        "px4_evidence": px4_evidence,
+        "collision_evaluation": collision_evaluation,
+        "collision_evidence": "verified_collidable_geometry" if collision_evaluation.get("verified") else "unverified_contact_monitor",
+        "camera_freshness": "verified_capture_ids" if "capture_frame_id" in frames.columns else "unverified_legacy_capture_time",
+        "transmission_metadata": "recorded" if "transmitted_time_s" in actions.columns else "unverified_legacy",
+        "split_evidence": split_evidence,
         "seed": manifest["seed"],
         "mission_id": mission.get("mission_id"),
         "task_type": mission.get("task_type"),
@@ -270,45 +312,70 @@ def validate_episode(episode, errors):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset_root")
-    parser.add_argument("--expected", type=int, default=10)
+    parser.add_argument("dataset_root", nargs="?")
+    parser.add_argument("--episode", action="append", default=[], help="Validate this explicit attempt only; repeatable")
+    parser.add_argument("--expected", type=int, help="Optional aggregate count gate")
+    parser.add_argument("--output", type=Path, help="JSON report destination; otherwise stdout only for explicit attempts")
+    parser.add_argument("--require-success", action="store_true", help="Require verified mission success and PX4 receipt for expert publication")
+    parser.add_argument("--min-lighting-variants", type=int, default=0)
     args = parser.parse_args()
-    root = Path(args.dataset_root)
+    if not args.dataset_root and not args.episode:
+        parser.error("provide dataset_root or at least one --episode")
+    if args.dataset_root and args.episode:
+        parser.error("choose dataset_root or explicit --episode paths, not both")
+    root = Path(args.dataset_root) if args.dataset_root else None
     rows = []
     errors = []
-    episode_dirs = sorted(path for path in root.glob("episode-*") if path.is_dir())
-    if len(episode_dirs) != args.expected:
+    episode_dirs = ([Path(p) for p in args.episode] if args.episode else
+                    sorted(path for path in root.glob("episode-*") if path.is_dir()))
+    if len({p.resolve() for p in episode_dirs}) != len(episode_dirs):
+        parser.error("duplicate episode paths")
+    if not episode_dirs:
+        errors.append("no episodes selected")
+    if args.expected is not None and len(episode_dirs) != args.expected:
         errors.append(f"expected {args.expected} episodes, found {len(episode_dirs)}")
     for episode in episode_dirs:
         try:
             row = validate_episode(episode, errors)
             if row is not None:
                 rows.append(row)
+                if args.require_success:
+                    if not row["mission_success"] or row["status"] != "success" or not row["mission_evaluation"].get("verified"):
+                        errors.append(f"{episode.name}: expert publication requires mission success")
+                    if any(row["px4_evidence"].get(key) != "verified" for key in ("mode", "control_receipt")):
+                        errors.append(f"{episode.name}: expert publication requires independently verified PX4 mode and controls")
+                    if row["camera_freshness"] != "verified_capture_ids" or row["transmission_metadata"] != "recorded":
+                        errors.append(f"{episode.name}: expert publication requires sensor capture IDs and explicit transmission metadata")
+                    if row["split_evidence"] != "verified":
+                        errors.append(f"{episode.name}: expert publication requires a frozen ancestry split assignment")
+                    if not row["collision_evaluation"].get("verified") or not row["collision_evaluation"].get("success"):
+                        errors.append(f"{episode.name}: expert publication requires verified collision-free contact evidence")
         except Exception as exc:
             errors.append(f"{episode.name}: validator exception: {type(exc).__name__}: {exc}")
 
-    seeds = [row["seed"] for row in rows]
-    if len(seeds) != len(set(seeds)):
-        errors.append("episode seeds are not unique")
-    if len({row["lighting_variant"] for row in rows}) < 3:
-        errors.append("fewer than three deterministic lighting variants are represented")
-    if any(row.get("mission_id") for row in rows):
-        if len({row.get("mission_id") for row in rows}) != args.expected:
-            errors.append("mission IDs are not unique across the dataset")
-        if len({row.get("instruction") for row in rows}) != args.expected:
-            errors.append("natural-language instructions are not unique across the dataset")
+    identities = [row["episode_id"] for row in rows]
+    if len(identities) != len(set(identities)):
+        errors.append("episode instance IDs are not unique")
+    if len({row["lighting_variant"] for row in rows}) < args.min_lighting_variants:
+        errors.append(f"fewer than {args.min_lighting_variants} lighting variants represented")
 
     summary = {
-        "validator_version": "uav-sim-v2-validator",
+        "validator_version": "uav-sim-v3-validator",
         "status": "pass" if not errors else "fail",
         "episode_count": len(rows),
+        "valid_data_count": sum(row["data_valid"] for row in rows),
+        "successful_mission_count": sum(row["mission_success"] for row in rows),
         "episodes": rows,
         "errors": errors,
     }
-    (root / "validation_summary.json").write_text(
-        json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
-    pd.DataFrame(rows).to_csv(root / "dataset_summary.csv", index=False)
+    destination = args.output or (root / "validation_summary.json" if root else None)
+    if destination:
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        temporary = destination.with_name(destination.name + ".tmp")
+        temporary.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        temporary.replace(destination)
+    if root:
+        pd.DataFrame(rows).to_csv(root / "dataset_summary.csv", index=False)
     print(json.dumps(summary, indent=2))
     raise SystemExit(0 if not errors else 1)
 
