@@ -30,9 +30,10 @@ git_dir = Path(__file__).resolve().parents[2]/'.git'
 head = (git_dir/'HEAD').read_text().strip()
 run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
 from isaacsim import SimulationApp
+initial_renderer = 'PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting')
 app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
-                     'renderer': 'PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'),
-                     'extra_args': ['--portable-root', os.environ['ISAAC_PORTABLE_ROOT']],
+                     'renderer': initial_renderer,
+                     'extra_args': ['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer],
                      'limit_cpu_threads': int(os.environ.get('OMP_NUM_THREADS', '8')),
                      'fast_shutdown': True})
 import carb
