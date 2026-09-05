@@ -15,6 +15,7 @@ labels={'isaac-ap':'Isaac Sim 5.1 · AP / RTX A6000',
         'newton':'Newton / Warp · H100',
         'behavior45':'BEHAVIOR 3.7.1 / Isaac 4.5 · H100',
         'behavior45-pt':'BEHAVIOR 3.7.1 / path tracing · H100',
+        'behavior45-pt-ap':'Matched Isaac 4.5 path tracing · AP / RTX A6000',
         'behavior-pathtracing-ap':'Matched path tracing · AP / RTX A6000',
         'behavior-pathtracing':'BEHAVIOR / Isaac 5.1 path tracing · H100',
         'behavior-hq':'BEHAVIOR / Isaac 5.1 real-time · H100'}

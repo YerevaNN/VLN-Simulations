@@ -23,13 +23,13 @@ else
   initial=()
   if [[ $backend == behavior-pathtracing-ap ]]; then isaac=/isaac-sim; render_backend=behavior-pathtracing; fi
   export PYTHONPATH="$base/runtime/isaac-python-deps${PYTHONPATH:+:$PYTHONPATH}"
-  if [[ $backend == behavior45 || $backend == behavior45-pt ]]; then
+  if [[ $backend == behavior45 || $backend == behavior45-pt || $backend == behavior45-pt-ap ]]; then
     isaac="$base/runtime/isaac-sim-4.5"
     behavior_root="$base/runtime/behavior-3.7.1-source"
     export PYTHONPATH="$base/runtime/isaac45-python-deps"
     render_backend=behavior-hq
     initial=(--initial-renderer RayTracedLighting)
-    if [[ $backend == behavior45-pt ]]; then render_backend=behavior-pathtracing; initial=(--initial-renderer PathTracing); fi
+    if [[ $backend == behavior45-pt || $backend == behavior45-pt-ap ]]; then render_backend=behavior-pathtracing; initial=(--initial-renderer PathTracing); fi
   fi
   extra=()
   if [[ $backend == isaac-ap && ! -f "$base/comparison/scene/cameras.json" ]]; then extra+=(--prepare); fi
