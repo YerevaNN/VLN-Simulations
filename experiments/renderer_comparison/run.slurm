@@ -9,6 +9,8 @@ export ACCEPT_EULA=Y PRIVACY_CONSENT=Y
 export XDG_CACHE_HOME="$base/cache/comparison-$backend"
 export ISAAC_PORTABLE_ROOT="$base/cache/comparison-kit-$backend"
 export LD_LIBRARY_PATH="$base/runtime/system-libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export OPTIX_CACHE_PATH="$base/cache/optix-$backend"
+mkdir -p "$OPTIX_CACHE_PATH"
 mkdir -p "$XDG_CACHE_HOME" "$ISAAC_PORTABLE_ROOT" "$base/comparison/$backend"
 args=(--output "$base/comparison/$backend" --scene-dir "$base/comparison/scene")
 if [[ $backend == newton ]]; then
@@ -16,10 +18,12 @@ if [[ $backend == newton ]]; then
 else
   isaac="$base/runtime/isaac-sim"
   [[ $backend != isaac-ap ]] || isaac=/isaac-sim
+  render_backend=$backend
+  if [[ $backend == behavior-pathtracing-ap ]]; then isaac=/isaac-sim; render_backend=behavior-pathtracing; fi
   export PYTHONPATH="$base/runtime/isaac-python-deps${PYTHONPATH:+:$PYTHONPATH}"
   extra=()
   if [[ $backend == isaac-ap && ! -f "$base/comparison/scene/cameras.json" ]]; then extra+=(--prepare); fi
   exec "$isaac/python.sh" experiments/renderer_comparison/run_isaac.py "${args[@]}" \
-    --assets-root "$base/assets/polyhaven-v2" --backend "$backend" \
+    --assets-root "$base/assets/polyhaven-v2" --backend "$render_backend" \
     --behavior-root "$base/runtime/BEHAVIOR-1K" "${extra[@]}"
 fi

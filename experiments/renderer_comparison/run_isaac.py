@@ -69,7 +69,7 @@ if a.backend.startswith('behavior'):
     scope['_set_renderer_settings'](SimpleNamespace(get_rendering_dt=lambda: 1 / 60))
     if a.backend == 'behavior-pathtracing':
         for key, value in {'/rtx/rendermode': 'PathTracing', '/rtx/pathtracing/spp': 4,
-                           '/rtx/pathtracing/totalSpp': 256, '/rtx/pathtracing/maxBounces': 8,
+                           '/rtx/pathtracing/totalSpp': 256, '/rtx/pathtracing/maxBounces': 32,
                            '/rtx/pathtracing/optixDenoiser/enabled': True}.items():
             SettingsRecorder().set(key, value)
 
@@ -120,6 +120,11 @@ for pose in config['poses']:
     start = time.perf_counter()
     rep.orchestrator.step(rt_subframes=64 if pose['kind']=='view' and a.backend=='behavior-pathtracing' else 16, pause_timeline=False)
     pixels = np.asarray(rgb.get_data()).copy()
+    for retry in range(8):
+        if pixels.ndim == 3 and pixels.shape[:2] == (config['height'], config['width']): break
+        print('WAIT_FOR_IMAGE',pose['name'],retry, pixels.shape,flush=True)
+        rep.orchestrator.step(rt_subframes=16, pause_timeline=False)
+        pixels = np.asarray(rgb.get_data()).copy()
     if pixels.ndim != 3 or pixels.shape[:2] != (config['height'], config['width']):
         raise RuntimeError(f'Invalid image at {pose["name"]}: {pixels.shape}')
     Image.fromarray(pixels[:,:,:3]).save(out / (pose['name']+'.png'))
