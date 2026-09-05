@@ -27,6 +27,7 @@ p.add_argument('--views-only', action='store_true')
 p.add_argument('--quality-spp', type=int, default=4)
 p.add_argument('--disable-denoiser', action='store_true')
 p.add_argument('--omnigibson-experience', action='store_true')
+p.add_argument('--force-render-mode', choices=['RaytracedLighting','RealTimePathTracing','PathTracing'])
 a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene_dir = Path(a.scene_dir); scene_dir.mkdir(parents=True, exist_ok=True)
@@ -35,7 +36,7 @@ git_dir = Path(__file__).resolve().parents[2]/'.git'
 head = (git_dir/'HEAD').read_text().strip()
 run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
 from isaacsim import SimulationApp
-initial_renderer = a.initial_renderer or ('PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'))
+initial_renderer = a.force_render_mode or a.initial_renderer or ('PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'))
 launch_args=['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer]
 experience={}
 experience_hash=None
@@ -93,6 +94,9 @@ if a.backend.startswith('behavior'):
                            '/rtx/pathtracing/totalSpp': a.quality_spp * 64, '/rtx/pathtracing/maxBounces': 32,
                            '/rtx/pathtracing/optixDenoiser/enabled': not a.disable_denoiser}.items():
             SettingsRecorder().set(key, value)
+
+if a.force_render_mode:
+    SettingsRecorder().set('/rtx/rendermode',a.force_render_mode)
 
 if a.prepare:
     omni.usd.get_context().new_stage()
