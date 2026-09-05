@@ -35,4 +35,4 @@ extra=()
 if [[ $backend == omni51-hq || $backend == omni51-hq-ap ]]; then extra+=(--force-render-mode RaytracedLighting); fi
 if [[ $backend == omni51-kit* ]]; then extra+=(--omnigibson-experience); fi
 if [[ $backend == behavior45-reference-ap ]]; then extra=(--quality-spp 64 --disable-denoiser); fi
-exec timeout --signal=TERM --kill-after=15s 600s "$isaac/python.sh" experiments/renderer_comparison/run_isaac.py --output "$base/$suite/$backend" --scene-dir "$base/$suite/scene" --assets-root "$base/assets/polyhaven-v2" --backend "$render" --behavior-root "$behavior_root" "${extra[@]}"
+exec timeout --signal=TERM --kill-after=15s "${RENDER_TIMEOUT:-600}s" "$isaac/python.sh" experiments/renderer_comparison/run_isaac.py --output "$base/$suite/$backend" --scene-dir "$base/$suite/scene" --assets-root "$base/assets/polyhaven-v2" --backend "$render" --behavior-root "$behavior_root" "${extra[@]}"
