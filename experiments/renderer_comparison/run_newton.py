@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 import subprocess
 import time
+import faulthandler
+import importlib
 import numpy as np
 from PIL import Image
 from pxr import Usd, UsdGeom, Sdf, Gf
@@ -20,6 +22,8 @@ a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene = Path(a.scene_dir)
 t0 = time.perf_counter()
+run_commit = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+faulthandler.dump_traceback_later(120, repeat=True)
 stage = Usd.Stage.Open(str(scene/'valley.usdc'))
 # Expand USD PointInstancers, which the Newton importer does not traverse.
 # Keep prototype-local transforms; instance matrices explicitly exclude them.
@@ -53,6 +57,24 @@ print('EXPANDED_INSTANCES', count, flush=True)
 wp.init()
 wp.set_device('cuda:0')
 builder = newton.ModelBuilder()
+# Static rendering needs no mass integration. Reuse prototype-local mesh data
+# across the transform-only references created above; no geometry is altered.
+importer = importlib.import_module('newton._src.utils.import_usd')
+original_get_mesh = importer.usd.get_mesh
+mesh_cache = {}
+mesh_calls = 0
+def get_visual_mesh(prim, **kwargs):
+    global mesh_calls
+    kwargs['compute_inertia'] = False
+    points = prim.GetAttribute('points')
+    stack = points.GetPropertyStack() if points else []
+    key = (str(stack[0].path) if stack else str(prim.GetPath()), tuple(sorted(kwargs.items())))
+    if key not in mesh_cache:
+        mesh_cache[key] = original_get_mesh(prim, **kwargs)
+    mesh_calls += 1
+    if mesh_calls % 100 == 0: print('MESH_IMPORT',mesh_calls,'unique',len(mesh_cache),flush=True)
+    return mesh_cache[key]
+importer.usd.get_mesh = get_visual_mesh
 builder.add_usd(stage, root_path='/World', floating=False,
                 load_visual_shapes=True, load_static_visual_shapes=True,
                 skip_mesh_approximation=True)
@@ -89,7 +111,7 @@ metadata = {'backend':'newton-warp','frames':records,'elapsed_s':time.perf_count
     'expanded_instances':count,'shape_count':model.shape_count,
     'scene_sha256':hashlib.sha256((scene/'valley.usdc').read_bytes()).hexdigest(),
     'cameras_sha256':hashlib.sha256((scene/'cameras.json').read_bytes()).hexdigest(),
-    'git_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+    'git_commit':run_commit,
     'newton_commit':subprocess.check_output(['git','-C',str(Path(newton.__file__).parents[1]),'rev-parse','HEAD'],text=True).strip(),
     'slurm_job_id':os.environ.get('SLURM_JOB_ID'),
     'gpu':subprocess.check_output(['nvidia-smi','--query-gpu=name,uuid,driver_version','--format=csv'],text=True),
