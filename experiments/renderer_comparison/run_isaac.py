@@ -39,6 +39,7 @@ app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
                      'extra_args': ['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer],
                      'limit_cpu_threads': int(os.environ.get('OMP_NUM_THREADS', '8')),
                      'fast_shutdown': True})
+print('PHASE app_started', flush=True)
 import carb
 import numpy as np
 import omni.usd
@@ -107,6 +108,7 @@ else:
     stage = omni.usd.get_context().get_stage()
 
 config = json.loads((scene_dir / 'cameras.json').read_text())
+print('PHASE scene_opened', flush=True)
 camera = UsdGeom.Camera.Define(stage, '/ComparisonCamera')
 camera.CreateFocalLengthAttr(config['focal_length'])
 camera.CreateHorizontalApertureAttr(config['horizontal_aperture'])
@@ -116,7 +118,9 @@ op = camera.AddTransformOp()
 product = rep.create.render_product('/ComparisonCamera', (config['width'],config['height']))
 rgb = rep.AnnotatorRegistry.get_annotator('rgb'); rgb.attach([product])
 depth = rep.AnnotatorRegistry.get_annotator('distance_to_camera'); depth.attach([product])
-for _ in range(80): app.update()
+for step in range(80):
+    app.update()
+    if step % 20 == 19: print('PHASE warmup', step + 1, flush=True)
 records = []
 for pose in config['poses']:
     if a.views_only and pose['kind'] != 'view': continue
