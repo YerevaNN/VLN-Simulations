@@ -113,7 +113,7 @@ for pose in config['poses']:
     if a.views_only and pose['kind'] != 'view': continue
     op.Set(Gf.Matrix4d(*[v for row in pose['matrix'] for v in row]))
     start = time.perf_counter()
-    for _ in range(64 if pose['kind']=='view' and a.backend=='behavior-pathtracing' else 16): app.update()
+    rep.orchestrator.step(rt_subframes=64 if pose['kind']=='view' and a.backend=='behavior-pathtracing' else 16, pause_timeline=False)
     pixels = np.asarray(rgb.get_data()).copy()
     if pixels.ndim != 3 or pixels.shape[:2] != (config['height'], config['width']):
         raise RuntimeError(f'Invalid image at {pose["name"]}: {pixels.shape}')
