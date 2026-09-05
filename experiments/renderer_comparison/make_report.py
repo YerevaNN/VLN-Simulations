@@ -37,7 +37,7 @@ assert 'isaac-ap' in backends
 hashes={(b['manifest']['scene_sha256'],b['manifest']['cameras_sha256']) for b in backends.values()}
 assert len(hashes)==1, 'Scene/camera mismatch across runs'
 frames=[f['name'] for f in backends['isaac-ap']['manifest']['frames']]
-default=['isaac-ap','newton',next((b for b in ['behavior45','behavior45-pt','behavior-pathtracing','behavior-hq'] if b in backends),'unavailable')]
+default=['isaac-ap','newton' if 'newton' in backends else 'newton-unavailable',next((b for b in ['behavior45','behavior45-pt','behavior-pathtracing','behavior-hq'] if b in backends),'unavailable')]
 data=json.dumps({'backends':backends,'frames':frames,'default':default})
 page='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Valley rendering comparison</title><style>
@@ -50,10 +50,10 @@ body{font:16px system-ui;background:#13191e;color:#e9eef2;margin:28px}h1{font-si
 <p>Newton uses its own lighting and material support, so this is not a claim of RTX-equivalent quality. Use a column selector to inspect the matching path-tracing control on AP. A missing result means no valid image was obtained, not a black rendered scene.</p>
 <details><summary>Provenance and settings</summary><pre id="provenance"></pre></details>
 <script>const data=DATA;const slider=document.querySelector('#frame');let timer;
-for(let i=0;i<3;i++){const card=document.createElement('article');const options=Object.entries(data.backends).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');card.innerHTML=`<select>${options}<option value="unavailable">No completed H100 Kit render</option></select><div class="picture"></div><div class="meta"></div>`;card.querySelector('select').value=data.default[i];card.querySelector('select').onchange=render;document.querySelector('#grid').append(card)}
+for(let i=0;i<3;i++){const card=document.createElement('article');const options=Object.entries(data.backends).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');card.innerHTML=`<select>${options}<option value="unavailable">No completed H100 Kit render</option><option value="newton-unavailable">No completed Newton render</option></select><div class="picture"></div><div class="meta"></div>`;card.querySelector('select').value=data.default[i];card.querySelector('select').onchange=render;document.querySelector('#grid').append(card)}
 function render(){const n=Number(slider.value),name=data.frames[n];document.querySelector('#caption').textContent=n<6?`Fixed view ${n+1} of 6`:`Camera replay ${n-5} / 48`;for(const card of document.querySelectorAll('article')){const key=card.querySelector('select').value,b=data.backends[key];card.querySelector('.picture').innerHTML=b?`<img src="${key}/${name}.png" alt="${b.label}, ${name}">`:'<div class="placeholder">No valid frame produced.<br>See the experiment report for startup and capture failures.</div>';card.querySelector('.meta').innerHTML=b?`Job ${b.manifest.slurm_job_id} · <a href="${key}/manifest.json">Run manifest</a><br>${key==='newton'?'Warp rendering; simpler lighting/material model':b.manifest.render_mode}`:''}}
 slider.oninput=render;document.querySelector('#play').onclick=()=>{if(timer){clearInterval(timer);timer=null;document.querySelector('#play').textContent='Play camera replay';return}if(Number(slider.value)<6)slider.value=6;timer=setInterval(()=>{slider.value=Number(slider.value)>=53?6:Number(slider.value)+1;render()},125);document.querySelector('#play').textContent='Pause'};document.querySelector('#provenance').textContent=JSON.stringify(data.backends,null,2);render();</script></html>'''.replace('DATA',data)
-(out/'index.html').write_text(page)
+(out/'index.html').write_text(page,encoding='utf-8')
 sheet=Image.new('RGB',(1920,800),'#13191e');draw=ImageDraw.Draw(sheet)
 font=ImageFont.load_default(size=20)
 for col,key in enumerate(default):
