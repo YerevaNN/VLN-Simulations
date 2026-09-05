@@ -56,6 +56,7 @@ if a.omnigibson_experience:
     experience={'experience':str(kit)}
     launch_args+=['--/persistent/rtx/modes/rt/enabled=true','--/persistent/rtx/modes/rt2/enabled=true','--/persistent/rtx/modes/pt/enabled=true']
 app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
+                     'multi_gpu': False,
                      'renderer': initial_renderer,
                      'extra_args': launch_args,
                      'limit_cpu_threads': int(os.environ.get('OMP_NUM_THREADS', '8')),
