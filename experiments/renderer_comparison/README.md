@@ -15,11 +15,18 @@ appearance, not policy quality or flight dynamics.
   claim to execute a complete Isaac Lab task. Isaac Lab is NVIDIA's open-source
   robot-learning framework, with research/community contributors. See its
   [renderer documentation](https://isaac-sim.github.io/IsaacLab/develop/source/overview/core-concepts/renderers.html).
+  Its wrapper at Isaac Lab commit `265edea3de79b5c82645313e5adfda6d910c6f99`
+  constructs `SensorTiledCamera` in `newton_warp_renderer.py`.
 - BEHAVIOR-1K `22d19cd2f99d6ae15dd0fb62e90363410cdd3260`: the exact upstream
   `Simulator._set_renderer_settings` function is extracted and executed with
   `ENABLE_HQ_RENDERING=True`. The default mode is `RealTimePathTracing`.
   The separate `behavior-pathtracing` diagnostic overrides the mode to
   `PathTracing`; it is not the upstream default or a complete BEHAVIOR task.
+- The older reproduction uses Isaac Sim 4.5.0 and BEHAVIOR 3.7.1 at
+  `79f0f5fb74a6063b67c6c0ce64f85fd96f2ba429`. This addresses the version used
+  in the [RLinf H100 rendering report](https://rlinf.readthedocs.io/en/release-v0.1/rst_source/examples/behavior.html).
+  Its renderer settings differ from current BEHAVIOR, so results are kept
+  separate under `behavior45` and `behavior45-pt`.
 
 ## Scene and camera controls
 
@@ -38,6 +45,8 @@ Sun direction is matched, but Newton uses its own illumination model, without
 matching the HDRI or radiometric light intensity. Its importer warns that
 roughness textures use a scalar fallback. These are fidelity differences to
 inspect, not evidence of full RTX parity.
+The initial Newton run retains the upstream default 1,000 m maximum ray
+distance; the Isaac camera far clip is 5,000 m. This matters for distant scenery.
 
 ## Running
 
@@ -62,6 +71,24 @@ Use `behavior-hq` or `behavior-pathtracing` instead of `newton` for the Kit
 paths. The Python environment needs the pinned Newton checkout, Warp 1.17.0,
 usd-core, newton-usd-schemas, NumPy, Pillow, imageio and imageio-ffmpeg.
 Kit additionally needs GLU/OpenGL system libraries and writable private caches.
+The AP Slurm container also lacked its host driver's `libnvidia-ngx.so.1` and
+`/usr/share/nvidia/nvoptix.bin`. Copies from that same AP host restored NGX and
+OptiX denoising for the corrected reference runs. Earlier outputs and logs are
+retained separately. Never substitute those AP driver files for the H100 node's
+own driver files.
+
+Isaac 4.5 is the official standalone archive linked by the RLinf instructions.
+Its Python 3.10 runtime uses Pillow 11.3.0 in a separate dependency directory.
+The Newton Python 3.11 package versions are in `requirements-newton.txt`.
+`behavior-pathtracing-ap` runs the matching path-tracing control on AP.
+
+Build the interactive comparison after completed runs with:
+
+```bash
+python experiments/renderer_comparison/make_report.py \
+  --results "$VLN_COMPARISON_ROOT/comparison" \
+  --output "$VLN_COMPARISON_ROOT/comparison/report"
+```
 
 Every successful run writes PNG frames, static-view depth arrays and a manifest
 with source hashes, device identity, Slurm ID, settings and frame statistics.

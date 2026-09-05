@@ -1,0 +1,9 @@
+newton @ git+https://github.com/newton-physics/newton.git@6d2ece7c314248960a249ebc46b0dafbb5a89232
+warp-lang==1.17.0
+newton-usd-schemas==0.5.0
+usd-core==26.8
+numpy==2.4.6
+pillow==12.3.0
+imageio==2.37.4
+imageio-ffmpeg==0.6.0
+scipy==1.17.1
