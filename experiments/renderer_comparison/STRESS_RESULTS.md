@@ -1,5 +1,7 @@
 # Adversarial renderer comparison
 
+[Public interactive comparison](https://yerevann.com/research/h100-rendering/).
+
 Latest OmniGibson's renderer settings and Kit experience successfully rendered
 this scene with Isaac Sim 5.1 on H100 in verified `RealTimePathTracing` mode.
 H100 and A6000 produced similar images. This supersedes the earlier no-frame
