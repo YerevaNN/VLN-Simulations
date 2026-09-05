@@ -1,0 +1,35 @@
+| Driver Version: 580.105.08    | Graphics API: Vulkan
+PHASE app_started
+PHASE scene_opened
+PHASE warmup 20
+PHASE warmup 40
+PHASE warmup 60
+PHASE warmup 80
+CAPTURE behavior-hq {'name': 'overview_0', 'seconds': 293.42947955057025, 'mean': 98.44792824074074, 'std': 84.78565529326725}
+CAPTURE behavior-hq {'name': 'overview_1', 'seconds': 0.3232106789946556, 'mean': 100.00774884259259, 'std': 84.65985822719072}
+CAPTURE behavior-hq {'name': 'overview_2', 'seconds': 0.34227912593632936, 'mean': 100.83819878472222, 'std': 84.58670212261593}
+CAPTURE behavior-hq {'name': 'reflection_0', 'seconds': 0.33549785427749157, 'mean': 81.79747974537037, 'std': 73.70998564123893}
+CAPTURE behavior-hq {'name': 'reflection_1', 'seconds': 0.3358343504369259, 'mean': 83.62450954861112, 'std': 73.7705774473085}
+CAPTURE behavior-hq {'name': 'reflection_2', 'seconds': 0.3373575024306774, 'mean': 84.74021122685186, 'std': 73.85426759875138}
+CAPTURE behavior-hq {'name': 'transparency_0', 'seconds': 0.3476283820345998, 'mean': 100.4853269675926, 'std': 82.01410559983574}
+CAPTURE behavior-hq {'name': 'transparency_1', 'seconds': 0.3433611439540982, 'mean': 100.91393373842592, 'std': 82.02450695393493}
+CAPTURE behavior-hq {'name': 'transparency_2', 'seconds': 0.35022002924233675, 'mean': 101.27311921296297, 'std': 82.04958796400003}
+CAPTURE behavior-hq {'name': 'thin_geometry_0', 'seconds': 0.36279242020100355, 'mean': 99.91811197916667, 'std': 81.09152818493587}
+CAPTURE behavior-hq {'name': 'thin_geometry_1', 'seconds': 0.35820235032588243, 'mean': 100.15590711805555, 'std': 81.18006466663111}
+CAPTURE behavior-hq {'name': 'thin_geometry_2', 'seconds': 0.35920576099306345, 'mean': 100.17522858796296, 'std': 81.14876024053736}
+CAPTURE behavior-hq {'name': 'emission_0', 'seconds': 0.3299613846465945, 'mean': 83.55184027777777, 'std': 74.27112253001167}
+CAPTURE behavior-hq {'name': 'emission_1', 'seconds': 0.3318910086527467, 'mean': 84.54301504629629, 'std': 74.98732453726242}
+CAPTURE behavior-hq {'name': 'emission_2', 'seconds': 0.3233152935281396, 'mean': 85.04269965277778, 'std': 75.23274280480607}
+CAPTURE behavior-hq {'name': 'grazing_0', 'seconds': 0.327153610996902, 'mean': 118.00072193287038, 'std': 71.45394761646483}
+CAPTURE behavior-hq {'name': 'grazing_1', 'seconds': 0.3266339488327503, 'mean': 118.26822193287038, 'std': 71.50948215981961}
+CAPTURE behavior-hq {'name': 'grazing_2', 'seconds': 0.32682604249566793, 'mean': 118.564921875, 'std': 71.5940798901151}
+COMPLETE behavior-hq
+--- final log lines ---
+CAPTURE behavior-hq {'name': 'thin_geometry_2', 'seconds': 0.35920576099306345, 'mean': 100.17522858796296, 'std': 81.14876024053736}
+CAPTURE behavior-hq {'name': 'emission_0', 'seconds': 0.3299613846465945, 'mean': 83.55184027777777, 'std': 74.27112253001167}
+CAPTURE behavior-hq {'name': 'emission_1', 'seconds': 0.3318910086527467, 'mean': 84.54301504629629, 'std': 74.98732453726242}
+CAPTURE behavior-hq {'name': 'emission_2', 'seconds': 0.3233152935281396, 'mean': 85.04269965277778, 'std': 75.23274280480607}
+CAPTURE behavior-hq {'name': 'grazing_0', 'seconds': 0.327153610996902, 'mean': 118.00072193287038, 'std': 71.45394761646483}
+CAPTURE behavior-hq {'name': 'grazing_1', 'seconds': 0.3266339488327503, 'mean': 118.26822193287038, 'std': 71.50948215981961}
+CAPTURE behavior-hq {'name': 'grazing_2', 'seconds': 0.32682604249566793, 'mean': 118.564921875, 'std': 71.5940798901151}
+COMPLETE behavior-hq

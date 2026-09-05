@@ -12,13 +12,13 @@ for file in sorted(raw.rglob('*')):
 for manifest in raw.glob('*/manifest.json'):
     target=out/manifest.parent.name; target.mkdir(exist_ok=True)
     shutil.copy2(manifest,target/'manifest.json')
-for name in ['metrics.json','comparison.jpg','transparency-pair.png']:
+for name in ['metrics.json','comparison.jpg','transparency-pair.png','omni51-pair.png']:
     if (raw/'report'/name).exists():shutil.copy2(raw/'report'/name,out/name)
 (out/'artifact-index.json').write_text(json.dumps(index,indent=2))
-(out/'slurm-accounting.txt').write_text(subprocess.check_output(['sacct','-j','246820,246821,246822,246823,246824,246825,246826,246827,246828,246829,246830','--format=JobID,State,Elapsed,NodeList,ExitCode','-P'],text=True))
-for j in [246824,246829]:
+(out/'slurm-accounting.txt').write_text(subprocess.check_output(['sacct','-j','246820,246821,246822,246823,246824,246825,246826,246827,246828,246829,246830,246831,246832,246833,246834,246835,246836','--format=JobID,State,Elapsed,NodeList,ExitCode','-P'],text=True))
+for j in [246824,246829,246831,246832]:
     log=base/'logs'/f'stress-{j}.log'
     if log.exists():
         lines=log.read_text(errors='replace').splitlines()
-        selected=[l for l in lines if any(x in l for x in ['Driver Version','ERROR_DEVICE_LOST','GPU crash','Fatal Python','CAPTURE','COMPLETE','TIME LIMIT'])]
+        selected=[l for l in lines if any(x in l for x in ['Driver Version','ERROR_DEVICE_LOST','GPU crash','Fatal Python','CAPTURE','COMPLETE','TIME LIMIT','PHASE'])]
         (out/f'failure-{j}.txt').write_text('\n'.join(selected+['--- final log lines ---']+lines[-8:]))

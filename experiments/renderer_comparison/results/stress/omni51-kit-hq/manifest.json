@@ -1,0 +1,188 @@
+{
+  "backend": "behavior-hq",
+  "frames": [
+    {
+      "name": "overview_0",
+      "seconds": 236.79888056125492,
+      "mean": 125.77147858796296,
+      "std": 88.44109644670695,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "overview_1",
+      "seconds": 0.36172592639923096,
+      "mean": 127.15133680555556,
+      "std": 88.17271383284135,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "overview_2",
+      "seconds": 0.2618739800527692,
+      "mean": 128.09351273148147,
+      "std": 88.08431256116879,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "reflection_0",
+      "seconds": 0.3285681465640664,
+      "mean": 118.22162905092593,
+      "std": 80.49686639006107,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "reflection_1",
+      "seconds": 0.29034270718693733,
+      "mean": 118.98019241898149,
+      "std": 80.71433653939913,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "reflection_2",
+      "seconds": 0.3278207331895828,
+      "mean": 119.62851996527777,
+      "std": 80.90638579686474,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "transparency_0",
+      "seconds": 0.3044991884380579,
+      "mean": 133.4231394675926,
+      "std": 81.69089826792008,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "transparency_1",
+      "seconds": 0.3029093714430928,
+      "mean": 133.71378472222221,
+      "std": 81.68711120457758,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "transparency_2",
+      "seconds": 0.2975675202906132,
+      "mean": 134.03641782407408,
+      "std": 81.68113758280302,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "thin_geometry_0",
+      "seconds": 0.3102670917287469,
+      "mean": 118.63349681712963,
+      "std": 83.69880083927814,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "thin_geometry_1",
+      "seconds": 0.35952092334628105,
+      "mean": 118.90489583333333,
+      "std": 83.73092392816498,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "thin_geometry_2",
+      "seconds": 0.36562087293714285,
+      "mean": 119.057109375,
+      "std": 83.72985417649691,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "emission_0",
+      "seconds": 0.2935436936095357,
+      "mean": 99.92951099537036,
+      "std": 87.89285194203183,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "emission_1",
+      "seconds": 0.34074671752750874,
+      "mean": 100.61447048611112,
+      "std": 87.69673663822341,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "emission_2",
+      "seconds": 0.2938272366300225,
+      "mean": 100.8543287037037,
+      "std": 87.55938179018808,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "grazing_0",
+      "seconds": 0.29489234555512667,
+      "mean": 147.25610966435184,
+      "std": 76.77361705056838,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "grazing_1",
+      "seconds": 0.26415928825736046,
+      "mean": 147.49698929398147,
+      "std": 76.72026969844617,
+      "render_mode": "RealTimePathTracing"
+    },
+    {
+      "name": "grazing_2",
+      "seconds": 0.29357496555894613,
+      "mean": 147.88089265046295,
+      "std": 76.70129883975557,
+      "render_mode": "RealTimePathTracing"
+    }
+  ],
+  "elapsed_s": 284.5773421237245,
+  "scene_sha256": "7a068c59dd25a2907423af40c0f1a54dfc67ebf5cd286f34dee029e2e7fe5810",
+  "cameras_sha256": "80db67567fb68b5f847e3465c9c96eca25ff119e276d424967cf76a65914267d",
+  "valley_source_sha256": "843f0c859a7e001f0b1aed3654d4733575f79a1e530943d365fccc75a064c952",
+  "behavior_source_sha256": "d800c2832f24962c440c4781ebfdb4ea78c74aac37d2c74ee7894ae430f1e2a9",
+  "applied_settings": {
+    "/rtx/rtx/modes/rt/enabled": true,
+    "/rtx/rtx/modes/rt2/enabled": true,
+    "/rtx/rendermode": "RealTimePathTracing",
+    "/rtx/raytracing/fractionalCutoutOpacity": true,
+    "/rtx/reflections/enabled": true,
+    "/rtx/indirectDiffuse/enabled": true,
+    "/rtx/post/dlss/execMode": 1,
+    "/rtx/ambientOcclusion/enabled": true,
+    "/rtx/directLighting/sampledLighting/enabled": true,
+    "/rtx/raytracing/showLights": 1,
+    "/rtx/sceneDb/ambientLightIntensity": 1.0,
+    "/app/renderer/skipMaterialLoading": false,
+    "/rtx/flow/enabled": true,
+    "/physics/updateToUsd": false,
+    "/physics/updateParticlesToUsd": true,
+    "/physics/updateVelocitiesToUsd": true,
+    "/physics/updateForceSensorsToUsd": false,
+    "/physics/updateResidualsToUsd": false,
+    "/physics/outputVelocitiesLocalSpace": false,
+    "/physics/fabricUpdateTransformations": true,
+    "/physics/fabricUpdateVelocities": false,
+    "/physics/fabricUpdateForceSensors": false,
+    "/physics/fabricUpdateJointStates": false,
+    "/physics/fabricUpdateResiduals": false,
+    "/physics/fabricUseGPUInterop": true,
+    "/persistent/app/viewport/displayOptions": 3094,
+    "/persistent/simulation/minFrameRate": 60,
+    "/rtx-defaults/pathtracing/lightcache/cached/enabled": false,
+    "/rtx-defaults/pathtracing/cached/enabled": false,
+    "/rtx-defaults/pathtracing/fireflyFilter/maxIntensityPerSample": 10000,
+    "/rtx-defaults/pathtracing/fireflyFilter/maxIntensityPerSampleDiffuse": 50000,
+    "/rtx-defaults/pathtracing/optixDenoiser/blendFactor": 0.09,
+    "/rtx-defaults/pathtracing/aa/op": 2,
+    "/rtx-defaults/pathtracing/maxBounces": 32,
+    "/rtx-defaults/pathtracing/maxSpecularAndTransmissionBounces": 16,
+    "/rtx-defaults/translucency/maxRefractionBounces": 12
+  },
+  "render_mode": "RealTimePathTracing",
+  "experience_sha256": "b4f25110cb7c19677ac6771102fae179be3d421ad24a8921fcd0988283324a15",
+  "launch_args": [
+    "--portable-root",
+    "/mnt/weka/hrant/rtx-vln-sample-20260905/cache/stress-kit-246835-omni51-kit-hq",
+    "--/rtx/rendermode=RealTimePathTracing",
+    "--/persistent/rtx/modes/rt/enabled=true",
+    "--/persistent/rtx/modes/rt2/enabled=true",
+    "--/persistent/rtx/modes/pt/enabled=true"
+  ],
+  "gpu": "uuid, name, driver_version\nGPU-58b379e7-613c-2915-0274-2a0ac4d9b1f9, NVIDIA H100 80GB HBM3, 580.105.08\n",
+  "slurm_job_id": "246835",
+  "git_commit": "85f53679d52293463c20139951ca6e2b12f9d4b2",
+  "scope": "Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics."
+}

@@ -2,6 +2,22 @@
   "pairs": [
     {
       "view": "overview_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 18.957921006944446,
+      "pixel_fraction_over_10": 0.6900607638888889,
+      "p99": 96.0
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 19.266112557870372,
+      "pixel_fraction_over_10": 0.6982769097222222,
+      "p99": 96.0
+    },
+    {
+      "view": "overview_2",
       "left": "isaac-ap",
       "right": "behavior45-pt-ap",
       "mae": 12.26373263888889,
@@ -15,6 +31,46 @@
       "mae": 0.6635778356481481,
       "pixel_fraction_over_10": 0.003728298611111111,
       "p99": 4.0
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 12.094186921296297,
+      "pixel_fraction_over_10": 0.56359375,
+      "p99": 77.0
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 3.173695023148148,
+      "pixel_fraction_over_10": 0.11034722222222222,
+      "p99": 28.0
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 11.284435763888888,
+      "pixel_fraction_over_10": 0.5146831597222222,
+      "p99": 76.0
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 23.51745515046296,
+      "pixel_fraction_over_10": 0.7132595486111111,
+      "p99": 89.0
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 23.78033130787037,
+      "pixel_fraction_over_10": 0.7139800347222223,
+      "p99": 89.0
     },
     {
       "view": "reflection_2",
@@ -33,6 +89,46 @@
       "p99": 1.0
     },
     {
+      "view": "reflection_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 19.540850694444444,
+      "pixel_fraction_over_10": 0.7252907986111111,
+      "p99": 95.0
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 6.437055844907407,
+      "pixel_fraction_over_10": 0.32481770833333334,
+      "p99": 48.0
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 18.458993055555556,
+      "pixel_fraction_over_10": 0.7252690972222222,
+      "p99": 95.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 20.563713831018518,
+      "pixel_fraction_over_10": 0.6987630208333333,
+      "p99": 97.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 20.64705005787037,
+      "pixel_fraction_over_10": 0.7002734375,
+      "p99": 97.0
+    },
+    {
       "view": "transparency_2",
       "left": "isaac-ap",
       "right": "behavior45-pt-ap",
@@ -47,6 +143,46 @@
       "mae": 0.13583188657407408,
       "pixel_fraction_over_10": 8.680555555555556e-05,
       "p99": 1.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 17.95929398148148,
+      "pixel_fraction_over_10": 0.6119487847222222,
+      "p99": 120.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 7.1464612268518515,
+      "pixel_fraction_over_10": 0.3164279513888889,
+      "p99": 50.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 17.872683738425927,
+      "pixel_fraction_over_10": 0.6092491319444444,
+      "p99": 119.0
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 17.71075810185185,
+      "pixel_fraction_over_10": 0.5629166666666666,
+      "p99": 81.0
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 17.80398726851852,
+      "pixel_fraction_over_10": 0.5590104166666666,
+      "p99": 82.0
     },
     {
       "view": "thin_geometry_2",
@@ -65,6 +201,46 @@
       "p99": 8.0
     },
     {
+      "view": "thin_geometry_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 18.308956886574073,
+      "pixel_fraction_over_10": 0.5815451388888889,
+      "p99": 107.0
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 7.918404224537037,
+      "pixel_fraction_over_10": 0.37404947916666664,
+      "p99": 43.0
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 18.19503761574074,
+      "pixel_fraction_over_10": 0.5828949652777777,
+      "p99": 106.0
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 14.690677083333334,
+      "pixel_fraction_over_10": 0.6269835069444445,
+      "p99": 112.0
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 15.25574363425926,
+      "pixel_fraction_over_10": 0.6402821180555556,
+      "p99": 111.0
+    },
+    {
       "view": "emission_2",
       "left": "isaac-ap",
       "right": "behavior45-pt-ap",
@@ -81,6 +257,46 @@
       "p99": 1.0
     },
     {
+      "view": "emission_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 12.85622974537037,
+      "pixel_fraction_over_10": 0.6803862847222222,
+      "p99": 74.0
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 5.124017650462963,
+      "pixel_fraction_over_10": 0.20649305555555555,
+      "p99": 42.0
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 12.069001736111112,
+      "pixel_fraction_over_10": 0.627890625,
+      "p99": 74.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 24.182310474537037,
+      "pixel_fraction_over_10": 0.8714930555555556,
+      "p99": 97.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 24.385218460648147,
+      "pixel_fraction_over_10": 0.8731857638888889,
+      "p99": 97.0
+    },
+    {
       "view": "grazing_2",
       "left": "isaac-ap",
       "right": "behavior45-pt-ap",
@@ -95,9 +311,93 @@
       "mae": 0.18602430555555555,
       "pixel_fraction_over_10": 0.0013194444444444445,
       "p99": 2.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 12.366705729166666,
+      "pixel_fraction_over_10": 0.3933289930555556,
+      "p99": 98.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 5.516990740740741,
+      "pixel_fraction_over_10": 0.16483940972222222,
+      "p99": 54.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-hq",
+      "right": "behavior45-pt-ap",
+      "mae": 12.199644097222222,
+      "pixel_fraction_over_10": 0.3760590277777778,
+      "p99": 99.0
     }
   ],
   "repeats": [
+    {
+      "backend": "omni51-kit-hq-ap",
+      "view": "overview_2",
+      "mae": 0.9002416087962963
+    },
+    {
+      "backend": "omni51-kit-hq-ap",
+      "view": "reflection_2",
+      "mae": 0.7293055555555555
+    },
+    {
+      "backend": "omni51-kit-hq-ap",
+      "view": "transparency_2",
+      "mae": 0.42573640046296296
+    },
+    {
+      "backend": "omni51-kit-hq-ap",
+      "view": "thin_geometry_2",
+      "mae": 0.33782552083333334
+    },
+    {
+      "backend": "omni51-kit-hq-ap",
+      "view": "emission_2",
+      "mae": 0.5272424768518519
+    },
+    {
+      "backend": "omni51-kit-hq-ap",
+      "view": "grazing_2",
+      "mae": 0.37838541666666664
+    },
+    {
+      "backend": "omni51-kit-hq",
+      "view": "overview_2",
+      "mae": 1.0615653935185185
+    },
+    {
+      "backend": "omni51-kit-hq",
+      "view": "reflection_2",
+      "mae": 0.8371412037037037
+    },
+    {
+      "backend": "omni51-kit-hq",
+      "view": "transparency_2",
+      "mae": 0.5331597222222222
+    },
+    {
+      "backend": "omni51-kit-hq",
+      "view": "thin_geometry_2",
+      "mae": 0.5359114583333333
+    },
+    {
+      "backend": "omni51-kit-hq",
+      "view": "emission_2",
+      "mae": 0.5609114583333333
+    },
+    {
+      "backend": "omni51-kit-hq",
+      "view": "grazing_2",
+      "mae": 0.5908333333333333
+    },
     {
       "backend": "isaac-ap",
       "view": "overview_2",
@@ -187,9 +487,111 @@
       "backend": "behavior-pathtracing-ap",
       "view": "grazing_2",
       "mae": 0.0
+    },
+    {
+      "backend": "omni51-hq-ap",
+      "view": "overview_2",
+      "mae": 1.1670124421296297
+    },
+    {
+      "backend": "omni51-hq-ap",
+      "view": "reflection_2",
+      "mae": 1.199185474537037
+    },
+    {
+      "backend": "omni51-hq-ap",
+      "view": "transparency_2",
+      "mae": 0.46867042824074073
+    },
+    {
+      "backend": "omni51-hq-ap",
+      "view": "thin_geometry_2",
+      "mae": 0.38322337962962966
+    },
+    {
+      "backend": "omni51-hq-ap",
+      "view": "emission_2",
+      "mae": 0.6880266203703703
+    },
+    {
+      "backend": "omni51-hq-ap",
+      "view": "grazing_2",
+      "mae": 0.44251880787037035
+    },
+    {
+      "backend": "omni51-pt-ap",
+      "view": "overview_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "omni51-pt-ap",
+      "view": "reflection_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "omni51-pt-ap",
+      "view": "transparency_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "omni51-pt-ap",
+      "view": "thin_geometry_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "omni51-pt-ap",
+      "view": "emission_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "omni51-pt-ap",
+      "view": "grazing_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "omni51-hq",
+      "view": "overview_2",
+      "mae": 0.9512138310185185
+    },
+    {
+      "backend": "omni51-hq",
+      "view": "reflection_2",
+      "mae": 1.2486762152777777
+    },
+    {
+      "backend": "omni51-hq",
+      "view": "transparency_2",
+      "mae": 0.5580280671296296
+    },
+    {
+      "backend": "omni51-hq",
+      "view": "thin_geometry_2",
+      "mae": 0.3752039930555556
+    },
+    {
+      "backend": "omni51-hq",
+      "view": "emission_2",
+      "mae": 0.8738396990740741
+    },
+    {
+      "backend": "omni51-hq",
+      "view": "grazing_2",
+      "mae": 0.5027647569444444
     }
   ],
   "diagnostic": [
+    {
+      "view": "overview_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 18.957921006944446
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 19.266112557870372
+    },
     {
       "view": "overview_2",
       "left": "isaac-ap",
@@ -207,6 +609,36 @@
       "left": "behavior-pathtracing-ap",
       "right": "behavior45-reference-ap",
       "mae": 0.6635778356481481
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 12.094186921296297
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 3.173695023148148
+    },
+    {
+      "view": "overview_2",
+      "left": "omni51-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 11.284435763888888
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 23.517741608796296
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 23.780629340277777
     },
     {
       "view": "reflection_2",
@@ -227,6 +659,36 @@
       "mae": 0.13061921296296297
     },
     {
+      "view": "reflection_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 19.54066840277778
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 6.437316261574074
+    },
+    {
+      "view": "reflection_2",
+      "left": "omni51-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 18.45886863425926
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 20.56359664351852
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 20.646970486111112
+    },
+    {
       "view": "transparency_2",
       "left": "isaac-ap",
       "right": "behavior45-reference-ap",
@@ -243,6 +705,36 @@
       "left": "behavior-pathtracing-ap",
       "right": "behavior45-reference-ap",
       "mae": 0.1356915509259259
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 17.95951244212963
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 7.1462601273148145
+    },
+    {
+      "view": "transparency_2",
+      "left": "omni51-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 17.87287037037037
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 17.71077980324074
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 17.804040798611112
     },
     {
       "view": "thin_geometry_2",
@@ -263,6 +755,36 @@
       "mae": 0.3413599537037037
     },
     {
+      "view": "thin_geometry_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 18.30943287037037
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 7.918084490740741
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "omni51-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 18.195533854166666
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 14.690374710648149
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 15.25538917824074
+    },
+    {
       "view": "emission_2",
       "left": "isaac-ap",
       "right": "behavior45-reference-ap",
@@ -281,6 +803,36 @@
       "mae": 0.07172019675925925
     },
     {
+      "view": "emission_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 12.856511863425926
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 5.123619791666667
+    },
+    {
+      "view": "emission_2",
+      "left": "omni51-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 12.069272280092592
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-kit-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 24.18202835648148
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-kit-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 24.38497974537037
+    },
+    {
       "view": "grazing_2",
       "left": "isaac-ap",
       "right": "behavior45-reference-ap",
@@ -297,6 +849,122 @@
       "left": "behavior-pathtracing-ap",
       "right": "behavior45-reference-ap",
       "mae": 0.18584056712962962
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-hq-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 12.36663773148148
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 5.5169140625
+    },
+    {
+      "view": "grazing_2",
+      "left": "omni51-hq",
+      "right": "behavior45-reference-ap",
+      "mae": 12.199639756944444
+    }
+  ],
+  "hardware": [
+    {
+      "left": "omni51-hq",
+      "right": "omni51-hq-ap",
+      "view": "overview_2",
+      "mae": 1.4280381944444445,
+      "depth_valid_fraction": 0.9264930555555555,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-hq",
+      "right": "omni51-hq-ap",
+      "view": "reflection_2",
+      "mae": 2.213611111111111,
+      "depth_valid_fraction": 0.9949479166666667,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-hq",
+      "right": "omni51-hq-ap",
+      "view": "transparency_2",
+      "mae": 1.4753660300925926,
+      "depth_valid_fraction": 1.0,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-hq",
+      "right": "omni51-hq-ap",
+      "view": "thin_geometry_2",
+      "mae": 1.763878761574074,
+      "depth_valid_fraction": 1.0,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-hq",
+      "right": "omni51-hq-ap",
+      "view": "emission_2",
+      "mae": 3.1744270833333332,
+      "depth_valid_fraction": 1.0,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-hq",
+      "right": "omni51-hq-ap",
+      "view": "grazing_2",
+      "mae": 1.4354933449074074,
+      "depth_valid_fraction": 0.9973003472222223,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-kit-hq",
+      "right": "omni51-kit-hq-ap",
+      "view": "overview_2",
+      "mae": 0.8431278935185185,
+      "depth_valid_fraction": 0.9291666666666667,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-kit-hq",
+      "right": "omni51-kit-hq-ap",
+      "view": "reflection_2",
+      "mae": 1.3215914351851852,
+      "depth_valid_fraction": 0.9949479166666667,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-kit-hq",
+      "right": "omni51-kit-hq-ap",
+      "view": "transparency_2",
+      "mae": 1.0849508101851852,
+      "depth_valid_fraction": 1.0,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-kit-hq",
+      "right": "omni51-kit-hq-ap",
+      "view": "thin_geometry_2",
+      "mae": 1.3209866898148148,
+      "depth_valid_fraction": 1.0,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-kit-hq",
+      "right": "omni51-kit-hq-ap",
+      "view": "emission_2",
+      "mae": 2.0159375,
+      "depth_valid_fraction": 1.0,
+      "depth_abs_p95_m": 0.0
+    },
+    {
+      "left": "omni51-kit-hq",
+      "right": "omni51-kit-hq-ap",
+      "view": "grazing_2",
+      "mae": 1.0813570601851852,
+      "depth_valid_fraction": 0.9973003472222223,
+      "depth_abs_p95_m": 0.0
     }
   ]
 }

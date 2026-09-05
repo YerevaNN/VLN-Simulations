@@ -1,0 +1,17 @@
+| Driver Version: 580.105.08    | Graphics API: Vulkan
+2026-09-05T22:29:02Z [39,846ms] [Warning] [carb.graphics-vulkan.plugin] aftermath reports no active shader during GPU crash
+2026-09-05T22:29:02Z [39,846ms] [Error] [carb.graphics-vulkan.plugin] GPU crash is detected. Trying to write crash dump into: /mnt/weka/hrant/rtx-vln-sample-20260905/cache/stress-kit-246832-omni51-pt/logs/Kit/Isaac-Sim Python/5.1/kit_20260906_022822-0.nv-gpudmp
+2026-09-05T22:29:02Z [39,850ms] [Error] [carb.graphics-vulkan.plugin] GPU crash dump is successfully written
+2026-09-05T22:29:02Z [40,001ms] [Error] [carb.graphics-vulkan.plugin] VkResult: ERROR_DEVICE_LOST
+2026-09-05T22:29:02Z [40,002ms] [Error] [gpu.foundation.plugin] A GPU crash occurred. Exiting the application...
+Driver Version                            : 580.105.08
+| Driver Version: 580.105.08    | Graphics API: Vulkan
+--- final log lines ---
+2026-09-05T22:29:08Z [2,920ms] [Fatal] [carb.crashreporter-breakpad.plugin] 024: libpython3.11.so.1.0!_PyRun_AnyFileObject+0x3c (/builds/omniverse/externals/python-build/_build/Python-3.11.13/Python/pythonrun.c:79)
+2026-09-05T22:29:08Z [3,161ms] [Fatal] [carb.crashreporter-breakpad.plugin] 025: libpython3.11.so.1.0!Py_RunMain+0x793 (/builds/omniverse/externals/python-build/_build/Python-3.11.13/Modules/main.c:361)
+2026-09-05T22:29:09Z [3,384ms] [Fatal] [carb.crashreporter-breakpad.plugin] 026: libpython3.11.so.1.0!Py_BytesMain+0x43 (/builds/omniverse/externals/python-build/_build/Python-3.11.13/Modules/main.c:739)
+2026-09-05T22:29:09Z [3,495ms] [Fatal] [carb.crashreporter-breakpad.plugin] 027: libc.so.6!__libc_init_first+0x8a (./csu/../sysdeps/x86/libc-start.c:74)
+2026-09-05T22:29:09Z [3,595ms] [Fatal] [carb.crashreporter-breakpad.plugin] 028: libc.so.6!__libc_start_main+0x8b (./csu/../csu/libc-start.c:128)
+2026-09-05T22:29:09Z [3,624ms] [Fatal] [carb.crashreporter-breakpad.plugin] 029: python3!_start+0x29 (??:?)
+/mnt/weka/hrant/rtx-vln-sample-20260905/runtime/isaac-sim/python.sh: line 73: 1102646 Segmentation fault      (core dumped) $python_exe "${filtered_args[@]}" $args
+There was an error running python

@@ -740,6 +740,941 @@
     "sha256": "039d2a9300edb19f66508a0d652a69a5779d66b4fd096cb8d4b9d97ba0574fa2"
   },
   {
+    "path": "stress-bright/omni51-hq/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "1538304a0727bd54f8d658c2748bd29969dfc75f7051bfca0c1fdb5d6aed2c42"
+  },
+  {
+    "path": "stress-bright/omni51-hq/emission_0.png",
+    "bytes": 198338,
+    "sha256": "711a99ae3f43667c64c047b4ccef0c4a2fbd18518c5b29210cb3034c70cf23df"
+  },
+  {
+    "path": "stress-bright/omni51-hq/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "1538304a0727bd54f8d658c2748bd29969dfc75f7051bfca0c1fdb5d6aed2c42"
+  },
+  {
+    "path": "stress-bright/omni51-hq/emission_1.png",
+    "bytes": 192232,
+    "sha256": "840989ac841c88f87a5c1fbcf8a20de3cb72862b47d6d5339ed58097d75270fa"
+  },
+  {
+    "path": "stress-bright/omni51-hq/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "1538304a0727bd54f8d658c2748bd29969dfc75f7051bfca0c1fdb5d6aed2c42"
+  },
+  {
+    "path": "stress-bright/omni51-hq/emission_2.png",
+    "bytes": 194027,
+    "sha256": "94f0eabf9a0a4f5e04fc4d7d52261a8ac5879a50982dc236e8a327aa228584d4"
+  },
+  {
+    "path": "stress-bright/omni51-hq/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d121a53a9caedfc66fa5725b37bd1bfbc4b4b6d117bf130a88c9b113e39a1a"
+  },
+  {
+    "path": "stress-bright/omni51-hq/grazing_0.png",
+    "bytes": 148051,
+    "sha256": "beb324d3183e842802c219e45c2c0797868617554c18379acd83ab7166513f46"
+  },
+  {
+    "path": "stress-bright/omni51-hq/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d121a53a9caedfc66fa5725b37bd1bfbc4b4b6d117bf130a88c9b113e39a1a"
+  },
+  {
+    "path": "stress-bright/omni51-hq/grazing_1.png",
+    "bytes": 148760,
+    "sha256": "9d3dee5f08e1a815ad323b326152cc215049e5be84166709ee7299285e313159"
+  },
+  {
+    "path": "stress-bright/omni51-hq/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d121a53a9caedfc66fa5725b37bd1bfbc4b4b6d117bf130a88c9b113e39a1a"
+  },
+  {
+    "path": "stress-bright/omni51-hq/grazing_2.png",
+    "bytes": 148900,
+    "sha256": "8bbcaba83dd946d773c68684c40ea7e0bb21f55ec65351fbc9c36519493ea1cc"
+  },
+  {
+    "path": "stress-bright/omni51-hq/manifest.json",
+    "bytes": 5168,
+    "sha256": "d1d73aa55b9833d1329c261a20c6a561603233e7c502615efa8343043b698330"
+  },
+  {
+    "path": "stress-bright/omni51-hq/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "990088860f1800f557633c692bc80a6e88456c69ae74b5ca06eefe308460712d"
+  },
+  {
+    "path": "stress-bright/omni51-hq/overview_0.png",
+    "bytes": 156628,
+    "sha256": "0c932bcbf2d1976d4ee9cb45025c0f5683b4a09cdae438faf151904eefa90a1b"
+  },
+  {
+    "path": "stress-bright/omni51-hq/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "990088860f1800f557633c692bc80a6e88456c69ae74b5ca06eefe308460712d"
+  },
+  {
+    "path": "stress-bright/omni51-hq/overview_1.png",
+    "bytes": 144542,
+    "sha256": "c13198b51d14d3054a632d66ff688d5d60cb0e0f2b45fb91eb870f8adbfecfba"
+  },
+  {
+    "path": "stress-bright/omni51-hq/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "990088860f1800f557633c692bc80a6e88456c69ae74b5ca06eefe308460712d"
+  },
+  {
+    "path": "stress-bright/omni51-hq/overview_2.png",
+    "bytes": 141953,
+    "sha256": "6c8f48a6c873731d78e6d60622433a3b81b59d305f13dc539f723b06be524b03"
+  },
+  {
+    "path": "stress-bright/omni51-hq/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "0538c3dbcf0c415950381bbd9ae4f254c8ce01ab4f239882958cc5278121a0ac"
+  },
+  {
+    "path": "stress-bright/omni51-hq/reflection_0.png",
+    "bytes": 162686,
+    "sha256": "90464762d64321db7056fa4e7e5bbe9518d6d28013173dda7e51ae76ad78d546"
+  },
+  {
+    "path": "stress-bright/omni51-hq/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "0538c3dbcf0c415950381bbd9ae4f254c8ce01ab4f239882958cc5278121a0ac"
+  },
+  {
+    "path": "stress-bright/omni51-hq/reflection_1.png",
+    "bytes": 164855,
+    "sha256": "ee6ee6de12bff7728e1a79891d1e492d962e9395b5b7e21129db11d1204bb894"
+  },
+  {
+    "path": "stress-bright/omni51-hq/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "0538c3dbcf0c415950381bbd9ae4f254c8ce01ab4f239882958cc5278121a0ac"
+  },
+  {
+    "path": "stress-bright/omni51-hq/reflection_2.png",
+    "bytes": 165925,
+    "sha256": "0dc73497cc0e5388365ed0db1462b9535ad5468639395461bee72438808dfbe6"
+  },
+  {
+    "path": "stress-bright/omni51-hq/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "40336d7de144200ef4c6d7cb5ff3e7bc78788615534a5d800614aa6d3d079b09"
+  },
+  {
+    "path": "stress-bright/omni51-hq/thin_geometry_0.png",
+    "bytes": 176167,
+    "sha256": "1d2c1fa88d404ce28c5d50bcf6d2ddb956861507bcd9654e3c2034a2e54a9092"
+  },
+  {
+    "path": "stress-bright/omni51-hq/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "40336d7de144200ef4c6d7cb5ff3e7bc78788615534a5d800614aa6d3d079b09"
+  },
+  {
+    "path": "stress-bright/omni51-hq/thin_geometry_1.png",
+    "bytes": 176754,
+    "sha256": "eded1e36ca507fcc9d740dac313daaf06995abce7d7ac6e6ebd5ee159af5b093"
+  },
+  {
+    "path": "stress-bright/omni51-hq/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "40336d7de144200ef4c6d7cb5ff3e7bc78788615534a5d800614aa6d3d079b09"
+  },
+  {
+    "path": "stress-bright/omni51-hq/thin_geometry_2.png",
+    "bytes": 179721,
+    "sha256": "1aa3953b5a98fd42f6fb391354dc42b3df54d70f7fec3099cbcb86046371df4a"
+  },
+  {
+    "path": "stress-bright/omni51-hq/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "8968b9edafdf9ce811c004b8907274adffa7e2490cba790fa0069b3d645c4420"
+  },
+  {
+    "path": "stress-bright/omni51-hq/transparency_0.png",
+    "bytes": 164186,
+    "sha256": "5a28c9b654ce96f5d58dffd6cf535e7c25bec2b9c5a0fa8661ee39bb23ed7ea2"
+  },
+  {
+    "path": "stress-bright/omni51-hq/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "8968b9edafdf9ce811c004b8907274adffa7e2490cba790fa0069b3d645c4420"
+  },
+  {
+    "path": "stress-bright/omni51-hq/transparency_1.png",
+    "bytes": 164751,
+    "sha256": "c3791b414cf67ddce4f8958b5eb1f7c6c26ea075dc5af69095a0f1a3b994aef3"
+  },
+  {
+    "path": "stress-bright/omni51-hq/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "8968b9edafdf9ce811c004b8907274adffa7e2490cba790fa0069b3d645c4420"
+  },
+  {
+    "path": "stress-bright/omni51-hq/transparency_2.png",
+    "bytes": 167163,
+    "sha256": "2cddb5207ae3097e7f8dbdbaa65e57d57b5c72106efafceb3946c517fb9b21c1"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/emission_0.png",
+    "bytes": 207063,
+    "sha256": "e6fca489914550b1e5fd041c89d39d80108bc9d1d29da01d629848b732d2d977"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/emission_1.png",
+    "bytes": 206763,
+    "sha256": "f3d8fe0774057dd7b33576024e36502bd04c421080592980b4c0113ae31a7c27"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/emission_2.png",
+    "bytes": 210389,
+    "sha256": "2faff5c58fd6622d1c05e1a786d22c4a28b47833e796f9553899c12d8e1e3366"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/grazing_0.png",
+    "bytes": 150563,
+    "sha256": "9f165fb9a9bffd385fab30e476faef17a83ad045bab667638f3a42028a944b4d"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/grazing_1.png",
+    "bytes": 150606,
+    "sha256": "3947b828c659da78da05ed4072ed6c092c614c6939f29b5bfe274d10b3edc8cd"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/grazing_2.png",
+    "bytes": 152482,
+    "sha256": "b0462cc19cb8ea611c8217db2c0c94a771e5c52f07a7d52773d5b1737bfef651"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/manifest.json",
+    "bytes": 5169,
+    "sha256": "eec777c3a6639c60e46143531222afa4eec3b8a7ab61820f7ca6f23a738d36c6"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/overview_0.png",
+    "bytes": 133875,
+    "sha256": "765db68032a5ad650c505f417c985075ad98d0e2b4687f97d6cc34fbecfb6907"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/overview_1.png",
+    "bytes": 135733,
+    "sha256": "ca0e1d88916d49dd3c435d0b0ea0e2a96b7edcad7798ec4bb5df62c40a06c041"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/overview_2.png",
+    "bytes": 136966,
+    "sha256": "987c6f47b07da7ce0e3b7228a3061cbce2732412f2de0cae8e39a6c472361363"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/reflection_0.png",
+    "bytes": 160330,
+    "sha256": "70a28e115a5cdb3806d8446b32daf7cf692a95bdfcbfa05cd5ab39ff7cf92a7f"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/reflection_1.png",
+    "bytes": 163234,
+    "sha256": "03572dcb661663743eb791d0aac10d9c13b05c6e5f58d6fb292c9481ce6e92cc"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/reflection_2.png",
+    "bytes": 166259,
+    "sha256": "bd8e4114b345363f030e29f8c3f176d732c0774998e13dbfe7cdab8355bc92df"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/thin_geometry_0.png",
+    "bytes": 177811,
+    "sha256": "421e6ad3139d693df66b7dbb0b61702dd79a7032e5a8afe4f9427d11de0662a9"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/thin_geometry_1.png",
+    "bytes": 181046,
+    "sha256": "5c140b34cc34e4bff3cccbd5dfd74994725f043b9b6efefc42c6522aca2ea71f"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/thin_geometry_2.png",
+    "bytes": 183750,
+    "sha256": "5575625d1be2beffcb1edbe67d98c7b85a596985938c94ab8d3a2c1f8d4638b4"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/transparency_0.png",
+    "bytes": 164169,
+    "sha256": "7835c7ab8ac9a4e973513812087dc80b8ff97cf82ad7a572c5cf1e3660c1caa8"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/transparency_1.png",
+    "bytes": 164166,
+    "sha256": "0baa7eb1788bdb6568e022b8bcaaedaab24c2f4baa5555b47b5c96ed97b0ccea"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-hq-ap/transparency_2.png",
+    "bytes": 165365,
+    "sha256": "31a08aa2a90c3163b668ba664410072f26d0a898e9e8d2d092413bcd41afe2d5"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "1538304a0727bd54f8d658c2748bd29969dfc75f7051bfca0c1fdb5d6aed2c42"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/emission_0.png",
+    "bytes": 182149,
+    "sha256": "57414f06d5972d9c780d4468676b1db4eb15df4e5ce39468ac0197ceeb46c7fa"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "1538304a0727bd54f8d658c2748bd29969dfc75f7051bfca0c1fdb5d6aed2c42"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/emission_1.png",
+    "bytes": 181440,
+    "sha256": "1056f00e2bf0434ff3eb1cb3776ac9c0b1a654ed0ea82c2b7f6df40978c92318"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "1538304a0727bd54f8d658c2748bd29969dfc75f7051bfca0c1fdb5d6aed2c42"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/emission_2.png",
+    "bytes": 185481,
+    "sha256": "1dcbf6e2e0715295ca16fb7baf4ae1cc4868731155c103eab5f947f7781b1323"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/experience/apps/omnigibson_5_1_0.kit",
+    "bytes": 1598,
+    "sha256": "b4f25110cb7c19677ac6771102fae179be3d421ad24a8921fcd0988283324a15"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d121a53a9caedfc66fa5725b37bd1bfbc4b4b6d117bf130a88c9b113e39a1a"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/grazing_0.png",
+    "bytes": 141805,
+    "sha256": "5d4c4f9d4a660bfaeb70a2946c6072fd2fc9e4728f19fffd9f9da84508b4e420"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d121a53a9caedfc66fa5725b37bd1bfbc4b4b6d117bf130a88c9b113e39a1a"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/grazing_1.png",
+    "bytes": 141165,
+    "sha256": "90a69f1780c08ef37347daf67728f15aca8050786cd539d018610b007909c746"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d121a53a9caedfc66fa5725b37bd1bfbc4b4b6d117bf130a88c9b113e39a1a"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/grazing_2.png",
+    "bytes": 140371,
+    "sha256": "0e25d083be88481d6db1e67ed6133e00a9314eda5f158d83b05f721f3d025115"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/manifest.json",
+    "bytes": 6381,
+    "sha256": "65393dd1c11246fbdcd3a7cceac61396b0ac11d5bafeb16cea5a5900674730a7"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "4b6c835fbd139e0272a4c8b46483a64934ee471c5c8b2d3c8625fb5cb3bb17fa"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/overview_0.png",
+    "bytes": 124803,
+    "sha256": "020637f50fa803fe0f45a34839777850de8e01a156c5e03ed08d69f3c58a1fb4"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "4b6c835fbd139e0272a4c8b46483a64934ee471c5c8b2d3c8625fb5cb3bb17fa"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/overview_1.png",
+    "bytes": 125305,
+    "sha256": "2b7d4a63f528bb9b628635d5cb72e412225ed8c194fbe473003311f6e851cf4e"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "4b6c835fbd139e0272a4c8b46483a64934ee471c5c8b2d3c8625fb5cb3bb17fa"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/overview_2.png",
+    "bytes": 126118,
+    "sha256": "d572588411825efc3f7c1255cd2421387c85e02962c977ad6f2e6e2d344372ee"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "0538c3dbcf0c415950381bbd9ae4f254c8ce01ab4f239882958cc5278121a0ac"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/reflection_0.png",
+    "bytes": 162343,
+    "sha256": "1a17bbb72881da9d5cbaf4550f890eba85577b213195d2c6fde333584b069d70"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "0538c3dbcf0c415950381bbd9ae4f254c8ce01ab4f239882958cc5278121a0ac"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/reflection_1.png",
+    "bytes": 161012,
+    "sha256": "9064794d1f2e2a13bd4ec14082410dc98047cf676fed76e7ba6d2d29e7c4ac21"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "0538c3dbcf0c415950381bbd9ae4f254c8ce01ab4f239882958cc5278121a0ac"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/reflection_2.png",
+    "bytes": 160900,
+    "sha256": "9d8b60c8d6aac400b28f65e35c21b5dc4ad16966663649b2b7c9e9819cdf9faf"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "40336d7de144200ef4c6d7cb5ff3e7bc78788615534a5d800614aa6d3d079b09"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/thin_geometry_0.png",
+    "bytes": 181961,
+    "sha256": "4fd0370d0d95dbfc1ae659c5fe342136f98addf223468ce47011d07bb0197fa8"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "40336d7de144200ef4c6d7cb5ff3e7bc78788615534a5d800614aa6d3d079b09"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/thin_geometry_1.png",
+    "bytes": 179698,
+    "sha256": "af3655b17e6afa3bcb34555f38b15d44e7fc834f1826f6a3d46dd53fcd0bec84"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "40336d7de144200ef4c6d7cb5ff3e7bc78788615534a5d800614aa6d3d079b09"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/thin_geometry_2.png",
+    "bytes": 179193,
+    "sha256": "3ad04a8954c5d25b1a1326810c44db965528ee0a9697976cc6baba1dfd1b121a"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "8968b9edafdf9ce811c004b8907274adffa7e2490cba790fa0069b3d645c4420"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/transparency_0.png",
+    "bytes": 161978,
+    "sha256": "f59f02709c27a20b38428636258657354354c64673e8eb54ea82a4eef504b48b"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "8968b9edafdf9ce811c004b8907274adffa7e2490cba790fa0069b3d645c4420"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/transparency_1.png",
+    "bytes": 160370,
+    "sha256": "86cc8379d320004bd97db527d8a18b5af178b1f74ecf509310dbf101c3c70ddc"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "8968b9edafdf9ce811c004b8907274adffa7e2490cba790fa0069b3d645c4420"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq/transparency_2.png",
+    "bytes": 159672,
+    "sha256": "d4bf359735d7518654a6aa17a010aa9163831536514a40a40e1af11d6aecc1df"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/emission_0.png",
+    "bytes": 180742,
+    "sha256": "2a6b0225d5ee3e6786c7e1238c480366afd4b442687e7f9b2963336cb1c55794"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/emission_1.png",
+    "bytes": 181156,
+    "sha256": "99b4e99c716a4ff4760c38f2b4984ab8e764b1de930ed177bcb2b9a324eb0eac"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/emission_2.png",
+    "bytes": 183023,
+    "sha256": "efdfd0002be33928319b49ff4d895a2f68553fea737164e63fbb2677c25dec6d"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/experience/apps/omnigibson_5_1_0.kit",
+    "bytes": 1598,
+    "sha256": "b4f25110cb7c19677ac6771102fae179be3d421ad24a8921fcd0988283324a15"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/grazing_0.png",
+    "bytes": 136542,
+    "sha256": "d88c9ec0884b6225f32da4978a18691f3f43e4e5bcc239b546c07962a978a4fb"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/grazing_1.png",
+    "bytes": 136828,
+    "sha256": "479b2935e72da919cbfb6bdf1de4ac74900d22b11310da7f7ba846fccfa0b966"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/grazing_2.png",
+    "bytes": 137368,
+    "sha256": "27617a9bff743348410e668dde88614d0e11f2ea998ee96b0207e64828a3b232"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/manifest.json",
+    "bytes": 6389,
+    "sha256": "39bc52c6bdba65eafb9343cb05b32b376eb4496be2e54f0c2d5855bd55b08a98"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "3f11bd0eb44f08d693fe631acc89619471ef62f6a8b3832be7551bf48b2c0453"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/overview_0.png",
+    "bytes": 121447,
+    "sha256": "ba2f19f60a8744c119779b3e9929be19be60e31cc47bb71d6d1a614056319638"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "3f11bd0eb44f08d693fe631acc89619471ef62f6a8b3832be7551bf48b2c0453"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/overview_1.png",
+    "bytes": 121841,
+    "sha256": "1c142ae6bad70972345751c575c55698d4f97153335c395ce72808c00ac4f48b"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "3f11bd0eb44f08d693fe631acc89619471ef62f6a8b3832be7551bf48b2c0453"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/overview_2.png",
+    "bytes": 121753,
+    "sha256": "8a35b0af1d522fcd86316a7e338b3e375219a168a45483cd91db9b8dc27b10ea"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/reflection_0.png",
+    "bytes": 154038,
+    "sha256": "56f57f125914bb2244fb6131fab03969c44ffde6e3d020a4b1fa0239a06daf05"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/reflection_1.png",
+    "bytes": 153817,
+    "sha256": "1aca8046a2c4ed37262e6bea01e97f1b7788d2bda4b61786a5a3a784aed7c9aa"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/reflection_2.png",
+    "bytes": 154475,
+    "sha256": "20ad759b290ab117686025dcd40613cac94ae56b7ab4777f39dcf72c08a7b261"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/thin_geometry_0.png",
+    "bytes": 177029,
+    "sha256": "a789c1cc6ead39e650dea79dfc80df0a534ef7d8501f6ff6a9b6c0c594896654"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/thin_geometry_1.png",
+    "bytes": 172368,
+    "sha256": "d6597f25b3818756c44f4115354894c486e86ad5b8e6fa778ac3b7b29dc453c1"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/thin_geometry_2.png",
+    "bytes": 171729,
+    "sha256": "5050784929be316a1a94a511a94acfd232faa50a6e02e8a908a1f974246676dc"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/transparency_0.png",
+    "bytes": 156657,
+    "sha256": "4be7ef3a368cab1273ea959206faef5fb79de39c1bd3e06e64e31938ad8b5329"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/transparency_1.png",
+    "bytes": 154370,
+    "sha256": "77cba91b8eaea3f51abd21ed11f598f1c4021826cf77d7ef0ee70a48584a2019"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-kit-hq-ap/transparency_2.png",
+    "bytes": 153424,
+    "sha256": "62c7523965f38a18539be197a29c1c7c466d9c73ab2326643c25456d39b05f14"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/emission_0.png",
+    "bytes": 266773,
+    "sha256": "24cee1cda66de3ad00d0f2979c7066645ea12019de048ac82dfbcf59e1f71ff2"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/emission_1.png",
+    "bytes": 266773,
+    "sha256": "24cee1cda66de3ad00d0f2979c7066645ea12019de048ac82dfbcf59e1f71ff2"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/emission_2.png",
+    "bytes": 266773,
+    "sha256": "24cee1cda66de3ad00d0f2979c7066645ea12019de048ac82dfbcf59e1f71ff2"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/grazing_0.png",
+    "bytes": 241042,
+    "sha256": "3d3c926ee6ef029613edab82be64bbbd57300d1b156e6dc07a28e02670c4a2de"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/grazing_1.png",
+    "bytes": 241042,
+    "sha256": "3d3c926ee6ef029613edab82be64bbbd57300d1b156e6dc07a28e02670c4a2de"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/grazing_2.png",
+    "bytes": 241042,
+    "sha256": "3d3c926ee6ef029613edab82be64bbbd57300d1b156e6dc07a28e02670c4a2de"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/manifest.json",
+    "bytes": 5327,
+    "sha256": "31b6df2ef510ed4ba08d8a898d4ff0f294d30455d7b9a509b1a2f4ef748650b5"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/overview_0.png",
+    "bytes": 219458,
+    "sha256": "9a6224be513c5890453c7238b6f35534d82cba77faa36a270ac37fd486e920cc"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/overview_1.png",
+    "bytes": 219458,
+    "sha256": "9a6224be513c5890453c7238b6f35534d82cba77faa36a270ac37fd486e920cc"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/overview_2.png",
+    "bytes": 219458,
+    "sha256": "9a6224be513c5890453c7238b6f35534d82cba77faa36a270ac37fd486e920cc"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/reflection_0.png",
+    "bytes": 260635,
+    "sha256": "0a7fa498b697b427731406ef5ced39aa170da9f8088530c6718c0078ebc5365d"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/reflection_1.png",
+    "bytes": 260635,
+    "sha256": "0a7fa498b697b427731406ef5ced39aa170da9f8088530c6718c0078ebc5365d"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/reflection_2.png",
+    "bytes": 260635,
+    "sha256": "0a7fa498b697b427731406ef5ced39aa170da9f8088530c6718c0078ebc5365d"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/thin_geometry_0.png",
+    "bytes": 239007,
+    "sha256": "b931dea2a021f8f49f354eae7359876a53d644abee1a9187fd375524a4c0a147"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/thin_geometry_1.png",
+    "bytes": 239007,
+    "sha256": "b931dea2a021f8f49f354eae7359876a53d644abee1a9187fd375524a4c0a147"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/thin_geometry_2.png",
+    "bytes": 239007,
+    "sha256": "b931dea2a021f8f49f354eae7359876a53d644abee1a9187fd375524a4c0a147"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/transparency_0.png",
+    "bytes": 247505,
+    "sha256": "345bf0321bb386df28fa0eff963060059d29d9c34fd181591eda94cc9ee89031"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/transparency_1.png",
+    "bytes": 247505,
+    "sha256": "345bf0321bb386df28fa0eff963060059d29d9c34fd181591eda94cc9ee89031"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/omni51-pt-ap/transparency_2.png",
+    "bytes": 247505,
+    "sha256": "345bf0321bb386df28fa0eff963060059d29d9c34fd181591eda94cc9ee89031"
+  },
+  {
     "path": "stress-bright/scene/cameras.json",
     "bytes": 9445,
     "sha256": "80db67567fb68b5f847e3465c9c96eca25ff119e276d424967cf76a65914267d"

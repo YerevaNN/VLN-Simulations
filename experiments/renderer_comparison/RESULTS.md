@@ -61,10 +61,12 @@ runs. [Slurm accounting](results/slurm-accounting.txt) records each attempt.
 
 ## Scope and reproducibility
 
-The subsequent [adversarial material test](STRESS_RESULTS.md) exposes a large
-transparency appearance mismatch between real-time and path tracing on A6000.
-It also records H100 startup failures and a pending matched-node control;
-the valley's agreement should not be generalized to all materials or setups.
+The subsequent [adversarial material test](STRESS_RESULTS.md) successfully
+renders latest OmniGibson's Kit/settings on H100 with Isaac 5.1 in verified
+`RealTimePathTracing` mode, with close agreement to A6000. This supersedes the
+earlier failed 5.1 attempts as a general compatibility conclusion. The same
+test exposes a transparency mismatch across modes on both GPUs; the valley's
+agreement should not be generalized to all materials or setups.
 
 The path-tracing override requests four samples per update, a total sample
 limit of 256, 32 maximum bounces and OptiX denoising. It is distinct from the
