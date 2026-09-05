@@ -1,0 +1,127 @@
+{
+  "backend": "isaac-ap",
+  "frames": [
+    {
+      "name": "valley-launch_0",
+      "seconds": 0.3643546258099377,
+      "mean": 85.84304108796296,
+      "std": 42.09368790255726,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-launch_1",
+      "seconds": 0.4303613221272826,
+      "mean": 86.02464265046297,
+      "std": 42.1268395723894,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-launch_2",
+      "seconds": 0.27109935227781534,
+      "mean": 86.18001302083333,
+      "std": 42.170479366218764,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-river_0",
+      "seconds": 0.2669578157365322,
+      "mean": 87.34806423611111,
+      "std": 40.23254646617936,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-river_1",
+      "seconds": 0.258436590898782,
+      "mean": 87.45802662037038,
+      "std": 40.26438803304002,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-river_2",
+      "seconds": 0.26292212633416057,
+      "mean": 87.54098958333333,
+      "std": 40.303431988346134,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-bridge_0",
+      "seconds": 0.2607992263510823,
+      "mean": 87.65572482638889,
+      "std": 36.24078339583992,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-bridge_1",
+      "seconds": 0.2495324700139463,
+      "mean": 87.81209056712963,
+      "std": 36.33653350536127,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-bridge_2",
+      "seconds": 0.24492399906739593,
+      "mean": 87.9112962962963,
+      "std": 36.411715819201916,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-forest_0",
+      "seconds": 0.2767234807834029,
+      "mean": 59.009584780092595,
+      "std": 35.51366642223872,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-forest_1",
+      "seconds": 0.2746394476853311,
+      "mean": 59.12214699074074,
+      "std": 35.6285775773058,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-forest_2",
+      "seconds": 0.27309410693123937,
+      "mean": 59.194658564814816,
+      "std": 35.69337803231797,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-overview_0",
+      "seconds": 0.2544539007358253,
+      "mean": 94.21330584490741,
+      "std": 42.053364463636385,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-overview_1",
+      "seconds": 0.2470205812714994,
+      "mean": 94.38952690972222,
+      "std": 42.11626692613611,
+      "render_mode": "RaytracedLighting"
+    },
+    {
+      "name": "valley-overview_2",
+      "seconds": 0.24874746473506093,
+      "mean": 94.46446903935185,
+      "std": 42.13676104151046,
+      "render_mode": "RaytracedLighting"
+    }
+  ],
+  "elapsed_s": 43.552716975566,
+  "scene_sha256": "c115366f1daabca92f0663e972f1614ca5fc09a41b286e52bc77487e0ec57aef",
+  "cameras_sha256": "0cefc13cfd949c614dc547df6a7e3738018c933384d51f0bb30e9e0c992d17bd",
+  "valley_source_sha256": "843f0c859a7e001f0b1aed3654d4733575f79a1e530943d365fccc75a064c952",
+  "behavior_source_sha256": null,
+  "applied_settings": {},
+  "render_mode": "RaytracedLighting",
+  "experience_sha256": null,
+  "launch_args": [
+    "--portable-root",
+    "/mnt/weka/hrant/rtx-vln-sample-20260905/cache/comparison-kit-isaac-ap",
+    "--/rtx/rendermode=RayTracedLighting"
+  ],
+  "gpu": "uuid, name, driver_version\nGPU-d81e5e91-d138-dd6d-c930-1e4e64e67317, NVIDIA RTX A6000, 580.173.02\n",
+  "slurm_job_id": "246847",
+  "git_commit": "5557e44efccaeaf73ef99417c91e9609207fa0bb",
+  "scope": "Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics."
+}

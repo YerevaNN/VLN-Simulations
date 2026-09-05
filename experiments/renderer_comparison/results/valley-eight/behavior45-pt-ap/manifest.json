@@ -1,0 +1,154 @@
+{
+  "backend": "behavior-pathtracing",
+  "frames": [
+    {
+      "name": "valley-launch_0",
+      "seconds": 1.5575711857527494,
+      "mean": 86.5600925925926,
+      "std": 41.486916967946826,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-launch_1",
+      "seconds": 1.2646608799695969,
+      "mean": 86.5600925925926,
+      "std": 41.486916967946826,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-launch_2",
+      "seconds": 1.0600328268483281,
+      "mean": 86.5600925925926,
+      "std": 41.486916967946826,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-river_0",
+      "seconds": 1.388380707707256,
+      "mean": 89.6360619212963,
+      "std": 40.711571183651664,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-river_1",
+      "seconds": 1.0108205280266702,
+      "mean": 89.6360619212963,
+      "std": 40.711571183651664,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-river_2",
+      "seconds": 1.016181725077331,
+      "mean": 89.6360619212963,
+      "std": 40.711571183651664,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-bridge_0",
+      "seconds": 1.447584104258567,
+      "mean": 89.2494458912037,
+      "std": 37.190608496904794,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-bridge_1",
+      "seconds": 1.0214073271490633,
+      "mean": 89.2494458912037,
+      "std": 37.190608496904794,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-bridge_2",
+      "seconds": 1.016407247632742,
+      "mean": 89.2494458912037,
+      "std": 37.190608496904794,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-forest_0",
+      "seconds": 1.44610193092376,
+      "mean": 60.22896412037037,
+      "std": 35.369901398910066,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-forest_1",
+      "seconds": 1.0374104590155184,
+      "mean": 60.22896412037037,
+      "std": 35.369901398910066,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-forest_2",
+      "seconds": 1.0496360841207206,
+      "mean": 60.22896412037037,
+      "std": 35.369901398910066,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-overview_0",
+      "seconds": 1.412958072964102,
+      "mean": 95.73868634259259,
+      "std": 42.43424177353326,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-overview_1",
+      "seconds": 1.0426721591502428,
+      "mean": 95.73868634259259,
+      "std": 42.43424177353326,
+      "render_mode": "PathTracing"
+    },
+    {
+      "name": "valley-overview_2",
+      "seconds": 1.0557422558777034,
+      "mean": 95.73868634259259,
+      "std": 42.43424177353326,
+      "render_mode": "PathTracing"
+    }
+  ],
+  "elapsed_s": 88.46049310592934,
+  "scene_sha256": "c115366f1daabca92f0663e972f1614ca5fc09a41b286e52bc77487e0ec57aef",
+  "cameras_sha256": "0cefc13cfd949c614dc547df6a7e3738018c933384d51f0bb30e9e0c992d17bd",
+  "valley_source_sha256": "843f0c859a7e001f0b1aed3654d4733575f79a1e530943d365fccc75a064c952",
+  "behavior_source_sha256": "eba2125ec848475f35e42c47e2cd2de30eac739d66ee6643ab64684cb8fd13ab",
+  "applied_settings": {
+    "/rtx/reflections/enabled": true,
+    "/rtx/indirectDiffuse/enabled": true,
+    "/rtx/post/dlss/execMode": 0,
+    "/rtx/ambientOcclusion/enabled": true,
+    "/rtx/directLighting/sampledLighting/enabled": true,
+    "/rtx/raytracing/showLights": 1,
+    "/rtx/sceneDb/ambientLightIntensity": 1.0,
+    "/app/renderer/skipMaterialLoading": false,
+    "/rtx/flow/enabled": true,
+    "/physics/updateToUsd": false,
+    "/physics/updateParticlesToUsd": true,
+    "/physics/updateVelocitiesToUsd": false,
+    "/physics/updateForceSensorsToUsd": false,
+    "/physics/updateResidualsToUsd": false,
+    "/physics/outputVelocitiesLocalSpace": false,
+    "/physics/fabricUpdateTransformations": true,
+    "/physics/fabricUpdateVelocities": false,
+    "/physics/fabricUpdateForceSensors": false,
+    "/physics/fabricUpdateJointStates": false,
+    "/physics/fabricUpdateResiduals": false,
+    "/physics/fabricUseGPUInterop": true,
+    "/rtx/rendermode": "PathTracing",
+    "/rtx/pathtracing/spp": 4,
+    "/rtx/pathtracing/totalSpp": 256,
+    "/rtx/pathtracing/maxBounces": 32,
+    "/rtx/pathtracing/optixDenoiser/enabled": true
+  },
+  "render_mode": "PathTracing",
+  "experience_sha256": null,
+  "launch_args": [
+    "--portable-root",
+    "/mnt/weka/hrant/rtx-vln-sample-20260905/cache/comparison-kit-behavior45-pt-ap",
+    "--/rtx/rendermode=PathTracing"
+  ],
+  "gpu": "uuid, name, driver_version\nGPU-d81e5e91-d138-dd6d-c930-1e4e64e67317, NVIDIA RTX A6000, 580.173.02\n",
+  "slurm_job_id": "246848",
+  "git_commit": "5557e44efccaeaf73ef99417c91e9609207fa0bb",
+  "scope": "Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics."
+}

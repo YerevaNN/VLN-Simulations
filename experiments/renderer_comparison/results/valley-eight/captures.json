@@ -1,0 +1,90 @@
+{
+  "omni51-kit-hq": {
+    "job": "246854",
+    "mode": "RealTimePathTracing",
+    "views": {
+      "valley-launch_2": 0.48048751801252365,
+      "valley-river_2": 0.4921275619417429,
+      "valley-bridge_2": 0.4845348931849003,
+      "valley-forest_2": 0.5658351629972458,
+      "valley-overview_2": 0.458422988653183
+    }
+  },
+  "omni51-kit-hq-ap": {
+    "job": "246852",
+    "mode": "RealTimePathTracing",
+    "views": {
+      "valley-launch_2": 0.2869672658853233,
+      "valley-river_2": 0.2882455037906766,
+      "valley-bridge_2": 0.27759688068181276,
+      "valley-forest_2": 0.3029865329153836,
+      "valley-overview_2": 0.5260235127061605
+    }
+  },
+  "omni51-hq": {
+    "job": "246854",
+    "mode": "RaytracedLighting",
+    "views": {
+      "valley-launch_2": 0.4929643189534545,
+      "valley-river_2": 0.5182479182258248,
+      "valley-bridge_2": 0.4902859563007951,
+      "valley-forest_2": 0.5793834766373038,
+      "valley-overview_2": 0.4947045538574457
+    }
+  },
+  "omni51-hq-ap": {
+    "job": "246846",
+    "mode": "RaytracedLighting",
+    "views": {
+      "valley-launch_2": 0.26166497683152556,
+      "valley-river_2": 0.2664826321415603,
+      "valley-bridge_2": 0.24871598603203893,
+      "valley-forest_2": 0.27026691008359194,
+      "valley-overview_2": 0.2779226517304778
+    }
+  },
+  "isaac-ap": {
+    "job": "246847",
+    "mode": "RaytracedLighting",
+    "views": {
+      "valley-launch_2": 0.27109935227781534,
+      "valley-river_2": 0.26292212633416057,
+      "valley-bridge_2": 0.24492399906739593,
+      "valley-forest_2": 0.27309410693123937,
+      "valley-overview_2": 0.24874746473506093
+    }
+  },
+  "behavior45-pt-ap": {
+    "job": "246848",
+    "mode": "PathTracing",
+    "views": {
+      "valley-launch_2": 1.0600328268483281,
+      "valley-river_2": 1.016181725077331,
+      "valley-bridge_2": 1.016407247632742,
+      "valley-forest_2": 1.0496360841207206,
+      "valley-overview_2": 1.0557422558777034
+    }
+  },
+  "behavior-pathtracing-ap": {
+    "job": "246849",
+    "mode": "PathTracing",
+    "views": {
+      "valley-launch_2": 0.31954581290483475,
+      "valley-river_2": 0.31606128718703985,
+      "valley-bridge_2": 0.31982722505927086,
+      "valley-forest_2": 0.32690993417054415,
+      "valley-overview_2": 0.304116936866194
+    }
+  },
+  "omni51-pt-ap": {
+    "job": "246850",
+    "mode": "PathTracing",
+    "views": {
+      "valley-launch_2": 0.27990578580647707,
+      "valley-river_2": 0.2776907682418823,
+      "valley-bridge_2": 0.277732296846807,
+      "valley-forest_2": 0.2939548180438578,
+      "valley-overview_2": 0.26454230723902583
+    }
+  }
+}

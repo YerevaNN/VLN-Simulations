@@ -115,3 +115,29 @@ Raw data is under `/mnt/weka/hrant/rtx-vln-sample-20260905/stress-bright/`;
 logs are under the sibling `logs/`. Manifests, metrics, hashes and a contact
 sheet are preserved in [results/stress](results/stress/). The interactive
 comparison is generated from the raw outputs by `analyze_stress.py`.
+
+## Five valley viewpoints across all eight configurations
+
+The unchanged original valley USD (SHA-256
+`c115366f1daabca92f0663e972f1614ca5fc09a41b286e52bc77487e0ec57aef`)
+was rendered at the original launch, river, bridge, forest, and overview poses.
+Each of the eight page configurations completed 15 RGB and 15 depth captures
+at 640 × 360; the public dropdown shows the third capture per pose (40 images).
+All scene/camera hashes and per-frame active modes were validated. See
+[recorded manifests and timings](results/valley-eight/).
+
+Successful runs: H100 Kit HQ and legacy RT 246854; A6000 Kit HQ 246852,
+OmniGibson legacy 246846, Isaac legacy 246847, 4.5 PT 246848, 5.1 older-settings
+PT 246849, and 5.1 latest-settings PT 246850. The H100 pair ran sequentially
+in one allocation, with multi-GPU rendering disabled to match OmniGibson's
+launcher. Earlier valley retries timed out or crashed; the successful retry
+also had a larger memory allocation and reused caches, so no single cause
+for recovery is established. GPU metadata is collected before initialization
+to avoid a post-render subprocess stall. Legacy valley runs explicitly request
+RaytracedLighting rather than depending on a fallback.
+
+Seconds beneath each title belong to that displayed capture, including image
+transfer and PNG/depth saving. Real-time modes request 16 subframes; PT modes
+request 64. These measurements exclude scene startup and are not native FPS
+or an equal-work hardware benchmark. The existing aggregate metrics on the
+page remain explicitly scoped to the material stress scene.
