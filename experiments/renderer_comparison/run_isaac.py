@@ -26,8 +26,11 @@ a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene_dir = Path(a.scene_dir); scene_dir.mkdir(parents=True, exist_ok=True)
 t0 = time.perf_counter()
+run_commit = subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
 from isaacsim import SimulationApp
 app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
+                     'renderer': 'PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'),
+                     'extra_args': ['--portable-root', os.environ['ISAAC_PORTABLE_ROOT']],
                      'limit_cpu_threads': int(os.environ.get('OMP_NUM_THREADS', '8')),
                      'fast_shutdown': True})
 import carb
@@ -130,7 +133,7 @@ metadata = {'backend':a.backend,'frames':records,'elapsed_s':time.perf_counter()
             'render_mode':settings.get('/rtx/rendermode'),
             'gpu':subprocess.check_output(['nvidia-smi','--query-gpu=uuid,name,driver_version','--format=csv'],text=True),
             'slurm_job_id':os.environ.get('SLURM_JOB_ID'),
-            'git_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            'git_commit':run_commit,
             'scope':'Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics.'}
 (out/'manifest.json').write_text(json.dumps(metadata,indent=2))
 print('COMPLETE', a.backend, flush=True)
