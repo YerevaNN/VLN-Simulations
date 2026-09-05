@@ -20,6 +20,7 @@ p.add_argument('--scene-dir', required=True)
 p.add_argument('--assets-root', required=True)
 p.add_argument('--backend', choices=['isaac-ap', 'behavior-hq', 'behavior-pathtracing'], required=True)
 p.add_argument('--behavior-root')
+p.add_argument('--initial-renderer')
 p.add_argument('--prepare', action='store_true')
 p.add_argument('--views-only', action='store_true')
 a = p.parse_args()
@@ -30,7 +31,7 @@ git_dir = Path(__file__).resolve().parents[2]/'.git'
 head = (git_dir/'HEAD').read_text().strip()
 run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
 from isaacsim import SimulationApp
-initial_renderer = 'PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting')
+initial_renderer = a.initial_renderer or ('PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'))
 app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
                      'renderer': initial_renderer,
                      'extra_args': ['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer],
@@ -65,7 +66,7 @@ if a.backend.startswith('behavior'):
     behavior_hash = hashlib.sha256(text.encode()).hexdigest()
     fn = next(n for n in ast.walk(ast.parse(text)) if isinstance(n, ast.FunctionDef) and n.name == '_set_renderer_settings')
     scope = {'lazy': SimpleNamespace(carb=SimpleNamespace(settings=SimpleNamespace(get_settings=lambda: SettingsRecorder()))),
-             'gm': SimpleNamespace(ENABLE_HQ_RENDERING=True)}
+             'gm': SimpleNamespace(ENABLE_HQ_RENDERING=True, ENABLE_FLATCACHE=True)}
     exec(compile(ast.Module(body=[fn], type_ignores=[]), str(source), 'exec'), scope)
     scope['_set_renderer_settings'](SimpleNamespace(get_rendering_dt=lambda: 1 / 60))
     if a.backend == 'behavior-pathtracing':
