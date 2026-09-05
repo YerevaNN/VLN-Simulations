@@ -1,0 +1,151 @@
+{
+  "backend": "behavior-pathtracing",
+  "frames": [
+    {
+      "name": "overview_0",
+      "seconds": 1.0101194237358868,
+      "mean": 111.5919921875,
+      "std": 83.25695526463505
+    },
+    {
+      "name": "overview_1",
+      "seconds": 0.6837576720863581,
+      "mean": 111.5919921875,
+      "std": 83.25695526463505
+    },
+    {
+      "name": "overview_2",
+      "seconds": 0.6018772278912365,
+      "mean": 111.5919921875,
+      "std": 83.25695526463505
+    },
+    {
+      "name": "reflection_0",
+      "seconds": 0.9545316738076508,
+      "mean": 102.56085358796297,
+      "std": 74.00677115285102
+    },
+    {
+      "name": "reflection_1",
+      "seconds": 0.6039378009736538,
+      "mean": 102.56085358796297,
+      "std": 74.00677115285102
+    },
+    {
+      "name": "reflection_2",
+      "seconds": 0.6081217620521784,
+      "mean": 102.56085358796297,
+      "std": 74.00677115285102
+    },
+    {
+      "name": "transparency_0",
+      "seconds": 1.027265038806945,
+      "mean": 117.75575520833333,
+      "std": 77.68717343076845
+    },
+    {
+      "name": "transparency_1",
+      "seconds": 0.6064795176498592,
+      "mean": 117.75575520833333,
+      "std": 77.68717343076845
+    },
+    {
+      "name": "transparency_2",
+      "seconds": 0.6168455663137138,
+      "mean": 117.75575520833333,
+      "std": 77.68717343076845
+    },
+    {
+      "name": "thin_geometry_0",
+      "seconds": 1.0156606920063496,
+      "mean": 112.7159765625,
+      "std": 80.63826140192619
+    },
+    {
+      "name": "thin_geometry_1",
+      "seconds": 0.602715581189841,
+      "mean": 112.7159765625,
+      "std": 80.63826140192619
+    },
+    {
+      "name": "thin_geometry_2",
+      "seconds": 0.6123881018720567,
+      "mean": 112.7159765625,
+      "std": 80.63826140192619
+    },
+    {
+      "name": "emission_0",
+      "seconds": 0.9053886132314801,
+      "mean": 95.04271556712963,
+      "std": 79.44468361302336
+    },
+    {
+      "name": "emission_1",
+      "seconds": 0.6281660120002925,
+      "mean": 95.04271556712963,
+      "std": 79.44468361302336
+    },
+    {
+      "name": "emission_2",
+      "seconds": 0.6281916918233037,
+      "mean": 95.04271556712963,
+      "std": 79.44468361302336
+    },
+    {
+      "name": "grazing_0",
+      "seconds": 1.0028194547630847,
+      "mean": 128.82926070601852,
+      "std": 69.20114568170546
+    },
+    {
+      "name": "grazing_1",
+      "seconds": 0.604629147797823,
+      "mean": 128.82926070601852,
+      "std": 69.20114568170546
+    },
+    {
+      "name": "grazing_2",
+      "seconds": 0.6148314820602536,
+      "mean": 128.82926070601852,
+      "std": 69.20114568170546
+    }
+  ],
+  "elapsed_s": 314.1553874448873,
+  "scene_sha256": "7a068c59dd25a2907423af40c0f1a54dfc67ebf5cd286f34dee029e2e7fe5810",
+  "cameras_sha256": "80db67567fb68b5f847e3465c9c96eca25ff119e276d424967cf76a65914267d",
+  "valley_source_sha256": "843f0c859a7e001f0b1aed3654d4733575f79a1e530943d365fccc75a064c952",
+  "behavior_source_sha256": "eba2125ec848475f35e42c47e2cd2de30eac739d66ee6643ab64684cb8fd13ab",
+  "applied_settings": {
+    "/rtx/reflections/enabled": true,
+    "/rtx/indirectDiffuse/enabled": true,
+    "/rtx/post/dlss/execMode": 0,
+    "/rtx/ambientOcclusion/enabled": true,
+    "/rtx/directLighting/sampledLighting/enabled": true,
+    "/rtx/raytracing/showLights": 1,
+    "/rtx/sceneDb/ambientLightIntensity": 1.0,
+    "/app/renderer/skipMaterialLoading": false,
+    "/rtx/flow/enabled": true,
+    "/physics/updateToUsd": false,
+    "/physics/updateParticlesToUsd": true,
+    "/physics/updateVelocitiesToUsd": false,
+    "/physics/updateForceSensorsToUsd": false,
+    "/physics/updateResidualsToUsd": false,
+    "/physics/outputVelocitiesLocalSpace": false,
+    "/physics/fabricUpdateTransformations": true,
+    "/physics/fabricUpdateVelocities": false,
+    "/physics/fabricUpdateForceSensors": false,
+    "/physics/fabricUpdateJointStates": false,
+    "/physics/fabricUpdateResiduals": false,
+    "/physics/fabricUseGPUInterop": true,
+    "/rtx/rendermode": "PathTracing",
+    "/rtx/pathtracing/spp": 64,
+    "/rtx/pathtracing/totalSpp": 4096,
+    "/rtx/pathtracing/maxBounces": 32,
+    "/rtx/pathtracing/optixDenoiser/enabled": false
+  },
+  "render_mode": "PathTracing",
+  "gpu": "uuid, name, driver_version\nGPU-d81e5e91-d138-dd6d-c930-1e4e64e67317, NVIDIA RTX A6000, 580.173.02\n",
+  "slurm_job_id": "246830",
+  "git_commit": "e3189f0d748f980743ec16412ae86ade0004666c",
+  "scope": "Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics."
+}

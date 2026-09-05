@@ -1,0 +1,11 @@
+| Driver Version: 590.48.01     | Graphics API: Vulkan
+[2026-09-05T15:26:28.000] error: *** JOB 246829 ON gpu04 CANCELLED AT 2026-09-05T15:26:27 DUE TO TIME LIMIT ***
+--- final log lines ---
+2026-09-05 22:14:41 [40,881ms] [Warning] [carb.audio.device] audio device is misconfigured or broken {deviceIndex = 0, name = 'default'} (The device is likely misconfigured, check your $HOME/.asoundrc)
+2026-09-05 22:14:41 [40,881ms] [Warning] [carb.audio.output] failed to retrieve the capabilities for device 0 {result = eDeviceLost (2)}
+2026-09-05 22:14:41 [40,881ms] [Warning] [carb.audio.context] failed to set the requested output during context creation.  Using a null streamer instead {result = eDeviceLost (2)}
+[41.538s] app ready
+2026-09-05 22:14:41 [41,256ms] [Warning] [rtx.neuraylib.plugin] [IRAY:RENDER]   1.1   IRAY   rend warn : CUDA device 0 (NVIDIA H100 80GB HBM3): ECC is enabled, this will reduce rendering performance (it is strongly recommended to disable ECC with iray)
+2026-09-05 22:14:41 [41,278ms] [Warning] [rtx.scenedb.plugin] SceneDbContext : TLAS limit buffer size 2705217792
+2026-09-05 22:14:41 [41,278ms] [Warning] [rtx.scenedb.plugin] SceneDbContext : TLAS limit : valid true, within: false
+[2026-09-05T15:26:28.000] error: *** JOB 246829 ON gpu04 CANCELLED AT 2026-09-05T15:26:27 DUE TO TIME LIMIT ***

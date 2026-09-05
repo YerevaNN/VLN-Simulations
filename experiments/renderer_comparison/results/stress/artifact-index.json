@@ -1,0 +1,752 @@
+[
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/emission_0.png",
+    "bytes": 223005,
+    "sha256": "4d22b694d2714755eef344aa1fa85368ea01a77df82db72172115b9789a4e6e9"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/emission_1.png",
+    "bytes": 223005,
+    "sha256": "4d22b694d2714755eef344aa1fa85368ea01a77df82db72172115b9789a4e6e9"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/emission_2.png",
+    "bytes": 223005,
+    "sha256": "4d22b694d2714755eef344aa1fa85368ea01a77df82db72172115b9789a4e6e9"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/grazing_0.png",
+    "bytes": 152806,
+    "sha256": "3b45db0fdaecfe67c3886e7d22d156e356e8fc7c754b14aa4d6e8af4a144a4a3"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/grazing_1.png",
+    "bytes": 152806,
+    "sha256": "3b45db0fdaecfe67c3886e7d22d156e356e8fc7c754b14aa4d6e8af4a144a4a3"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/grazing_2.png",
+    "bytes": 152806,
+    "sha256": "3b45db0fdaecfe67c3886e7d22d156e356e8fc7c754b14aa4d6e8af4a144a4a3"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/manifest.json",
+    "bytes": 4507,
+    "sha256": "d41fe913058a217a6247b02a4e98f30f7b7f684be8ebeabd14680345d4d60398"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/overview_0.png",
+    "bytes": 132930,
+    "sha256": "a467ad28028fa0bf242340894ad915901ba5e040b28bc4aa8bd4a28023be3e92"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/overview_1.png",
+    "bytes": 132930,
+    "sha256": "a467ad28028fa0bf242340894ad915901ba5e040b28bc4aa8bd4a28023be3e92"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/overview_2.png",
+    "bytes": 132930,
+    "sha256": "a467ad28028fa0bf242340894ad915901ba5e040b28bc4aa8bd4a28023be3e92"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/reflection_0.png",
+    "bytes": 169948,
+    "sha256": "04fdb416bbc7c94738bee625fd0971f1c511a59be7b4181a3ccec4d2e53773dc"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/reflection_1.png",
+    "bytes": 169948,
+    "sha256": "04fdb416bbc7c94738bee625fd0971f1c511a59be7b4181a3ccec4d2e53773dc"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/reflection_2.png",
+    "bytes": 169948,
+    "sha256": "04fdb416bbc7c94738bee625fd0971f1c511a59be7b4181a3ccec4d2e53773dc"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/thin_geometry_0.png",
+    "bytes": 168052,
+    "sha256": "676b003853bd625fc0a1e850203646c667d05cc28adfd5e75f577a6766616f36"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/thin_geometry_1.png",
+    "bytes": 168052,
+    "sha256": "676b003853bd625fc0a1e850203646c667d05cc28adfd5e75f577a6766616f36"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/thin_geometry_2.png",
+    "bytes": 168052,
+    "sha256": "676b003853bd625fc0a1e850203646c667d05cc28adfd5e75f577a6766616f36"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/transparency_0.png",
+    "bytes": 158631,
+    "sha256": "477ed2590a6deeacb94b37220b8753c24c2bbf2846a74cefabe3bea69943b557"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/transparency_1.png",
+    "bytes": 158631,
+    "sha256": "477ed2590a6deeacb94b37220b8753c24c2bbf2846a74cefabe3bea69943b557"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/behavior-pathtracing-ap/transparency_2.png",
+    "bytes": 158631,
+    "sha256": "477ed2590a6deeacb94b37220b8753c24c2bbf2846a74cefabe3bea69943b557"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "df21a550f7461b026106dc70cb9dae0bf30cd5e724d2c5f66a6e2ad7706a0c96"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/emission_0.png",
+    "bytes": 222879,
+    "sha256": "c020bd85f971d02220badc5f7a31b94b5a3b753e427cf72083213341785e4f5b"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "df21a550f7461b026106dc70cb9dae0bf30cd5e724d2c5f66a6e2ad7706a0c96"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/emission_1.png",
+    "bytes": 222879,
+    "sha256": "c020bd85f971d02220badc5f7a31b94b5a3b753e427cf72083213341785e4f5b"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "df21a550f7461b026106dc70cb9dae0bf30cd5e724d2c5f66a6e2ad7706a0c96"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/emission_2.png",
+    "bytes": 222879,
+    "sha256": "c020bd85f971d02220badc5f7a31b94b5a3b753e427cf72083213341785e4f5b"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "f2dd0b05625b3de939fda2f229a564b4d64204838185b2bb9a38784f29a85c25"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/grazing_0.png",
+    "bytes": 152895,
+    "sha256": "8762bffa27461ca875a6796d1199949ba785eb28958d48bb70d663cc40571f0d"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "f2dd0b05625b3de939fda2f229a564b4d64204838185b2bb9a38784f29a85c25"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/grazing_1.png",
+    "bytes": 152895,
+    "sha256": "8762bffa27461ca875a6796d1199949ba785eb28958d48bb70d663cc40571f0d"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "f2dd0b05625b3de939fda2f229a564b4d64204838185b2bb9a38784f29a85c25"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/grazing_2.png",
+    "bytes": 152895,
+    "sha256": "8762bffa27461ca875a6796d1199949ba785eb28958d48bb70d663cc40571f0d"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/manifest.json",
+    "bytes": 4509,
+    "sha256": "d7427d0142ff34780d2356faba0137ffe32dc3dab44608b2f92a58ea88d90a27"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/overview_0.png",
+    "bytes": 133301,
+    "sha256": "73e6f1a0123633edf54864a8756fb525a8c655208e61e8ea5eeb4a1b45654d8f"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/overview_1.png",
+    "bytes": 133301,
+    "sha256": "73e6f1a0123633edf54864a8756fb525a8c655208e61e8ea5eeb4a1b45654d8f"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/overview_2.png",
+    "bytes": 133301,
+    "sha256": "73e6f1a0123633edf54864a8756fb525a8c655208e61e8ea5eeb4a1b45654d8f"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "f822f73e588ca4c41e5ed741bec1a646a45918128666ec02a832f6ac2624248e"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/reflection_0.png",
+    "bytes": 169784,
+    "sha256": "d9b5a2e671b5486b156f701e8264bbaa8a285ddf0c596a655ed47b25a5c35d01"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "f822f73e588ca4c41e5ed741bec1a646a45918128666ec02a832f6ac2624248e"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/reflection_1.png",
+    "bytes": 169784,
+    "sha256": "d9b5a2e671b5486b156f701e8264bbaa8a285ddf0c596a655ed47b25a5c35d01"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "f822f73e588ca4c41e5ed741bec1a646a45918128666ec02a832f6ac2624248e"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/reflection_2.png",
+    "bytes": 169784,
+    "sha256": "d9b5a2e671b5486b156f701e8264bbaa8a285ddf0c596a655ed47b25a5c35d01"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d55abfb65e9026e70e2bdb19feba7f4f35e48fef09d8aea0ec6be031dcba30"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/thin_geometry_0.png",
+    "bytes": 168288,
+    "sha256": "2fd9bd1290da9e9cf66375b7f7f17b3ed4bf8d4b83ad637e41e1533f4e4af3e8"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d55abfb65e9026e70e2bdb19feba7f4f35e48fef09d8aea0ec6be031dcba30"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/thin_geometry_1.png",
+    "bytes": 168288,
+    "sha256": "2fd9bd1290da9e9cf66375b7f7f17b3ed4bf8d4b83ad637e41e1533f4e4af3e8"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d55abfb65e9026e70e2bdb19feba7f4f35e48fef09d8aea0ec6be031dcba30"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/thin_geometry_2.png",
+    "bytes": 168288,
+    "sha256": "2fd9bd1290da9e9cf66375b7f7f17b3ed4bf8d4b83ad637e41e1533f4e4af3e8"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "1e8d3aa31e33a55852d69c476ad9f06e9f0eddd7f4cac1723bd5df94dfe7d9e5"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/transparency_0.png",
+    "bytes": 158929,
+    "sha256": "b39b8fab7a255ca4c976150cb016e2481eb40754cc88b2caf40ad8b38bfc3aa3"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "1e8d3aa31e33a55852d69c476ad9f06e9f0eddd7f4cac1723bd5df94dfe7d9e5"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/transparency_1.png",
+    "bytes": 158929,
+    "sha256": "b39b8fab7a255ca4c976150cb016e2481eb40754cc88b2caf40ad8b38bfc3aa3"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "1e8d3aa31e33a55852d69c476ad9f06e9f0eddd7f4cac1723bd5df94dfe7d9e5"
+  },
+  {
+    "path": "stress-bright/behavior45-pt-ap/transparency_2.png",
+    "bytes": 158929,
+    "sha256": "b39b8fab7a255ca4c976150cb016e2481eb40754cc88b2caf40ad8b38bfc3aa3"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "df21a550f7461b026106dc70cb9dae0bf30cd5e724d2c5f66a6e2ad7706a0c96"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/emission_0.png",
+    "bytes": 222808,
+    "sha256": "f115d6682f14c94ac6a6842428365111f9d7ef738f271e190cc6ee34da1ea9b2"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "df21a550f7461b026106dc70cb9dae0bf30cd5e724d2c5f66a6e2ad7706a0c96"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/emission_1.png",
+    "bytes": 222808,
+    "sha256": "f115d6682f14c94ac6a6842428365111f9d7ef738f271e190cc6ee34da1ea9b2"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "df21a550f7461b026106dc70cb9dae0bf30cd5e724d2c5f66a6e2ad7706a0c96"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/emission_2.png",
+    "bytes": 222808,
+    "sha256": "f115d6682f14c94ac6a6842428365111f9d7ef738f271e190cc6ee34da1ea9b2"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "f2dd0b05625b3de939fda2f229a564b4d64204838185b2bb9a38784f29a85c25"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/grazing_0.png",
+    "bytes": 153131,
+    "sha256": "196241f5397022c39a5c2c8769b04916614ee3bc6ab392d8c12b9db4f632001f"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "f2dd0b05625b3de939fda2f229a564b4d64204838185b2bb9a38784f29a85c25"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/grazing_1.png",
+    "bytes": 153131,
+    "sha256": "196241f5397022c39a5c2c8769b04916614ee3bc6ab392d8c12b9db4f632001f"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "f2dd0b05625b3de939fda2f229a564b4d64204838185b2bb9a38784f29a85c25"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/grazing_2.png",
+    "bytes": 153131,
+    "sha256": "196241f5397022c39a5c2c8769b04916614ee3bc6ab392d8c12b9db4f632001f"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/manifest.json",
+    "bytes": 4505,
+    "sha256": "08432f5460734dfe57f0d95ca851945addc62d9979eebc7558ae58c131f9fd2e"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/overview_0.png",
+    "bytes": 133301,
+    "sha256": "73e6f1a0123633edf54864a8756fb525a8c655208e61e8ea5eeb4a1b45654d8f"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/overview_1.png",
+    "bytes": 133301,
+    "sha256": "73e6f1a0123633edf54864a8756fb525a8c655208e61e8ea5eeb4a1b45654d8f"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/overview_2.png",
+    "bytes": 133301,
+    "sha256": "73e6f1a0123633edf54864a8756fb525a8c655208e61e8ea5eeb4a1b45654d8f"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "f822f73e588ca4c41e5ed741bec1a646a45918128666ec02a832f6ac2624248e"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/reflection_0.png",
+    "bytes": 169692,
+    "sha256": "b9874501fb952bd1c2ad7c2511e1e6a459367d06854e9aed358bce0668da78e4"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "f822f73e588ca4c41e5ed741bec1a646a45918128666ec02a832f6ac2624248e"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/reflection_1.png",
+    "bytes": 169692,
+    "sha256": "b9874501fb952bd1c2ad7c2511e1e6a459367d06854e9aed358bce0668da78e4"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "f822f73e588ca4c41e5ed741bec1a646a45918128666ec02a832f6ac2624248e"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/reflection_2.png",
+    "bytes": 169692,
+    "sha256": "b9874501fb952bd1c2ad7c2511e1e6a459367d06854e9aed358bce0668da78e4"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d55abfb65e9026e70e2bdb19feba7f4f35e48fef09d8aea0ec6be031dcba30"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/thin_geometry_0.png",
+    "bytes": 168282,
+    "sha256": "d6f3a53a026621a40e3a7221449fdc5c99b94e6a4e9f733fbc004c54c5775d11"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d55abfb65e9026e70e2bdb19feba7f4f35e48fef09d8aea0ec6be031dcba30"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/thin_geometry_1.png",
+    "bytes": 168282,
+    "sha256": "d6f3a53a026621a40e3a7221449fdc5c99b94e6a4e9f733fbc004c54c5775d11"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "46d55abfb65e9026e70e2bdb19feba7f4f35e48fef09d8aea0ec6be031dcba30"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/thin_geometry_2.png",
+    "bytes": 168282,
+    "sha256": "d6f3a53a026621a40e3a7221449fdc5c99b94e6a4e9f733fbc004c54c5775d11"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "1e8d3aa31e33a55852d69c476ad9f06e9f0eddd7f4cac1723bd5df94dfe7d9e5"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/transparency_0.png",
+    "bytes": 159119,
+    "sha256": "f4cb20d0e14c21d208c3a4b41fc77dbfa68b943d6fe545aba2ed06a1a9cd09c2"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "1e8d3aa31e33a55852d69c476ad9f06e9f0eddd7f4cac1723bd5df94dfe7d9e5"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/transparency_1.png",
+    "bytes": 159119,
+    "sha256": "f4cb20d0e14c21d208c3a4b41fc77dbfa68b943d6fe545aba2ed06a1a9cd09c2"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "1e8d3aa31e33a55852d69c476ad9f06e9f0eddd7f4cac1723bd5df94dfe7d9e5"
+  },
+  {
+    "path": "stress-bright/behavior45-reference-ap/transparency_2.png",
+    "bytes": 159119,
+    "sha256": "f4cb20d0e14c21d208c3a4b41fc77dbfa68b943d6fe545aba2ed06a1a9cd09c2"
+  },
+  {
+    "path": "stress-bright/isaac-ap/emission_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/isaac-ap/emission_0.png",
+    "bytes": 203164,
+    "sha256": "07552329f04d31a5f271448de1123da8550473db27a33617801be960cff6b16e"
+  },
+  {
+    "path": "stress-bright/isaac-ap/emission_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/isaac-ap/emission_1.png",
+    "bytes": 203775,
+    "sha256": "b789e28f26b3375439a668e2954c685d096c53d3f137ce13739d123dd996fb1c"
+  },
+  {
+    "path": "stress-bright/isaac-ap/emission_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "396780c4cd2ba3cd36fa838d3d70b32ae1a4e5856756329f81bc2599436a9bd3"
+  },
+  {
+    "path": "stress-bright/isaac-ap/emission_2.png",
+    "bytes": 208421,
+    "sha256": "742d591e64374c6d703aea5979e195e01dceb1a40ea3af34cc4c2dbd3dde84cf"
+  },
+  {
+    "path": "stress-bright/isaac-ap/grazing_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/isaac-ap/grazing_0.png",
+    "bytes": 148544,
+    "sha256": "864c80ead888898172ad9cae072de3751f22484ca5d33b68ef98ff7f47906fe4"
+  },
+  {
+    "path": "stress-bright/isaac-ap/grazing_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/isaac-ap/grazing_1.png",
+    "bytes": 149487,
+    "sha256": "666a7420803fb31a54dcb57a4f5ed798ce0bd7d78219c46d65f8a9870ffcd405"
+  },
+  {
+    "path": "stress-bright/isaac-ap/grazing_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "b85896f8d26fb2dcfc3fd70772ea8f4bf69540b205858228e41765eb191b6bf7"
+  },
+  {
+    "path": "stress-bright/isaac-ap/grazing_2.png",
+    "bytes": 151073,
+    "sha256": "ed9abb4ec45d69c05d1736743c7556a5554031dd66800a658ecabb9a5e8563d2"
+  },
+  {
+    "path": "stress-bright/isaac-ap/manifest.json",
+    "bytes": 3338,
+    "sha256": "7a6b92fac9c57004eeaea5bf4c581b8068498ba63a4c64a469954239c3fa80b9"
+  },
+  {
+    "path": "stress-bright/isaac-ap/overview_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/isaac-ap/overview_0.png",
+    "bytes": 133111,
+    "sha256": "b44326ae30b46f47f9f03a912335256232e26ea617e5a194d309a21966bf4f0c"
+  },
+  {
+    "path": "stress-bright/isaac-ap/overview_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/isaac-ap/overview_1.png",
+    "bytes": 134638,
+    "sha256": "3d7776b01dee58bbaaa6effe0293453ddbaf214fcdd7b45b6f8bf8539c36f728"
+  },
+  {
+    "path": "stress-bright/isaac-ap/overview_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "27caf8fcb9f367e41222f06f9395d0bf7a91d22cee82fdd57a240f41cbc03544"
+  },
+  {
+    "path": "stress-bright/isaac-ap/overview_2.png",
+    "bytes": 136545,
+    "sha256": "f43391aa14f67dcb87c30b170d57b6111f0e4c3b79cfbe9db28e17110807187b"
+  },
+  {
+    "path": "stress-bright/isaac-ap/reflection_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/isaac-ap/reflection_0.png",
+    "bytes": 159908,
+    "sha256": "3c77f1c93056a88f441de3888d16fcc26f5049a98bda6d2eccbb148b291bed16"
+  },
+  {
+    "path": "stress-bright/isaac-ap/reflection_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/isaac-ap/reflection_1.png",
+    "bytes": 162509,
+    "sha256": "f2642dfaf73b33c0e55e4ab8c17c56f41c27f32923819b4f62095e6288f1ec40"
+  },
+  {
+    "path": "stress-bright/isaac-ap/reflection_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "867c47ffcb4ac9d5e0a4084095fe5779f3a0dd74af7333dea6dcaa10dab1bc72"
+  },
+  {
+    "path": "stress-bright/isaac-ap/reflection_2.png",
+    "bytes": 166024,
+    "sha256": "dc82949206bdc99a735615f6f9d80975513d3f125bad46e9cc3c3291150cfce1"
+  },
+  {
+    "path": "stress-bright/isaac-ap/thin_geometry_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/isaac-ap/thin_geometry_0.png",
+    "bytes": 177005,
+    "sha256": "d7427a2c35417dfd15bc6b79cbcea460e337332d866f800e3f83d7187b762de7"
+  },
+  {
+    "path": "stress-bright/isaac-ap/thin_geometry_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/isaac-ap/thin_geometry_1.png",
+    "bytes": 179705,
+    "sha256": "6e669af01c13885de91975ef61428e0e39d88e3a41d600b81713989773ca854d"
+  },
+  {
+    "path": "stress-bright/isaac-ap/thin_geometry_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "9b2a4553d7c04bc5513cae80e464067c693e9a7a83ec6726f5c6e151df257b03"
+  },
+  {
+    "path": "stress-bright/isaac-ap/thin_geometry_2.png",
+    "bytes": 182563,
+    "sha256": "4bd3754f8edcd83973422933b64f0cabf3ec9dd3a4415ce1da14df9497e22d7e"
+  },
+  {
+    "path": "stress-bright/isaac-ap/transparency_0-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/isaac-ap/transparency_0.png",
+    "bytes": 161678,
+    "sha256": "5818113e647553a28a5ffc182dec1c15dcc3527465a1dd25510eec6c7f3747be"
+  },
+  {
+    "path": "stress-bright/isaac-ap/transparency_1-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/isaac-ap/transparency_1.png",
+    "bytes": 161907,
+    "sha256": "27d6d693bce34d8f381a43607c033823821b0e67c8a6424602689376d7689d9e"
+  },
+  {
+    "path": "stress-bright/isaac-ap/transparency_2-depth.npy",
+    "bytes": 921728,
+    "sha256": "114ae79e9b60e7279bd11d7a0b257857c0c31bea1a503af431736e1b7fe2e922"
+  },
+  {
+    "path": "stress-bright/isaac-ap/transparency_2.png",
+    "bytes": 162897,
+    "sha256": "039d2a9300edb19f66508a0d652a69a5779d66b4fd096cb8d4b9d97ba0574fa2"
+  },
+  {
+    "path": "stress-bright/scene/cameras.json",
+    "bytes": 9445,
+    "sha256": "80db67567fb68b5f847e3465c9c96eca25ff119e276d424967cf76a65914267d"
+  },
+  {
+    "path": "stress-bright/scene/valley.usdc",
+    "bytes": 5261,
+    "sha256": "7a068c59dd25a2907423af40c0f1a54dfc67ebf5cd286f34dee029e2e7fe5810"
+  }
+]

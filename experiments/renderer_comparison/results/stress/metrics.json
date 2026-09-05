@@ -1,0 +1,302 @@
+{
+  "pairs": [
+    {
+      "view": "overview_2",
+      "left": "isaac-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 12.26373263888889,
+      "pixel_fraction_over_10": 0.5634982638888889,
+      "p99": 81.0
+    },
+    {
+      "view": "overview_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 0.6635778356481481,
+      "pixel_fraction_over_10": 0.003728298611111111,
+      "p99": 4.0
+    },
+    {
+      "view": "reflection_2",
+      "left": "isaac-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 19.809286747685185,
+      "pixel_fraction_over_10": 0.7263888888888889,
+      "p99": 103.0
+    },
+    {
+      "view": "reflection_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 0.13059895833333332,
+      "pixel_fraction_over_10": 0.00010416666666666667,
+      "p99": 1.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "isaac-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 18.592201967592594,
+      "pixel_fraction_over_10": 0.6117057291666667,
+      "p99": 131.0
+    },
+    {
+      "view": "transparency_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 0.13583188657407408,
+      "pixel_fraction_over_10": 8.680555555555556e-05,
+      "p99": 1.0
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "isaac-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 18.266843171296298,
+      "pixel_fraction_over_10": 0.5813107638888889,
+      "p99": 107.0
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 0.3415928819444444,
+      "pixel_fraction_over_10": 0.009127604166666666,
+      "p99": 8.0
+    },
+    {
+      "view": "emission_2",
+      "left": "isaac-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 12.827345196759259,
+      "pixel_fraction_over_10": 0.6806032986111111,
+      "p99": 74.0
+    },
+    {
+      "view": "emission_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 0.07141203703703704,
+      "pixel_fraction_over_10": 3.472222222222222e-05,
+      "p99": 1.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "isaac-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 12.521807002314814,
+      "pixel_fraction_over_10": 0.3992144097222222,
+      "p99": 97.0
+    },
+    {
+      "view": "grazing_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-pt-ap",
+      "mae": 0.18602430555555555,
+      "pixel_fraction_over_10": 0.0013194444444444445,
+      "p99": 2.0
+    }
+  ],
+  "repeats": [
+    {
+      "backend": "isaac-ap",
+      "view": "overview_2",
+      "mae": 1.1510112847222222
+    },
+    {
+      "backend": "isaac-ap",
+      "view": "reflection_2",
+      "mae": 1.1734186921296297
+    },
+    {
+      "backend": "isaac-ap",
+      "view": "transparency_2",
+      "mae": 0.47046006944444446
+    },
+    {
+      "backend": "isaac-ap",
+      "view": "thin_geometry_2",
+      "mae": 0.3918388310185185
+    },
+    {
+      "backend": "isaac-ap",
+      "view": "emission_2",
+      "mae": 0.6818619791666667
+    },
+    {
+      "backend": "isaac-ap",
+      "view": "grazing_2",
+      "mae": 0.4164424189814815
+    },
+    {
+      "backend": "behavior45-pt-ap",
+      "view": "overview_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior45-pt-ap",
+      "view": "reflection_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior45-pt-ap",
+      "view": "transparency_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior45-pt-ap",
+      "view": "thin_geometry_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior45-pt-ap",
+      "view": "emission_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior45-pt-ap",
+      "view": "grazing_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior-pathtracing-ap",
+      "view": "overview_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior-pathtracing-ap",
+      "view": "reflection_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior-pathtracing-ap",
+      "view": "transparency_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior-pathtracing-ap",
+      "view": "thin_geometry_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior-pathtracing-ap",
+      "view": "emission_2",
+      "mae": 0.0
+    },
+    {
+      "backend": "behavior-pathtracing-ap",
+      "view": "grazing_2",
+      "mae": 0.0
+    }
+  ],
+  "diagnostic": [
+    {
+      "view": "overview_2",
+      "left": "isaac-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 12.26373263888889
+    },
+    {
+      "view": "overview_2",
+      "left": "behavior45-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.0
+    },
+    {
+      "view": "overview_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.6635778356481481
+    },
+    {
+      "view": "reflection_2",
+      "left": "isaac-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 19.809116030092593
+    },
+    {
+      "view": "reflection_2",
+      "left": "behavior45-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.008330439814814815
+    },
+    {
+      "view": "reflection_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.13061921296296297
+    },
+    {
+      "view": "transparency_2",
+      "left": "isaac-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 18.59242332175926
+    },
+    {
+      "view": "transparency_2",
+      "left": "behavior45-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.008036747685185185
+    },
+    {
+      "view": "transparency_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.1356915509259259
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "isaac-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 18.26734519675926
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "behavior45-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.009217303240740741
+    },
+    {
+      "view": "thin_geometry_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.3413599537037037
+    },
+    {
+      "view": "emission_2",
+      "left": "isaac-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 12.827609953703703
+    },
+    {
+      "view": "emission_2",
+      "left": "behavior45-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.01345630787037037
+    },
+    {
+      "view": "emission_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.07172019675925925
+    },
+    {
+      "view": "grazing_2",
+      "left": "isaac-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 12.521776620370371
+    },
+    {
+      "view": "grazing_2",
+      "left": "behavior45-pt-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.0076171875
+    },
+    {
+      "view": "grazing_2",
+      "left": "behavior-pathtracing-ap",
+      "right": "behavior45-reference-ap",
+      "mae": 0.18584056712962962
+    }
+  ]
+}

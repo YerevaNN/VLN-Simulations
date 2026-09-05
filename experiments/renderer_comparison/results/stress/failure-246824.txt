@@ -1,0 +1,16 @@
+| Driver Version: 580.105.08    | Graphics API: Vulkan
+2026-09-05 22:10:32 [31,927ms] [Warning] [carb.graphics-vulkan.plugin] aftermath reports no active shader during GPU crash
+2026-09-05 22:10:32 [31,927ms] [Error] [carb.graphics-vulkan.plugin] GPU crash is detected. Trying to write crash dump into: /mnt/weka/hrant/rtx-vln-sample-20260905/cache/comparison-kit-behavior45-pt/logs/Kit/Isaac-Sim Python/4.5/kit_20260906_021000-0.nv-gpudmp
+2026-09-05 22:10:32 [31,930ms] [Error] [carb.graphics-vulkan.plugin] GPU crash dump is successfully written
+2026-09-05 22:10:32 [32,080ms] [Error] [carb.graphics-vulkan.plugin] VkResult: ERROR_DEVICE_LOST
+2026-09-05 22:10:32 [32,080ms] [Error] [gpu.foundation.plugin] A GPU crash occurred. Exiting the application...
+Fatal Python error: Segmentation fault
+--- final log lines ---
+
+Current thread 0x00007ffff7e3fb80 (most recent call first):
+  File "/mnt/weka/hrant/rtx-vln-sample-20260905/runtime/isaac-sim-4.5/exts/isaacsim.simulation_app/isaacsim/simulation_app/simulation_app.py", line 253 in __init__
+  File "/mnt/weka/hrant/rtx-vln-sample-20260905/repo/experiments/renderer_comparison/run_isaac.py", line 35 in <module>
+
+Extension modules: omni.mdl.pymdlsdk._pymdlsdk, psutil._psutil_linux, psutil._psutil_posix, numpy.core._multiarray_umath, numpy.core._multiarray_tests, numpy.linalg._umath_linalg, numpy.fft._pocketfft_internal, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, scipy._lib._ccallback_c, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.sparse.linalg._isolve._iterative, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg._cythonized_array_utils, scipy.linalg._flinalg, scipy.linalg._solve_toeplitz, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg.cython_lapack, scipy.linalg.cython_blas, scipy.linalg._matfuncs_expm, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial.transform._rotation, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, PIL._imagingft, charset_normalizer.md, requests.packages.charset_normalizer.md, requests.packages.chardet.md, osqp._osqp, scipy.io.matlab._mio_utils, scipy.io.matlab._streams, scipy.io.matlab._mio5_utils, yaml._yaml (total: 73)
+/mnt/weka/hrant/rtx-vln-sample-20260905/runtime/isaac-sim-4.5/python.sh: line 41: 1090115 Segmentation fault      (core dumped) $python_exe "$@" $args
+There was an error running python

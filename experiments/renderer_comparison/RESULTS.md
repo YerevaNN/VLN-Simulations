@@ -61,6 +61,11 @@ runs. [Slurm accounting](results/slurm-accounting.txt) records each attempt.
 
 ## Scope and reproducibility
 
+The subsequent [adversarial material test](STRESS_RESULTS.md) exposes a large
+transparency appearance mismatch between real-time and path tracing on A6000.
+It also records H100 startup failures and a pending matched-node control;
+the valley's agreement should not be generalized to all materials or setups.
+
 The path-tracing override requests four samples per update, a total sample
 limit of 256, 32 maximum bounces and OptiX denoising. It is distinct from the
 default BEHAVIOR real-time configuration. The scripts record the applied
