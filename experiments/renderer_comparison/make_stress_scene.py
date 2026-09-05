@@ -45,7 +45,7 @@ shape('hot_emitter',UsdGeom.Sphere,(-.4,2.5,1.5),(.15,.15,.15),glow)
 for i in range(48):
     shape('bar_%02d'%i,UsdGeom.Cube,(-3+i*.125,3,1.3),(.015,.04,2.6),black)
 light=UsdLux.RectLight.Define(stage,'/World/Key')
-light.CreateIntensityAttr(1200); light.CreateWidthAttr(1); light.CreateHeightAttr(1)
+light.CreateIntensityAttr(120000); light.CreateWidthAttr(1); light.CreateHeightAttr(1)
 UsdGeom.Xformable(light).AddTranslateOp().Set(Gf.Vec3d(0,0,4.5))
 stage.GetRootLayer().Save()
 views=[('overview',(0,-8,3),(0,1,1.5)),('reflection',(-3,-3,2),(-1,3,1.5)),

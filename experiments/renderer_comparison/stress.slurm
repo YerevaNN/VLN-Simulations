@@ -15,4 +15,5 @@ if [[ $backend == isaac-ap || $backend == behavior-pathtracing-ap ]]; then
  export PYTHONPATH="$base/runtime/isaac-python-deps"
 fi
 if [[ $backend == isaac-ap ]]; then render=isaac-ap; fi
-exec "$isaac/python.sh" experiments/renderer_comparison/run_isaac.py --output "$base/stress/$backend" --scene-dir "$base/stress/scene" --assets-root "$base/assets/polyhaven-v2" --backend "$render" --behavior-root "$base/runtime/behavior-3.7.1-source"
+suite=${STRESS_SUITE:-stress-bright}
+exec "$isaac/python.sh" experiments/renderer_comparison/run_isaac.py --output "$base/$suite/$backend" --scene-dir "$base/$suite/scene" --assets-root "$base/assets/polyhaven-v2" --backend "$render" --behavior-root "$base/runtime/behavior-3.7.1-source"
