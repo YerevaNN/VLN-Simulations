@@ -12,6 +12,7 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import shutil
 from types import SimpleNamespace
 
 p = argparse.ArgumentParser()
@@ -25,6 +26,7 @@ p.add_argument('--prepare', action='store_true')
 p.add_argument('--views-only', action='store_true')
 p.add_argument('--quality-spp', type=int, default=4)
 p.add_argument('--disable-denoiser', action='store_true')
+p.add_argument('--omnigibson-experience', action='store_true')
 a = p.parse_args()
 out = Path(a.output); out.mkdir(parents=True, exist_ok=True)
 scene_dir = Path(a.scene_dir); scene_dir.mkdir(parents=True, exist_ok=True)
@@ -34,11 +36,25 @@ head = (git_dir/'HEAD').read_text().strip()
 run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
 from isaacsim import SimulationApp
 initial_renderer = a.initial_renderer or ('PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'))
+launch_args=['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer]
+experience={}
+experience_hash=None
+if a.omnigibson_experience:
+    runtime=Path(os.environ['ISAAC_PATH'])
+    private=out/'experience'; (private/'apps').mkdir(parents=True,exist_ok=True)
+    for folder in ['exts','extscache','extsPhysics','extsUser','extsDeprecated']:
+        if (runtime/folder).exists() and not (private/folder).exists(): (private/folder).symlink_to(runtime/folder,target_is_directory=True)
+    source=Path(a.behavior_root)/'OmniGibson/omnigibson/omnigibson_5_1_0.kit'
+    kit=private/'apps'/source.name; shutil.copy2(source,kit)
+    experience_hash=hashlib.sha256(source.read_bytes()).hexdigest()
+    os.environ['MDL_USER_PATH']=str(Path(a.behavior_root)/'OmniGibson/omnigibson/materials')
+    experience={'experience':str(kit)}
+    launch_args+=['--/persistent/rtx/modes/rt/enabled=true','--/persistent/rtx/modes/rt2/enabled=true','--/persistent/rtx/modes/pt/enabled=true']
 app = SimulationApp({'headless': True, 'width': 640, 'height': 360,
                      'renderer': initial_renderer,
-                     'extra_args': ['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer],
+                     'extra_args': launch_args,
                      'limit_cpu_threads': int(os.environ.get('OMP_NUM_THREADS', '8')),
-                     'fast_shutdown': True})
+                     'fast_shutdown': True}, **experience)
 print('PHASE app_started', flush=True)
 import carb
 import numpy as np
@@ -109,6 +125,8 @@ else:
 
 config = json.loads((scene_dir / 'cameras.json').read_text())
 print('PHASE scene_opened', flush=True)
+if a.omnigibson_experience:
+    for key,value in applied.items(): settings.set(key,value)
 camera = UsdGeom.Camera.Define(stage, '/ComparisonCamera')
 camera.CreateFocalLengthAttr(config['focal_length'])
 camera.CreateHorizontalApertureAttr(config['horizontal_aperture'])
@@ -120,7 +138,7 @@ rgb = rep.AnnotatorRegistry.get_annotator('rgb'); rgb.attach([product])
 depth = rep.AnnotatorRegistry.get_annotator('distance_to_camera'); depth.attach([product])
 for step in range(80):
     app.update()
-    if step % 20 == 19: print('PHASE warmup', step + 1, flush=True)
+    if step % 20 == 19: print('PHASE warmup', step + 1, settings.get('/rtx/rendermode'), flush=True)
 records = []
 for pose in config['poses']:
     if a.views_only and pose['kind'] != 'view': continue
@@ -138,7 +156,7 @@ for pose in config['poses']:
     Image.fromarray(pixels[:,:,:3]).save(out / (pose['name']+'.png'))
     if pose['kind']=='view': np.save(out/(pose['name']+'-depth.npy'), np.asarray(depth.get_data()))
     records.append({'name':pose['name'],'seconds':time.perf_counter()-start,'mean':float(pixels[:,:,:3].mean()),
-                    'std':float(pixels[:,:,:3].std())})
+                    'std':float(pixels[:,:,:3].std()),'render_mode':settings.get('/rtx/rendermode')})
     print('CAPTURE', a.backend, records[-1], flush=True)
 metadata = {'backend':a.backend,'frames':records,'elapsed_s':time.perf_counter()-t0,
             'scene_sha256':hashlib.sha256((scene_dir/'valley.usdc').read_bytes()).hexdigest(),
@@ -146,6 +164,7 @@ metadata = {'backend':a.backend,'frames':records,'elapsed_s':time.perf_counter()
             'valley_source_sha256':hashlib.sha256(Path(natural_valley.__file__).read_bytes()).hexdigest(),
             'behavior_source_sha256':behavior_hash,'applied_settings':applied,
             'render_mode':settings.get('/rtx/rendermode'),
+            'experience_sha256':experience_hash,'launch_args':launch_args,
             'gpu':subprocess.check_output(['nvidia-smi','--query-gpu=uuid,name,driver_version','--format=csv'],text=True),
             'slurm_job_id':os.environ.get('SLURM_JOB_ID'),
             'git_commit':run_commit,
