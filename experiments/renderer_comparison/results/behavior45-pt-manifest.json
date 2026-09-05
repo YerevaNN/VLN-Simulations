@@ -1,0 +1,367 @@
+{
+  "backend": "behavior-pathtracing",
+  "frames": [
+    {
+      "name": "launch",
+      "seconds": 3.1721337259514257,
+      "mean": 86.55973813657407,
+      "std": 41.48612310787434
+    },
+    {
+      "name": "river",
+      "seconds": 3.1357421539723873,
+      "mean": 89.63653501157407,
+      "std": 40.711551653698066
+    },
+    {
+      "name": "bridge",
+      "seconds": 2.978066309937276,
+      "mean": 89.2493431712963,
+      "std": 37.1911064369706
+    },
+    {
+      "name": "upper_valley",
+      "seconds": 2.912690243101679,
+      "mean": 105.03211082175926,
+      "std": 41.29424286833138
+    },
+    {
+      "name": "forest",
+      "seconds": 2.897124702925794,
+      "mean": 60.22925925925926,
+      "std": 35.36957528302118
+    },
+    {
+      "name": "overview",
+      "seconds": 2.9236987399635836,
+      "mean": 95.73916087962964,
+      "std": 42.43418063017372
+    },
+    {
+      "name": "flight_000",
+      "seconds": 1.3114316200371832,
+      "mean": 90.84101996527778,
+      "std": 40.66977922331391
+    },
+    {
+      "name": "flight_001",
+      "seconds": 1.2785950799006969,
+      "mean": 90.6943359375,
+      "std": 40.82185031681889
+    },
+    {
+      "name": "flight_002",
+      "seconds": 1.2342923160176724,
+      "mean": 90.69465133101852,
+      "std": 40.95188917009903
+    },
+    {
+      "name": "flight_003",
+      "seconds": 1.2702347460435703,
+      "mean": 90.52040075231481,
+      "std": 41.02266033275875
+    },
+    {
+      "name": "flight_004",
+      "seconds": 1.2927469500573352,
+      "mean": 90.32709346064814,
+      "std": 41.085049290510156
+    },
+    {
+      "name": "flight_005",
+      "seconds": 1.2944612440187484,
+      "mean": 89.96511863425926,
+      "std": 41.16313266801925
+    },
+    {
+      "name": "flight_006",
+      "seconds": 1.3078760880744085,
+      "mean": 89.79034143518518,
+      "std": 41.02809200068601
+    },
+    {
+      "name": "flight_007",
+      "seconds": 1.2594276639865711,
+      "mean": 89.82140914351852,
+      "std": 40.991792814012264
+    },
+    {
+      "name": "flight_008",
+      "seconds": 1.3042402260471135,
+      "mean": 89.97368200231482,
+      "std": 41.04921409468443
+    },
+    {
+      "name": "flight_009",
+      "seconds": 1.281352246995084,
+      "mean": 90.07107638888888,
+      "std": 41.287923086816434
+    },
+    {
+      "name": "flight_010",
+      "seconds": 1.317144839093089,
+      "mean": 90.04281539351852,
+      "std": 41.37715144416958
+    },
+    {
+      "name": "flight_011",
+      "seconds": 1.3206554249627516,
+      "mean": 90.2722193287037,
+      "std": 41.493327633154045
+    },
+    {
+      "name": "flight_012",
+      "seconds": 1.2791162179782987,
+      "mean": 90.22382667824074,
+      "std": 41.45940902775398
+    },
+    {
+      "name": "flight_013",
+      "seconds": 1.3269951640395448,
+      "mean": 90.12047309027778,
+      "std": 41.27575208162172
+    },
+    {
+      "name": "flight_014",
+      "seconds": 1.2868598200147972,
+      "mean": 90.08045717592593,
+      "std": 41.11496337787665
+    },
+    {
+      "name": "flight_015",
+      "seconds": 1.277518483926542,
+      "mean": 90.3039134837963,
+      "std": 41.05885943847379
+    },
+    {
+      "name": "flight_016",
+      "seconds": 1.3164497099351138,
+      "mean": 90.45310474537037,
+      "std": 41.104680649789806
+    },
+    {
+      "name": "flight_017",
+      "seconds": 1.292327081086114,
+      "mean": 90.60193431712963,
+      "std": 41.22136765853799
+    },
+    {
+      "name": "flight_018",
+      "seconds": 1.2986461060354486,
+      "mean": 90.87282262731482,
+      "std": 41.2880038085749
+    },
+    {
+      "name": "flight_019",
+      "seconds": 1.307979799923487,
+      "mean": 91.04504050925927,
+      "std": 41.31240222082593
+    },
+    {
+      "name": "flight_020",
+      "seconds": 1.339057703036815,
+      "mean": 91.01741030092593,
+      "std": 41.21668717433258
+    },
+    {
+      "name": "flight_021",
+      "seconds": 1.3148656919365749,
+      "mean": 91.02109085648148,
+      "std": 40.98031826563363
+    },
+    {
+      "name": "flight_022",
+      "seconds": 1.2653796470258385,
+      "mean": 91.0052025462963,
+      "std": 40.79782032256627
+    },
+    {
+      "name": "flight_023",
+      "seconds": 1.278515693033114,
+      "mean": 91.12444155092592,
+      "std": 40.769303225355216
+    },
+    {
+      "name": "flight_024",
+      "seconds": 1.3212807989912108,
+      "mean": 91.44063657407408,
+      "std": 40.80157013264584
+    },
+    {
+      "name": "flight_025",
+      "seconds": 1.3055995419854298,
+      "mean": 91.72317274305556,
+      "std": 40.82620168805787
+    },
+    {
+      "name": "flight_026",
+      "seconds": 1.3104272399796173,
+      "mean": 92.03047453703704,
+      "std": 40.858172470696545
+    },
+    {
+      "name": "flight_027",
+      "seconds": 1.302595451939851,
+      "mean": 92.11743344907407,
+      "std": 40.913117419449115
+    },
+    {
+      "name": "flight_028",
+      "seconds": 1.312482650973834,
+      "mean": 92.07605034722222,
+      "std": 40.587370684155196
+    },
+    {
+      "name": "flight_029",
+      "seconds": 1.3024966919329017,
+      "mean": 92.08841435185185,
+      "std": 40.36880540324167
+    },
+    {
+      "name": "flight_030",
+      "seconds": 1.2962124770274386,
+      "mean": 92.14973524305556,
+      "std": 40.33620469884902
+    },
+    {
+      "name": "flight_031",
+      "seconds": 1.34278126899153,
+      "mean": 92.26483796296296,
+      "std": 40.32798263230305
+    },
+    {
+      "name": "flight_032",
+      "seconds": 1.393444532994181,
+      "mean": 92.45233072916666,
+      "std": 40.38779859899553
+    },
+    {
+      "name": "flight_033",
+      "seconds": 1.3450023940531537,
+      "mean": 92.54038194444445,
+      "std": 40.542547753272
+    },
+    {
+      "name": "flight_034",
+      "seconds": 1.3226375679951161,
+      "mean": 92.54033275462963,
+      "std": 40.62096599635756
+    },
+    {
+      "name": "flight_035",
+      "seconds": 1.368259115028195,
+      "mean": 92.54533564814815,
+      "std": 40.4627955072028
+    },
+    {
+      "name": "flight_036",
+      "seconds": 1.3952841409482062,
+      "mean": 92.52582320601852,
+      "std": 40.3099522070565
+    },
+    {
+      "name": "flight_037",
+      "seconds": 1.3586141630075872,
+      "mean": 92.46881365740741,
+      "std": 40.21967963376376
+    },
+    {
+      "name": "flight_038",
+      "seconds": 1.338122600922361,
+      "mean": 92.4066015625,
+      "std": 40.216160839942134
+    },
+    {
+      "name": "flight_039",
+      "seconds": 1.3758868150180206,
+      "mean": 92.5207740162037,
+      "std": 40.30820845850998
+    },
+    {
+      "name": "flight_040",
+      "seconds": 1.368613915052265,
+      "mean": 92.62248263888888,
+      "std": 40.4071223449235
+    },
+    {
+      "name": "flight_041",
+      "seconds": 1.338713921024464,
+      "mean": 92.80196903935185,
+      "std": 40.49744395512323
+    },
+    {
+      "name": "flight_042",
+      "seconds": 1.3424048809101805,
+      "mean": 92.91415364583334,
+      "std": 40.36820335263486
+    },
+    {
+      "name": "flight_043",
+      "seconds": 1.3667589490069076,
+      "mean": 93.06583912037037,
+      "std": 40.17027620713419
+    },
+    {
+      "name": "flight_044",
+      "seconds": 1.3399685099720955,
+      "mean": 93.206640625,
+      "std": 40.04846430188226
+    },
+    {
+      "name": "flight_045",
+      "seconds": 1.358156030997634,
+      "mean": 93.35002170138888,
+      "std": 39.92387085048082
+    },
+    {
+      "name": "flight_046",
+      "seconds": 1.3350786110386252,
+      "mean": 93.4246166087963,
+      "std": 40.00381785433778
+    },
+    {
+      "name": "flight_047",
+      "seconds": 1.3347684990148991,
+      "mean": 93.50594039351851,
+      "std": 40.07248917775811
+    }
+  ],
+  "elapsed_s": 427.89349308493547,
+  "scene_sha256": "c115366f1daabca92f0663e972f1614ca5fc09a41b286e52bc77487e0ec57aef",
+  "cameras_sha256": "549f76ac690ac87710f7dd073364ab54283914fc5b142100357971a6cbd3c171",
+  "valley_source_sha256": "843f0c859a7e001f0b1aed3654d4733575f79a1e530943d365fccc75a064c952",
+  "behavior_source_sha256": "eba2125ec848475f35e42c47e2cd2de30eac739d66ee6643ab64684cb8fd13ab",
+  "applied_settings": {
+    "/rtx/reflections/enabled": true,
+    "/rtx/indirectDiffuse/enabled": true,
+    "/rtx/post/dlss/execMode": 0,
+    "/rtx/ambientOcclusion/enabled": true,
+    "/rtx/directLighting/sampledLighting/enabled": true,
+    "/rtx/raytracing/showLights": 1,
+    "/rtx/sceneDb/ambientLightIntensity": 1.0,
+    "/app/renderer/skipMaterialLoading": false,
+    "/rtx/flow/enabled": true,
+    "/physics/updateToUsd": false,
+    "/physics/updateParticlesToUsd": true,
+    "/physics/updateVelocitiesToUsd": false,
+    "/physics/updateForceSensorsToUsd": false,
+    "/physics/updateResidualsToUsd": false,
+    "/physics/outputVelocitiesLocalSpace": false,
+    "/physics/fabricUpdateTransformations": true,
+    "/physics/fabricUpdateVelocities": false,
+    "/physics/fabricUpdateForceSensors": false,
+    "/physics/fabricUpdateJointStates": false,
+    "/physics/fabricUpdateResiduals": false,
+    "/physics/fabricUseGPUInterop": true,
+    "/rtx/rendermode": "PathTracing",
+    "/rtx/pathtracing/spp": 4,
+    "/rtx/pathtracing/totalSpp": 256,
+    "/rtx/pathtracing/maxBounces": 32,
+    "/rtx/pathtracing/optixDenoiser/enabled": true
+  },
+  "render_mode": "PathTracing",
+  "gpu": "uuid, name, driver_version\nGPU-cf741e00-118b-ec8f-3480-8936651592e1, NVIDIA H100 80GB HBM3, 580.173.02\n",
+  "slurm_job_id": "246811",
+  "git_commit": "4e5463c07fcfd5848dc8d82daf010207e62ec74d",
+  "scope": "Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics."
+}

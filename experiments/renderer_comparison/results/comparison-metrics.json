@@ -1,0 +1,182 @@
+[
+  {
+    "left": "isaac-ap",
+    "right": "newton",
+    "view": "launch",
+    "rgb_mae_0_255": 32.56486129760742,
+    "compared_depth_pixel_fraction": 0.6890451388888889,
+    "depth_abs_median_m": 1.1444091796875e-05,
+    "depth_abs_p95_m": 0.7468700408935547,
+    "depth_within_10cm_fraction": 0.9125702335659754
+  },
+  {
+    "left": "isaac-ap",
+    "right": "newton",
+    "view": "river",
+    "rgb_mae_0_255": 30.025781631469727,
+    "compared_depth_pixel_fraction": 0.7846223958333334,
+    "depth_abs_median_m": 1.52587890625e-05,
+    "depth_abs_p95_m": 17.232624053955078,
+    "depth_within_10cm_fraction": 0.9283924393036724
+  },
+  {
+    "left": "isaac-ap",
+    "right": "newton",
+    "view": "bridge",
+    "rgb_mae_0_255": 22.2488956451416,
+    "compared_depth_pixel_fraction": 0.9851996527777778,
+    "depth_abs_median_m": 1.52587890625e-05,
+    "depth_abs_p95_m": 0.00018310546875,
+    "depth_within_10cm_fraction": 0.9585532402308472
+  },
+  {
+    "left": "isaac-ap",
+    "right": "newton",
+    "view": "upper_valley",
+    "rgb_mae_0_255": 34.093109130859375,
+    "compared_depth_pixel_fraction": 0.8876519097222222,
+    "depth_abs_median_m": 3.0517578125e-05,
+    "depth_abs_p95_m": 0.9581588506698608,
+    "depth_within_10cm_fraction": 0.9161724078918416
+  },
+  {
+    "left": "isaac-ap",
+    "right": "newton",
+    "view": "forest",
+    "rgb_mae_0_255": 31.967273712158203,
+    "compared_depth_pixel_fraction": 0.7828255208333333,
+    "depth_abs_median_m": 3.0517578125e-05,
+    "depth_abs_p95_m": 0.12422485649585724,
+    "depth_within_10cm_fraction": 0.9481822768527913
+  },
+  {
+    "left": "isaac-ap",
+    "right": "newton",
+    "view": "overview",
+    "rgb_mae_0_255": 29.418235778808594,
+    "compared_depth_pixel_fraction": 0.7993142361111111,
+    "depth_abs_median_m": 3.0517578125e-05,
+    "depth_abs_p95_m": 0.00018310546875,
+    "depth_within_10cm_fraction": 0.9540296043700655
+  },
+  {
+    "left": "behavior-pathtracing-ap",
+    "right": "behavior45-pt",
+    "view": "launch",
+    "rgb_mae_0_255": 2.0493924617767334,
+    "compared_depth_pixel_fraction": 0.7131684027777778,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 0.9991662305098774
+  },
+  {
+    "left": "behavior-pathtracing-ap",
+    "right": "behavior45-pt",
+    "view": "river",
+    "rgb_mae_0_255": 2.0199508666992188,
+    "compared_depth_pixel_fraction": 0.7984635416666667,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 0.9989345857386691
+  },
+  {
+    "left": "behavior-pathtracing-ap",
+    "right": "behavior45-pt",
+    "view": "bridge",
+    "rgb_mae_0_255": 1.9648423194885254,
+    "compared_depth_pixel_fraction": 0.9877387152777778,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 0.998839942875975
+  },
+  {
+    "left": "behavior-pathtracing-ap",
+    "right": "behavior45-pt",
+    "view": "upper_valley",
+    "rgb_mae_0_255": 1.9323698282241821,
+    "compared_depth_pixel_fraction": 0.8880295138888888,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 0.9979032463025777
+  },
+  {
+    "left": "behavior-pathtracing-ap",
+    "right": "behavior45-pt",
+    "view": "forest",
+    "rgb_mae_0_255": 1.6819878816604614,
+    "compared_depth_pixel_fraction": 0.7898090277777777,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 0.9983898621765986
+  },
+  {
+    "left": "behavior-pathtracing-ap",
+    "right": "behavior45-pt",
+    "view": "overview",
+    "rgb_mae_0_255": 1.8581452369689941,
+    "compared_depth_pixel_fraction": 0.806875,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 0.9991985110594716
+  },
+  {
+    "left": "behavior45-pt-ap",
+    "right": "behavior45-pt",
+    "view": "launch",
+    "rgb_mae_0_255": 0.021675346419215202,
+    "compared_depth_pixel_fraction": 0.7131684027777778,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 1.0
+  },
+  {
+    "left": "behavior45-pt-ap",
+    "right": "behavior45-pt",
+    "view": "river",
+    "rgb_mae_0_255": 0.022447915747761726,
+    "compared_depth_pixel_fraction": 0.7984635416666667,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 1.0
+  },
+  {
+    "left": "behavior45-pt-ap",
+    "right": "behavior45-pt",
+    "view": "bridge",
+    "rgb_mae_0_255": 0.024204282090067863,
+    "compared_depth_pixel_fraction": 0.9877387152777778,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 1.0
+  },
+  {
+    "left": "behavior45-pt-ap",
+    "right": "behavior45-pt",
+    "view": "upper_valley",
+    "rgb_mae_0_255": 0.02689236029982567,
+    "compared_depth_pixel_fraction": 0.8880295138888888,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 1.0
+  },
+  {
+    "left": "behavior45-pt-ap",
+    "right": "behavior45-pt",
+    "view": "forest",
+    "rgb_mae_0_255": 0.027151331305503845,
+    "compared_depth_pixel_fraction": 0.7898090277777777,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 1.0
+  },
+  {
+    "left": "behavior45-pt-ap",
+    "right": "behavior45-pt",
+    "view": "overview",
+    "rgb_mae_0_255": 0.023314526304602623,
+    "compared_depth_pixel_fraction": 0.806875,
+    "depth_abs_median_m": 0.0,
+    "depth_abs_p95_m": 0.0,
+    "depth_within_10cm_fraction": 1.0
+  }
+]

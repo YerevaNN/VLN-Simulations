@@ -1,0 +1,40 @@
+246791|vln-ap-ref|FAILED|1:0|00:00:52|ap-rtx|
+246791.batch|batch|FAILED|1:0|00:00:52|ap-rtx|
+246792|vln-behavior|FAILED|1:0|00:01:32|gpu05|
+246792.batch|batch|FAILED|1:0|00:01:32|gpu05|4581416K
+246793|vln-newton|FAILED|1:0|00:00:30|gpu09|
+246793.batch|batch|FAILED|1:0|00:00:30|gpu09|9068K
+246794|vln-ap-ref|CANCELLED by 1006|0:0|00:02:24|ap-rtx|
+246794.batch|batch|CANCELLED|0:15|00:02:25|ap-rtx|
+246795|vln-newton|CANCELLED by 1006|0:0|00:11:11|gpu09|
+246795.batch|batch|CANCELLED|0:15|00:11:14|gpu09|50316084K
+246796|vln-ap-ref|FAILED|1:0|00:00:00|ap-rtx|
+246796.batch|batch|FAILED|1:0|00:00:00|ap-rtx|
+246797|vln-behavior|FAILED|1:0|00:01:11|gpu05|
+246797.batch|batch|FAILED|1:0|00:01:11|gpu05|3309348K
+246798|vln-behavior-pt|FAILED|1:0|00:04:48|gpu09|
+246798.batch|batch|FAILED|1:0|00:04:48|gpu09|101667680K
+246799|vln-ap-ref|COMPLETED|0:0|00:03:18|ap-rtx|
+246799.batch|batch|COMPLETED|0:0|00:03:18|ap-rtx|
+246801|vln-ap-pt|COMPLETED|0:0|00:03:26|ap-rtx|
+246801.batch|batch|COMPLETED|0:0|00:03:26|ap-rtx|
+246802|vln-behavior-pt|FAILED|1:0|00:01:04|gpu05|
+246802.batch|batch|FAILED|1:0|00:01:04|gpu05|3302428K
+246803|vln-behavior-pt|FAILED|1:0|00:01:05|gpu05|
+246803.batch|batch|FAILED|1:0|00:01:05|gpu05|3266720K
+246804|vln-newton|COMPLETED|0:0|00:21:15|gpu05|
+246804.batch|batch|COMPLETED|0:0|00:21:15|gpu05|62377100K
+246805|vln-behavior-pt|FAILED|1:0|00:00:42|gpu09|
+246805.batch|batch|FAILED|1:0|00:00:42|gpu09|9064K
+246806|vln-ap-pt|CANCELLED by 1006|0:0|00:00:23|ap-rtx|
+246806.batch|batch|CANCELLED|0:15|00:00:24|ap-rtx|
+246807|vln-ap-pt|COMPLETED|0:0|00:01:10|ap-rtx|
+246807.batch|batch|COMPLETED|0:0|00:01:10|ap-rtx|
+246808|vln-ap-ref|COMPLETED|0:0|00:00:56|ap-rtx|
+246808.batch|batch|COMPLETED|0:0|00:00:56|ap-rtx|
+246810|vln-behavior45|FAILED|1:0|00:00:52|gpu09|
+246810.batch|batch|FAILED|1:0|00:00:52|gpu09|2064008K
+246811|vln-behavior45-pt|COMPLETED|0:0|00:07:13|gpu09|
+246811.batch|batch|COMPLETED|0:0|00:07:13|gpu09|26779572K
+246814|vln-ap-45pt|COMPLETED|0:0|00:06:37|ap-rtx|
+246814.batch|batch|COMPLETED|0:0|00:06:37|ap-rtx|

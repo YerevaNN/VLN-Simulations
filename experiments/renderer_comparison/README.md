@@ -5,6 +5,8 @@ AP's RTX A6000 and two H100 rendering paths: Newton's Warp camera renderer and
 BEHAVIOR/OmniGibson's Kit renderer settings. It measures image production and
 appearance, not policy quality or flight dynamics.
 
+See [RESULTS.md](RESULTS.md) for the completed runs, visual comparison and limits.
+
 ## Backends and provenance
 
 - Isaac Sim 5.1.0 is the runtime already installed on AP. The H100 runtime is a
