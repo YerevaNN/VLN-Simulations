@@ -35,6 +35,7 @@ t0 = time.perf_counter()
 git_dir = Path(__file__).resolve().parents[2]/'.git'
 head = (git_dir/'HEAD').read_text().strip()
 run_commit = (git_dir/head[5:]).read_text().strip() if head.startswith('ref: ') else head
+gpu_info = subprocess.check_output(['nvidia-smi','--query-gpu=uuid,name,driver_version','--format=csv'],text=True,timeout=30)
 from isaacsim import SimulationApp
 initial_renderer = a.force_render_mode or a.initial_renderer or ('PathTracing' if a.backend=='behavior-pathtracing' else ('RealTimePathTracing' if a.backend=='behavior-hq' else 'RayTracedLighting'))
 launch_args=['--portable-root', os.environ['ISAAC_PORTABLE_ROOT'], '--/rtx/rendermode='+initial_renderer]
@@ -162,6 +163,8 @@ for pose in config['poses']:
     records.append({'name':pose['name'],'seconds':time.perf_counter()-start,'mean':float(pixels[:,:,:3].mean()),
                     'std':float(pixels[:,:,:3].std()),'render_mode':settings.get('/rtx/rendermode')})
     print('CAPTURE', a.backend, records[-1], flush=True)
+(out/'capture-records.json').write_text(json.dumps(records,indent=2))
+print('PHASE captures_saved',flush=True)
 metadata = {'backend':a.backend,'frames':records,'elapsed_s':time.perf_counter()-t0,
             'scene_sha256':hashlib.sha256((scene_dir/'valley.usdc').read_bytes()).hexdigest(),
             'cameras_sha256':hashlib.sha256((scene_dir/'cameras.json').read_bytes()).hexdigest(),
@@ -169,7 +172,7 @@ metadata = {'backend':a.backend,'frames':records,'elapsed_s':time.perf_counter()
             'behavior_source_sha256':behavior_hash,'applied_settings':applied,
             'render_mode':settings.get('/rtx/rendermode'),
             'experience_sha256':experience_hash,'launch_args':launch_args,
-            'gpu':subprocess.check_output(['nvidia-smi','--query-gpu=uuid,name,driver_version','--format=csv'],text=True),
+            'gpu':gpu_info,
             'slurm_job_id':os.environ.get('SLURM_JOB_ID'),
             'git_commit':run_commit,
             'scope':'Static scene and matched camera replay; no PX4 flight or BEHAVIOR task dynamics.'}
