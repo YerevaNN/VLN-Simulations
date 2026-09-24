@@ -39,10 +39,9 @@ echo "Host: $(uname -srmo)"
 echo "RAM: $(awk '/MemTotal:/ {printf "%.1f GiB", $2/1048576}' /proc/meminfo)"
 echo "Isaac Python: $ISAAC_PYTHON"
 
-# active_gpu uses the nvidia-smi physical index; CUDA_VISIBLE_DEVICES keeps
-# CUDA/PhysX on the selected GPU, where its visible index becomes zero.
+# active_gpu uses the physical index reported by nvidia-smi.
+# Isaac Sim 5.1 warns that CUDA_VISIBLE_DEVICES can break its GPU enumeration.
 export ISAAC_ACTIVE_GPU="$GPU_DEVICE"
-export CUDA_VISIBLE_DEVICES="$GPU_DEVICE"
 smoke_log=$(mktemp)
 trap 'rm -f "$smoke_log"' EXIT
 if ! "$ISAAC_PYTHON" -c \
@@ -50,6 +49,10 @@ if ! "$ISAAC_PYTHON" -c \
   >"$smoke_log" 2>&1; then
   tail -n 40 "$smoke_log" >&2
   fail "Native Isaac Sim headless startup failed"
+fi
+if grep -E -q 'Could not initialize NVML|No CUDA devices found|CUDA context validation failed|Skipping NVIDIA GPU due CUDA being in bad state' "$smoke_log"; then
+  grep -E 'Could not initialize NVML|No CUDA devices found|CUDA context validation failed|Skipping NVIDIA GPU due CUDA being in bad state' "$smoke_log" | head -12 >&2
+  fail "Isaac Sim started but could not initialize the GPU"
 fi
 rm -f "$smoke_log"
 trap - EXIT
@@ -66,6 +69,10 @@ fi
 [[ -d "$RUNTIME_ROOT/isaac-python-deps" ]] || fail "isaac-python-deps missing under RUNTIME_ROOT"
 [[ -w "$DATA_ROOT" ]] || fail "DATA_ROOT is not writable"
 [[ "$EPISODE_ID" =~ ^[0-9]+$ && "$SEED" =~ ^[0-9]+$ ]] || fail "EPISODE_ID and SEED must be nonnegative integers"
+if pgrep -x px4 >/dev/null; then
+  pgrep -a -x px4 >&2 || true
+  fail "PX4 is already running on the host; stop the existing instance before this native mission"
+fi
 RUNTIME_ROOT=$(realpath "$RUNTIME_ROOT")
 DATA_ROOT=$(realpath "$DATA_ROOT")
 echo "Free disk at DATA_ROOT: $(df -hP "$DATA_ROOT" | awk 'NR==2 {print $4}')"
@@ -106,6 +113,9 @@ if ! "$ISAAC_PYTHON" "$REPO_ROOT/simulation/generate_episode.py" \
   --episode-id "$EPISODE_ID" --seed "$SEED" \
   >"$run_dir/episode.log" 2>&1; then
   tail -n 40 "$run_dir/episode.log" >&2
+  if pgrep -x px4 >/dev/null; then
+    echo "A PX4 process remains on the host; inspect it before retrying." >&2
+  fi
   fail "Episode failed; full log: $run_dir/episode.log"
 fi
 wall_s=$(($(date +%s) - start_s))
