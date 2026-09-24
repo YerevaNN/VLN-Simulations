@@ -72,6 +72,26 @@ DATA_ROOT/
   isaac-cache/
 ```
 
+## Check and benchmark an L40S host
+
+An L40S has the RT cores and 48 GB of VRAM needed for Isaac Sim rendering, but a GPU alone is not enough to run these missions. Use an x86_64 Linux host with a working NVIDIA driver, Docker GPU access, and the [Isaac Sim 5.1.0 container requirements](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/installation/requirements.html). This repository does not install Isaac Sim, Pegasus, PX4, or the Python dependencies for you.
+
+First, check the selected GPU and run Isaac Sim's compatibility checker. This pulls the container image if necessary; it does not require Pegasus or PX4:
+
+```bash
+GPU_DEVICE=0 bash scripts/benchmark_l40s.sh --preflight-only
+```
+
+To benchmark the **actual simulation**, prepare `RUNTIME_ROOT` with Pegasus Simulator 5.1.0, a PX4 v1.14.3 SITL build, and `isaac-python-deps` as shown above. Create writable `DATA_ROOT`, then set both paths and the GPU index in `.env`:
+
+```bash
+cp configs/example.env .env
+# Edit RUNTIME_ROOT, DATA_ROOT, and GPU_DEVICE in .env.
+bash scripts/benchmark_l40s.sh
+```
+
+The script runs one fresh Natural Valley mission through Isaac Sim, Pegasus, and PX4. It downloads missing scene assets, checks that the mission produced RGB frames, actions, and PX4/MAVLink logs, and writes `summary.json`, the simulator log, and one-second GPU samples under `DATA_ROOT/benchmarks/`. The summary reports end-to-end wall time, simulated time, real-time factor, RGB frames per wall second, and sampled peak GPU use and VRAM. A passing compatibility check alone does not verify mission completion. The first mission may spend substantial time downloading assets and warming renderer caches, so compare repeated runs on similarly prepared machines.
+
 ## Generate the dataset
 
 Copy the example configuration and point it at the prepared runtime and bulk-storage locations:
