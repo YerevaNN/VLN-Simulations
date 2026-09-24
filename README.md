@@ -45,6 +45,8 @@ simulation/
   validate_dataset.py   dataset-wide deep validator
 scripts/
   run_batch.sh          resumable ten-episode GPU batch
+  benchmark_l40s.sh          Docker L40S preflight and one-episode benchmark
+  benchmark_native_l40s.sh   native Linux L40S preflight and benchmark
   serve_viewer.sh       read-only playback deployment
 viewer/                 Flask + Canvas playback application
 configs/example.env     configurable AP/runtime paths
@@ -79,7 +81,7 @@ An L40S has the RT cores and 48 GB of VRAM needed for Isaac Sim rendering, but a
 First, check the selected GPU and run Isaac Sim's compatibility checker. This pulls the container image if necessary; it does not require Pegasus or PX4:
 
 ```bash
-GPU_DEVICE=0 bash scripts/benchmark_l40s.sh --preflight-only
+bash scripts/benchmark_l40s.sh --preflight-only
 ```
 
 To benchmark the **actual simulation**, prepare `RUNTIME_ROOT` with Pegasus Simulator 5.1.0, a PX4 v1.14.3 SITL build, and `isaac-python-deps` as shown above. Create writable `DATA_ROOT`, then set both paths and the GPU index in `.env`:
@@ -91,6 +93,18 @@ bash scripts/benchmark_l40s.sh
 ```
 
 The script runs one fresh Natural Valley mission through Isaac Sim, Pegasus, and PX4. It downloads missing scene assets, checks that the mission produced RGB frames, actions, and PX4/MAVLink logs, and writes `summary.json`, the simulator log, and one-second GPU samples under `DATA_ROOT/benchmarks/`. The summary reports end-to-end wall time, simulated time, real-time factor, RGB frames per wall second, and sampled peak GPU use and VRAM. A passing compatibility check alone does not verify mission completion. The first mission may spend substantial time downloading assets and warming renderer caches, so compare repeated runs on similarly prepared machines.
+
+### Run the same benchmark without Docker
+
+Install [Isaac Sim 5.1.0 natively on Linux](https://docs.isaacsim.omniverse.nvidia.com/5.1.0/installation/install_workstation.html), along with the same Pegasus, PX4, and Python dependencies. Set `ISAAC_ROOT` to the installation containing `python.sh`, or set `ISAAC_PYTHON` to the executable Python interpreter of an Isaac Sim 5.1 environment. Keep `RUNTIME_ROOT`, `DATA_ROOT`, and `GPU_DEVICE` in `.env` as above. The native preflight starts Isaac Sim headlessly; the full benchmark runs a new mission and produces the same measurements:
+
+```bash
+export ISAAC_ROOT=/absolute/path/to/isaac-sim
+bash scripts/benchmark_native_l40s.sh --preflight-only
+bash scripts/benchmark_native_l40s.sh
+```
+
+`GPU_DEVICE` selects the physical GPU index reported by `nvidia-smi`. Run only one native mission at a time on the host, since PX4/MAVLink ports are not isolated by containers.
 
 ## Generate the dataset
 

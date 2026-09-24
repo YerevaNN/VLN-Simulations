@@ -5,15 +5,19 @@ Run this file with Isaac Sim's Python interpreter. The surrounding launcher moun
 the repository at /workspace and bulk output at /data.
 """
 
+import os
+
 from isaacsim import SimulationApp
 
-simulation_app = SimulationApp({"headless": True, "width": 640, "height": 360})
+app_config = {"headless": True, "width": 640, "height": 360}
+if "ISAAC_ACTIVE_GPU" in os.environ:
+    app_config.update(active_gpu=int(os.environ["ISAAC_ACTIVE_GPU"]), multi_gpu=False)
+simulation_app = SimulationApp(app_config)
 
 import argparse
 import hashlib
 import json
 import math
-import os
 import shutil
 import struct
 import time
